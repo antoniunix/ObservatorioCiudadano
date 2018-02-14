@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">ObservatorioCiudadano</string>
+    <string name="app_path_photo">/sdcard/Nestle/</string>
+    <string name="app_db_name">NrocProm.db</string>
+
+    <string name="label_continue">CONTINUAR</string>
+    <string name="label_next">SIGUIENTE</string>
+    <string name="label_accept">ACEPTAR</string>
+    <string name="label_cancel">CANCELAR</string>
+    <string name="label_into">ENTRAR</string>
+    <string name="label_save">GUARDAR</string>
+    <string name="label_created">GENERAR</string>
+    <string name="label_account">CREDENCIALES</string>
+    <string name="label_synck">SINCRONIZACIÓN</string>
+
+    <!--Login-->
+    <string name="loggin_hint_user">Nombre de usuario</string>
+    <string name="loggin_hint_pass">Contraseña</string>
+    <string name="dialog_account_delete_data">Ha cambiado de usuario, todos los datos anteriores seran eliminados\n ¿Desea continuar?</string>
+</resources>
