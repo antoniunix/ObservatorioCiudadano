@@ -64,9 +64,9 @@ public class DaoEAEncuesta extends DAO {
 
         String query = "SELECT DISTINCT\n" +
                 "*\n" + "FROM\n" + "EAEncuesta \n"
-                +"LEFT JOIN EAAnswerPdv ON EAAnswerPdv.id_poll=EAEncuesta.id AND EAAnswerPdv.id_pdv="+idPdv+" \n"
+                + "LEFT JOIN EAAnswerPdv ON EAAnswerPdv.id_poll=EAEncuesta.id AND EAAnswerPdv.id_pdv=" + idPdv + " \n"
                 + " WHERE (EAEncuesta.restriction=1 OR EAAnswerPdv.id_poll ISNULL  ) and \n" +
-                + System.currentTimeMillis() + "\n"
+                +System.currentTimeMillis() + "\n"
                 + "BETWEEN vigenciaInicial and vigenciaFinal and\n" + "(\n"
                 + "EAEncuesta.canal like \"%@" + idCanal + "@%\" or \n"
                 + "EAEncuesta.cliente like \"%@" + idCliente + "@%\" or \n"
@@ -164,7 +164,7 @@ public class DaoEAEncuesta extends DAO {
 
     public List<DtoCheckIsPoll> selectIsPollComplete(DtoBundle dtoBundle, DtoPdvPdv dto, int status) {
         db = helper.getReadableDatabase();
-        String qry ="SELECT\n" +
+        String qry = "SELECT\n" +
                 "EAEncuesta.id,\n" +
                 "EAEncuesta.nombre,\n" +
                 "EAEncuesta.estado,\n" +
@@ -172,19 +172,19 @@ public class DaoEAEncuesta extends DAO {
                 "count(EARespuesta.ida) as respuestas\n" +
                 "FROM\n" +
                 "EAEncuesta\n" +
-                "LEFT JOIN EAAnswerPdv ON EAAnswerPdv.id_poll=EAEncuesta.id AND EAAnswerPdv.id_pdv="+dto.getId()+"\n" +
-                "LEFT JOIN EARespuesta ON EARespuesta.idEncuesta=EAEncuesta.id AND  EARespuesta.idReporteLocal="+dtoBundle.getIdReportLocal()+"\n" +
+                "LEFT JOIN EAAnswerPdv ON EAAnswerPdv.id_poll=EAEncuesta.id AND EAAnswerPdv.id_pdv=" + dto.getId() + "\n" +
+                "LEFT JOIN EARespuesta ON EARespuesta.idEncuesta=EAEncuesta.id AND  EARespuesta.idReporteLocal=" + dtoBundle.getIdReportLocal() + "\n" +
                 "INNER JOIN EAPregunta ON EAPregunta.idEncuesta=EAEncuesta.id\n" +
-                "WHERE "+ System.currentTimeMillis()+" BETWEEN vigenciaInicial and vigenciaFinal and    \n" +
-                "(EAEncuesta.canal like '%@"+dto.getIdCanal()+"@%' or EAEncuesta.canal ISNULL or EAEncuesta.canal= '' ) and    \n" +
-                "(EAEncuesta.cliente like '%@"+dto.getIdClient()+"@%' or EAEncuesta.cliente ISNULL or EAEncuesta.cliente='' ) and    \n" +
-                "(EAEncuesta.pdv like '%@"+dto.getId()+"@%' or  EAEncuesta.pdv ISNULL or EAEncuesta.pdv='' ) and    \n" +
-                "(EAEncuesta.region like '%@"+dto.getIdRegion()+"@%' or  EAEncuesta.region ISNULL or EAEncuesta.region='' ) and    \n" +
-                "( EAEncuesta.rtm like '%@"+dto.getIdRtm()+"@%' or  EAEncuesta.rtm ISNULL or EAEncuesta.rtm='') \n" +
-                "AND EAEncuesta.estado="+status+"\n" +
-                "AND (EAEncuesta.restriction=1 OR EAAnswerPdv.id_poll ISNULL ) \n"+
+                "WHERE " + System.currentTimeMillis() + " BETWEEN vigenciaInicial and vigenciaFinal and    \n" +
+                "(EAEncuesta.canal like '%@" + dto.getIdCanal() + "@%' or EAEncuesta.canal ISNULL or EAEncuesta.canal= '' ) and    \n" +
+                "(EAEncuesta.cliente like '%@" + dto.getIdClient() + "@%' or EAEncuesta.cliente ISNULL or EAEncuesta.cliente='' ) and    \n" +
+                "(EAEncuesta.pdv like '%@" + dto.getId() + "@%' or  EAEncuesta.pdv ISNULL or EAEncuesta.pdv='' ) and    \n" +
+                "(EAEncuesta.region like '%@" + dto.getIdRegion() + "@%' or  EAEncuesta.region ISNULL or EAEncuesta.region='' ) and    \n" +
+                "( EAEncuesta.rtm like '%@" + dto.getIdRtm() + "@%' or  EAEncuesta.rtm ISNULL or EAEncuesta.rtm='') \n" +
+                "AND EAEncuesta.estado=" + status + "\n" +
+                "AND (EAEncuesta.restriction=1 OR EAAnswerPdv.id_poll ISNULL ) \n" +
                 "GROUP BY EAEncuesta.id";
-        Log.e("qry","qry poll "+qry);
+        Log.e("qry", "qry poll " + qry);
         cursor = db.rawQuery(qry, null);
         List<DtoCheckIsPoll> obj = new ArrayList<DtoCheckIsPoll>();
         DtoCheckIsPoll catalogo;
@@ -230,22 +230,22 @@ public class DaoEAEncuesta extends DAO {
         return resp;
     }
 
-    /**
-     * Si existe o no almenos una encuesta
-     *
-     * @return
-     */
-    public boolean exists() {
+
+    public boolean isResponsePollById(long idPoll) {
         db = helper.getReadableDatabase();
-        cursor = db.rawQuery("SELECT *"
-                + " FROM " + TABLE_NAME
-                + " WHERE   " + System.currentTimeMillis() + " BETWEEN vigenciaInicial and vigenciaFinal", null);
-
-        if (cursor.getCount() > 0)
-            return true;
-        else
-            return false;
+        String qry = "SELECT \n" +
+                "COUNT(*) count\n" +
+                "FROM\n" +
+                "EARespuesta\n" +
+                "WHERE EARespuesta.idEncuesta=" + idPoll;
+        Log.e("qry", "qry poll " + qry);
+        cursor = db.rawQuery(qry, null);
+        boolean isResponsPoll = false;
+        if (cursor.moveToFirst()) {
+            isResponsPoll = cursor.getInt(cursor.getColumnIndexOrThrow("count")) > 0;
+        }
+        cursor.close();
+        db.close();
+        return isResponsPoll;
     }
-
-//    public boolean isResponse
 }

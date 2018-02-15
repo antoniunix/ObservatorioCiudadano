@@ -30,7 +30,7 @@ public class DaoReport extends DAO {
     public static String PK_FIELD = "id";
     private final String ID = "id";
     private final String ID_PDV = "id_pdv";
-    private final String ID_SCHEDULE = "id_schedule";
+    private final String ID_SCHEDULE = "id_agenda";
     private final String VERSION = "version";
     private final String DATE = "date";
     private final String TZ = "tz";
@@ -76,7 +76,7 @@ public class DaoReport extends DAO {
                 insStatement.bindNull(3);
             }
             try {
-                insStatement.bindString(4, dto.getDate());
+                insStatement.bindLong(4, dto.getDate());
             } catch (Exception e) {
                 insStatement.bindNull(4);
             }
@@ -133,7 +133,6 @@ public class DaoReport extends DAO {
     }
 
 
-
     public boolean isReportIncomplete() {
         boolean isReport = false;
         db = helper.getReadableDatabase();
@@ -169,7 +168,7 @@ public class DaoReport extends DAO {
      */
     public List<DtoReportToSend> SelectToSend() {
         db = helper.getReadableDatabase();
-        String qry="SELECT  * FROM(\n" +
+        String qry = "SELECT  * FROM(\n" +
                 "SELECT\n" +
                 "report.id,\n" +
                 "report.id_schedule,\n" +
@@ -209,7 +208,7 @@ public class DaoReport extends DAO {
                 ") AS q1\n" +
                 "WHERE q1.CHECKIn_date IS NOT NULL AND q1.CHECKOut_date IS NOT NULL";
         cursor = db.rawQuery(qry, null);
-        Log.e("qry","qry  "+qry);
+        Log.e("qry", "qry  " + qry);
         List<DtoReportToSend> obj = new ArrayList<DtoReportToSend>();
         DtoReportToSend catalogo;
         if (cursor.moveToFirst()) {
@@ -462,7 +461,6 @@ public class DaoReport extends DAO {
         db.close();
         return obj;
     }
-
 
 
     /**

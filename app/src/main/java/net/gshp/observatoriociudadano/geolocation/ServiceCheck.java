@@ -49,6 +49,7 @@ public class ServiceCheck extends IntentService implements OnApiGeolocation {
 
     public ServiceCheck() {
         super("ServiceCheck");
+        Log.e("service check", "service check");
         geolocation = new Geolocation(ServiceCheck.class);
         geolocation.setOnApiGeolocationListener(this)
                 .setContext(ContextApp.context)
@@ -106,7 +107,7 @@ public class ServiceCheck extends IntentService implements OnApiGeolocation {
                 dtoCheck.setTz(Config.getTimeZone());
                 dtoCheck.setLatitude(location.getLatitude());
                 dtoCheck.setLongitude(location.getLongitude());
-                dtoCheck.setAccuracy(location.getAccuracy()+"");
+                dtoCheck.setAccuracy(location.getAccuracy() + "");
                 dtoCheck.setImei(Config.getIMEI());
                 dtoCheck.setSatelliteUtc(location.getTime() + "");
                 dtoCheck.setTypeCheck(typeCheck);
@@ -120,14 +121,15 @@ public class ServiceCheck extends IntentService implements OnApiGeolocation {
         sendCheck();
 
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
     }
 
     public void sendCheck() {
-        lstCheckSends=new DaoReportCheck().SelectToSend();
-        Log.e("status", "size "+lstCheckSends.size());
+        lstCheckSends = new DaoReportCheck().SelectToSend();
+        Log.e("status", "size " + lstCheckSends.size());
         new Thread() {
             public void run() {
                 for (int i = 0; i < lstCheckSends.size(); i++) {

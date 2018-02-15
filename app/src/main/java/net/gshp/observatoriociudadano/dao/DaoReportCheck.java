@@ -108,7 +108,7 @@ public class DaoReportCheck extends DAO {
         db = helper.getReadableDatabase();
         cursor = db.rawQuery("SELECT\n" +
                 "report.id_pdv,\n" +
-                "report.id_schedule,\n" +
+                "report.id_agenda,\n" +
                 "report.version,\n" +
                 "report.hash,\n" +
                 "report_check.id_report_local,\n" +
@@ -127,7 +127,7 @@ public class DaoReportCheck extends DAO {
         DtoCheckSend catalogo;
         if (cursor.moveToFirst()) {
             int place = cursor.getColumnIndexOrThrow("id_pdv");
-            int id_agenda = cursor.getColumnIndexOrThrow("id_schedule");
+            int id_agenda = cursor.getColumnIndexOrThrow("id_agenda");
             int version = cursor.getColumnIndexOrThrow("version");
             int imei = cursor.getColumnIndexOrThrow(IMEI);
             int hash = cursor.getColumnIndexOrThrow(HASH);

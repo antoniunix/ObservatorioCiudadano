@@ -9,7 +9,7 @@ public class DtoReport {
     private long idPdv;
     private long idSchedule;
     private String version;
-    private String date;
+    private long date;
     private String tz;
     private String imei;
     private String hash;
@@ -55,11 +55,11 @@ public class DtoReport {
         return this;
     }
 
-    public String getDate() {
+    public long getDate() {
         return date;
     }
 
-    public DtoReport setDate(String date) {
+    public DtoReport setDate(long date) {
         this.date = date;
         return this;
     }

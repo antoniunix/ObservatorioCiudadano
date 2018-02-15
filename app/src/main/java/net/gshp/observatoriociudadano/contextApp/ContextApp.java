@@ -3,6 +3,7 @@ package net.gshp.observatoriociudadano.contextApp;
 import android.content.Context;
 import android.support.multidex.MultiDexApplication;
 
+import com.facebook.stetho.Stetho;
 import com.gosharp.apis.db.DBAPI;
 
 import net.gshp.apiencuesta.APIEncuesta;
@@ -21,7 +22,7 @@ public class ContextApp extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         context = getApplicationContext();
-//        Stetho.initializeWithDefaults(this);
+        Stetho.initializeWithDefaults(this);
         AlarmGeolocation.getInstance();
 
         APIEncuesta.setPATH_FOTO(getString(R.string.app_path_photo));

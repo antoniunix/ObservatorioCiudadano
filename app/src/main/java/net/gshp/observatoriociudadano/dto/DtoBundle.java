@@ -8,6 +8,7 @@ public class DtoBundle implements Parcelable {
     private long idPdv;
     private long idReportLocal;
     private long idRoll;
+    private long idTypeMenuReport;// es para saber si esta entrando a menu report Supervisor ó representante de casilla
 
     public long getIdPdv() {
         return idPdv;
@@ -36,6 +37,14 @@ public class DtoBundle implements Parcelable {
         return this;
     }
 
+    public long getIdTypeMenuReport() {
+        return idTypeMenuReport;
+    }
+
+    public DtoBundle setIdTypeMenuReport(long idTypeMenuReport) {
+        this.idTypeMenuReport = idTypeMenuReport;
+        return this;
+    }
 
     @Override
     public int describeContents() {
@@ -47,6 +56,7 @@ public class DtoBundle implements Parcelable {
         dest.writeLong(this.idPdv);
         dest.writeLong(this.idReportLocal);
         dest.writeLong(this.idRoll);
+        dest.writeLong(this.idTypeMenuReport);
     }
 
     public DtoBundle() {
@@ -56,6 +66,7 @@ public class DtoBundle implements Parcelable {
         this.idPdv = in.readLong();
         this.idReportLocal = in.readLong();
         this.idRoll = in.readLong();
+        this.idTypeMenuReport = in.readLong();
     }
 
     public static final Parcelable.Creator<DtoBundle> CREATOR = new Parcelable.Creator<DtoBundle>() {

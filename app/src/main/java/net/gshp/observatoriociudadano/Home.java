@@ -32,6 +32,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import net.gshp.observatoriociudadano.dialog.DialogAccount;
 import net.gshp.observatoriociudadano.dialog.DialogSync;
+import net.gshp.observatoriociudadano.dto.DtoBundle;
 import net.gshp.observatoriociudadano.util.Config;
 
 public class Home extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener,
@@ -88,9 +89,11 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+        DtoBundle dtoBundle = new DtoBundle();
         switch (item.getItemId()) {
             case R.id.action_supervisor:
-                startActivity(new Intent(this, MenuReport.class));
+                dtoBundle.setIdTypeMenuReport(getResources().getInteger(R.integer.idPollSupervisor));
+                startActivity(new Intent(this, MenuReport.class).putExtra(getString(R.string.app_bundle_name), dtoBundle));
                 break;
             case R.id.action_representative:
                 startActivity(new Intent(this, ListStation.class));
@@ -253,10 +256,10 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
     @Override
     public void onClick(View v) {
 
-        if(v.getId()==btnTBAccount.getId()){
+        if (v.getId() == btnTBAccount.getId()) {
             new DialogAccount().show(getSupportFragmentManager(), "Fragment_dialog_account");
 
-        }else if(v.getId()==btnTBSync.getId()){
+        } else if (v.getId() == btnTBSync.getId()) {
             if (preferences.getString(getString(R.string.app_share_preference_user_account), null) != null) {
                 DialogSync diFragmentSync = new DialogSync();
                 diFragmentSync.setCancelable(false);
@@ -265,9 +268,9 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
                 new DialogAccount().show(getSupportFragmentManager(), "Fragment_dialog_account");
             }
 
-        }else if(v.getId()==btnTBHelp.getId()){
+        } else if (v.getId() == btnTBHelp.getId()) {
 
-        }else if(v.getId()==btnTBSettings.getId()){
+        } else if (v.getId() == btnTBSettings.getId()) {
 
         }
 
