@@ -4,10 +4,10 @@ android {
     compileSdkVersion 26
     defaultConfig {
         applicationId "net.gshp.observatoriociudadano"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 26
         versionCode 1
-        versionName "1.0"
+        versionName "NROC_PRO_4.20"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
@@ -17,6 +17,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    useLibrary 'org.apache.http.legacy'
 }
 
 dependencies {
@@ -29,4 +30,13 @@ dependencies {
     compile 'com.android.support:design:26.+'
     compile 'com.google.code.gson:gson:2.2.2'
     compile 'com.android.support:multidex:1.0.0'
+    compile 'com.google.android.gms:play-services:9.2.1'
+    compile 'com.aurelhubert:ahbottomnavigation:2.1.0'
+    compile 'net.gshp:APINetwork:1.0'
+    compile 'net.gshp:ApiUtils:1.0'
+    compile 'net.gshp:ApiTimeModule:1.0'
+    compile 'net.gshp:ApiPoll:1.2'
+    compile 'net.gshp:ApiDB:1.1'
+    compile 'net.panamiur:ApiGeolocation:1.0'
 }
+apply plugin: 'com.google.gms.google-services'

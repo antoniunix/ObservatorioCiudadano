@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    style="@style/style_dialog"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/title_dialog_shape">
+
+        <TextView
+            android:id="@+id/toolbar_title"
+            style="@style/title_text_toolbar_style_dialog"
+            android:text="@string/dialog_account" />
+
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:id="@+id/lyt_account"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:orientation="vertical">
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_user"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/edt_user_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/loggin_hint_user"
+                android:inputType="textPersonName"
+                android:textColor="@color/colorTextEdt" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_pass"
+            android:layout_width="match_parent"
+            app:passwordToggleEnabled="true"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/edt_pass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/loggin_hint_pass"
+                android:inputType="textPassword"
+                android:textColor="@color/colorTextEdt" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <Button
+            android:id="@+id/btn_sync"
+            style="@style/style_Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/label_continue"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lyt_warning"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/txt_warning_account"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/dialog_account_delete_data" />
+
+        <Button
+            android:id="@+id/btn_sync_agree"
+            style="@style/style_Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/label_continue"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+</LinearLayout>

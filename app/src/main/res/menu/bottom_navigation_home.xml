@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_supervisor"
+        android:enabled="true"
+        android:icon="@drawable/key"
+        android:title="@string/home_button_navigation_supervisor"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_representative"
+        android:enabled="true"
+        android:icon="@drawable/sync"
+        android:title="@string/home_button_navigation_representative"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_visit"
+        android:enabled="true"
+        android:icon="@drawable/help"
+        android:title="@string/home_button_navigation_visit"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_exit"
+        android:enabled="true"
+        android:icon="@drawable/key"
+        android:title="@string/home_button_navigation_exit"
+        app:showAsAction="ifRoom" />
+</menu>

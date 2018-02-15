@@ -147,4 +147,45 @@ public class Tables {
     public final String Table_EATipoPregunta = "CREATE TABLE EATipoPregunta(" + "id INTEGER PRIMARY KEY NOT NULL,"
             + "tipo TEXT)";
 
+    /*MODULOS*/
+
+    public final String TableMeasurementModuleHead = "CREATE TABLE measurement_module_head(" +
+            "id INTEGER," +
+            "startDate TEXT," +
+            "endDate TEXT," +
+            "description TEXT," +
+            "last_update TEXT)";
+    public final String TableMeasurementModule = "CREATE TABLE measurement_module(" +
+            "id INTEGER," +
+            "id_measurement INTEGER," +
+            "id_item INTEGER," +
+            "value TEXT," +
+            "required INTEGER," +
+            "_orden INTEGER," +
+            "last_update TEXT)";
+    public final String TableMeasurementModuleClient = "CREATE TABLE measurement_module_client(" +
+            "id_item_relation INTEGER NOT NULL," +
+            "id_measurement INTEGER NOT NULL," +
+            "last_update TEXT)";
+    public final String TableMeasurementModuleCanal = "CREATE TABLE measurement_module_canal(" +
+            "id_item_relation INTEGER NOT NULL," +
+            "id_measurement INTEGER NOT NULL," +
+            "last_update TEXT)";
+    public final String TableMeasurementModuleFormat = "CREATE TABLE measurement_module_format(" +
+            "id_item_relation INTEGER NOT NULL," +
+            "id_measurement INTEGER NOT NULL," +
+            "last_update TEXT)";
+    public final String TableMeasurementModulePdv = "CREATE TABLE measurement_module_pdv(" +
+            "id_item_relation INTEGER NOT NULL," +
+            "id_measurement INTEGER NOT NULL," +
+            "last_update TEXT)";
+    public final String TableMeasurementModuleRtm = "CREATE TABLE measurement_module_rtm(" +
+            "id_item_relation INTEGER NOT NULL," +
+            "id_measurement INTEGER NOT NULL," +
+            "last_update TEXT)";
+    public final String TableMeasurementModuleRegion = "CREATE TABLE measurement_module_region(" +
+            "id_item_relation INTEGER NOT NULL," +
+            "id_measurement INTEGER NOT NULL," +
+            "last_update TEXT)";
+
 }

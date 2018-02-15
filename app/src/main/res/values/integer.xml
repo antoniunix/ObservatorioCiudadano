@@ -1,4 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <integer name="app_version_db">3</integer>
+    <integer name="app_version_db">1</integer>
+    <integer name="time_synch">86400000</integer>
+    <integer name="geolocation_alarm_start">120000</integer><!--cada 2 min se envia geos-->
+    <integer name="geolocation_schedule_start">6</integer><!--6 am-->
+    <integer name="geolocation_schedule_end">20</integer><!--8 pm-->
+    <integer name="geolocation_time_delete">86400000</integer>
+    <integer name="geolocation_time_update">100</integer>
+    <integer name="time_check_max">20000</integer>
+
+    <integer name="rollSupervisor">1</integer>
+    <integer name="rollRepresentanteCasilla">2</integer>
+    <integer name="idPollSupervisor">1</integer>
+    <integer name="idPollRepresentanteCasilla">2</integer>
 </resources>

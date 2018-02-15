@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    style="@style/style_dialog"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/title_dialog_shape">
+
+        <TextView
+            android:id="@+id/toolbar_title"
+            style="@style/title_text_toolbar_style_dialog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/dialog_update_title" />
+
+    </android.support.v7.widget.Toolbar>
+
+    <ProgressBar
+        android:id="@+id/pgb_update"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:max="100"
+        android:progress="1" />
+
+    <TextView
+        android:id="@+id/txt_percent_update"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:gravity="center"
+        android:textSize="@dimen/sizeTextNormal" />
+
+    <Button
+        android:id="@+id/btn_next_update"
+        style="@style/style_Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/label_continue"
+        android:visibility="gone" />
+
+</LinearLayout>

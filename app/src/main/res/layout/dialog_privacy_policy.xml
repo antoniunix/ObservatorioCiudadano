@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    style="@style/style_dialog">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/title_dialog_shape">
+
+        <TextView
+            android:id="@+id/toolbar_title"
+            style="@style/title_text_toolbar_style_dialog"
+            android:text="@string/dialog_politics"/>
+
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:id="@+id/lnyButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:padding="@dimen/activity_horizontal_margin">
+
+        <Button
+            android:id="@+id/btn_agree"
+            style="@style/style_Button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/activity_vertical_margin"
+            android:layout_weight="1"
+            android:text="@string/label_accept"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/btn_cancel"
+            style="@style/style_Button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/label_cancel" />
+    </LinearLayout>
+
+    <CheckBox
+        android:id="@+id/chb_agree"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/lnyButton"
+        android:layout_margin="5dp"
+        android:buttonTint="@color/colorPrimary"
+        android:text="Acepto"
+        android:textColor="@android:color/black" />
+
+    <EditText
+        android:id="@+id/edt_policy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/chb_agree"
+        android:layout_below="@id/toolbar_top"
+        android:layout_margin="10dp"
+        android:background="@android:color/white"
+        android:editable="false"
+        android:textColor="@android:color/black"
+        android:textSize="10sp" />
+
+
+</RelativeLayout>

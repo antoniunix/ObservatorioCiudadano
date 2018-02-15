@@ -35,7 +35,6 @@ public class AppDb extends SQLiteOpenHelper {
         db.execSQL(tables.TableReportCheck);
         db.execSQL(tables.TableModule);
 
-
         db.execSQL(tables.Table_EAEncuesta);
         db.execSQL(tables.Table_EAGrupo);
         db.execSQL(tables.Table_EAOpcionPregunta);
@@ -45,6 +44,15 @@ public class AppDb extends SQLiteOpenHelper {
         db.execSQL(tables.Table_EATipoPregunta);
         db.execSQL(tables.Table_EARespuestaRT);
         db.execSQL(tables.TableEAAnswerPdv);
+
+        db.execSQL(tables.TableMeasurementModuleHead);
+        db.execSQL(tables.TableMeasurementModule);
+        db.execSQL(tables.TableMeasurementModuleClient);
+        db.execSQL(tables.TableMeasurementModuleCanal);
+        db.execSQL(tables.TableMeasurementModuleFormat);
+        db.execSQL(tables.TableMeasurementModulePdv);
+        db.execSQL(tables.TableMeasurementModuleRtm);
+        db.execSQL(tables.TableMeasurementModuleRegion);
 
     }
 

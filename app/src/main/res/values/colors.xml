@@ -3,8 +3,20 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="colorBackgroundGeneral">#f6f7fb</color>
 
     <color name="colorShapeButtonInit">#2067d9</color>
     <color name="colorShapeButtonFinish">#194c9a</color>
+
+    <color name="colorTextTitleBar">#ffffff</color>
+    <color name="colorTextTitleDialog">#ffffff</color>
+    <color name="colorTextButton">#ffffff</color>
+    <color name="colorTextEdt">#ffffff</color>
+    <color name="colorTextNavigationBotton">#ffffff</color>
+
+    <color name="colorAHBottonDefaul">#000000</color>
+    <color name="colorAHBottonAccentColor">#FF0000</color>
+    <color name="colorAHBottonInactive">#00FF00</color>
+
 
 </resources>

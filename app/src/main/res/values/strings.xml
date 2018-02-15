@@ -1,7 +1,34 @@
 <resources>
     <string name="app_name">ObservatorioCiudadano</string>
-    <string name="app_path_photo">/sdcard/Nestle/</string>
-    <string name="app_db_name">NrocProm.db</string>
+    <string name="app_path_photo">/sdcard/ObservatorioCiudadano/</string>
+    <string name="app_db_name">ObservatorioCiudadano.db</string>
+    <string name="app_share_preference_name">ObservatorioCiudadano</string>
+    <string name="network_ip">https://nestle.gshp-apps.com</string>
+    <string name="network_context">nesmovil-rest/rest/</string>
+    <string name="app_download_apk">https://s3-us-west-1.amazonaws.com/gshpapps/Nestle/Cop/Nestle_COP.apk</string>
+    <string name="app_path_apk">sdcard/Nestle/NrocProm.apk</string>
+
+    <string name="home_button_navigation_supervisor">SUPERVISOR</string>
+    <string name="home_button_navigation_representative">REPRESENTANTE</string>
+    <string name="home_button_navigation_visit">VISITAS</string>
+    <string name="home_button_navigation_exit">SALIR</string>
+
+    <string name="network_sc_conflict">Sincronización fallida, intentelo\nmás tarde</string>
+    <string name="network_sc_precondition_failed">Su contraseña ha caducado,¡debe actualizarlo!</string>
+    <string name="network_sc_unauthorized">Verificar credenciales.</string>
+    <string name="network_no_content">Uds. no cuenta con la siguiente información</string>
+    <string name="network_error">Error de red, verifique su conexión o intentelo más tarde</string>
+    <string name="network_server_disable">El servidor se encuentra en mantenimiento, Intentelo más tarde</string>
+    <string name="network_forbidden">Su cuenta ha sido desactivada</string>
+
+    <string name="app_share_preference_privacy_politic">privacy_politic</string>
+    <string name="app_share_preference_time_synch">time_synch</string>
+    <string name="app_share_preference_user_account">user_account</string>
+    <string name="app_share_preference_user_pass">user_pass</string>
+    <string name="app_share_preference_count_unauthorized">count_unauthorized</string>
+
+    <string name="error_empty_user_name">Ingrese nombre de usuario</string>
+    <string name="error_empty_password">Ingrese su contraseña</string>
 
     <string name="label_continue">CONTINUAR</string>
     <string name="label_next">SIGUIENTE</string>
@@ -17,4 +44,250 @@
     <string name="loggin_hint_user">Nombre de usuario</string>
     <string name="loggin_hint_pass">Contraseña</string>
     <string name="dialog_account_delete_data">Ha cambiado de usuario, todos los datos anteriores seran eliminados\n ¿Desea continuar?</string>
+    <string name="dialog_account">CREDENCIALES</string>
+    <string name="dialog_synch">SINCRONIZACIÓN</string>
+
+    <string name="dialog_update_error">No se pudo actualizar, favor de verivicar su conexion a red y vuelva a intentarlo</string>
+
+    <!--POLITICS-->
+    <string name="dialog_politics">TÉRMINOS Y CONDICIONES</string>
+    <string name="dialog_update_title">ACTUALIZAR</string>
+    <string name="dialog_change_password">CAMBIO DE CONTRASEÑA</string>
+    <string name="dialog_change_password_actual">Contraseña Actual:</string>
+    <string name="dialog_change_password_new">Contraseña Nueva:</string>
+    <string name="dialog_change_password_confirm">Confirmar Contraseña:</string>
+    <string name="dialog_change_password_btn">CAMBIAR</string>
+    <string name="app_share_preference_first_synch">first_synch</string>
+    <string name="report_check_dont_provider">dont provider</string>
+    <string name="app_bundle_name">bundle</string>
+
+    <string name="privacy_politics">TÉRMINOS Y CONDICIONES DE USO
+1.
+Objeto.
+Los presentes Términos y Condiciones de Uso (los “TCU”) regulan el uso del
+software denominado Plataforma de Reporteo en Tiempo Real (Real Time Business
+Management) (el “PROGRAMA”) del cual GSHP DISTRIBUTION, S.A. de C.V. (“GSHP”) es
+titular, así como las condiciones generales de uso del mismo y las Políticas de Privacidad.
+GSHP es una persona moral constituida de conformidad con las leyes de los
+Estados Unidos Mexicanos (“México”) con domicilio en Galileo No. 93, Colonia Polanco
+Chapultepec, Delegación Miguel Hidalgo, 11560, México, Distrito Federal.
+El PROGRAMA es una herramienta utilizada por GSHP para el levantamiento de
+información de sus clientes respecto de sus productos.
+El acceso o utilización del usuario del PROGRAMA significa la absoluta
+conformidad con los TCU, mismos que el usuario deberá haber leído y aceptado, por lo que
+cualquier relación jurídica entre los mismos se regula por estos TCU. En caso de no estar
+de acuerdo con someterse a los mismos, el usuario deberá suspender inmediatamente su
+uso.
+2.
+Información.
+La información levantada por los Usuarios en campo, en los punto de venta
+señalados por los Clientes es enviada a través del dispositivo móvil a la nube para que a
+través del portal los Clientes de GSHP visualicen la información en tiempo real, misma que
+se utiliza para la toma de decisiones.
+GSHP cuidará que toda la información contenida en el PROGRAMA y toma todas las
+medidas necesarias para el resguardo de la misma, sin embargo no garantiza la fuga de
+información almacenada en la nube, en forma alguna.
+GSHP se reserva el derecho de modificar en todo o en parte el código u operación
+del PROGRAMA mediante actualizaciones del mismo, sin necesidad de dar previo aviso.
+El Cliente de GSHP podrá contar con un número 01800 donde los Usuarios podrán
+levantar su reporte.
+3.
+Condiciones de contratación de servicios prestados por terceros.
+GSHP utiliza la red de datos y voz de Radiomóvil Dipsa, S.A. de C.V. (“TELCEL”)
+para la prestación de sus servicios, en consecuencia no se hace responsable por problemas
+con la red de datos, problemas con la red de voz, etc. En consecuencia el servicio red de
+datos y voz es responsabilidad de los terceros proveedores de estos servicios y se regirán
+por sus propios términos y condiciones, mismos que el Usuario deberá leer y aceptar
+previo la contratación de los mismos.
+No obstante lo anterior, el PROGRAMA funciona fuera de red de datos, por lo qu el
+Usuario puede cargar la información levantada en campo aún cuando no esté conectado a
+internet, misma que será enviada a la nube y de ahí al portal una vez que el dispositivo
+móvil sea conectado a internet.
+Página 1 de 6La vigencia de los contratos de telefonía móvil e internet será señalada en el
+contrato respectivo con el Cliente de GSHP.
+GSHP no será responsable, en forma alguna, de las obligaciones derivadas de
+dichos contratos red de datos y voz y cualesquiera reclamaciones que se presentaren
+deberán ser comunicados directamente al proveedor tercero correspondiente.
+4.
+Soporte.
+4.1.
+El SOPORTE DE PRIMER NIVEL será otorgado a los Usuarios por GSHP en un
+horario de 9:00 a.m. a 6:00 p.m.
+4.2.
+El SOPORTE DE SEGUNDO NIVEL tendrá un tiempo de respuesta máximo de 2 días
+hábiles y este es proporcionado por técnicos especialistas de GSHP para cualquier
+incidente que esté relacionado con la funcionalidad del PROGRAMA y/o del portal y que no
+haya podido ser resuelto por el soporte de primer nivel.
+4.3.
+El soporte de segundo nivel hace también las gestiones necesarias con TELCEL
+para la reposición de dispositivos móviles robados, dañados o que presenten fallas del
+fabricante. El tiempo de respuesta para estas situaciones depende de cada caso.
+4.4.
+“GSHP” no se hará responsable por fallas del fabricante del equipo.
+4.5.
+“GSHP” no será responsable por las fallas que puedan suceder por el prestador de
+servicios de datos y voz, tales como, problemas con la red de datos, problemas con la red
+de voz, etc.
+4.6.
+“GSHP” no será responsable por la falta de señal en localidades donde el tercero
+proveedor de servicio de telefonía no tenga cobertura de datos.
+4.7.
+“GSHP” no es responsable si el usuario agota su plan de datos y voz y esto le impide
+hacer uso de los servicios objeto del PROGRAMA.
+5.
+Obligaciones de los Usuarios.
+Al hacer uso del PROGRAMA los Usuarios se obligan a:
+6.
+(i) realizar operaciones legítimas nombre propio;
+(ii) utilizar la página bajo su propio riesgo conforme a los TCU.
+Propiedad intelectual e industrial.
+GSHP ostenta todos los derechos sobre el contenido, diseño y código fuente del
+PROGRAMA y, en especial, de manera enunciativa más no limitativa, sobre las fotografías,
+Página 2 de 6imágenes, textos, logos, diseños, marcas, nombres comerciales y datos que se incluyen en
+el PROGRAMA. Se advierte a los Usuarios que tales derechos están protegidos por la
+legislación mexicana e internacional vigente relativa a la propiedad intelectual e industrial
+y son de su uso exclusivo.
+Queda expresamente prohibida la reproducción total o parcial del PROGRAMA o de
+cualquiera de sus contenidos, sin el permiso previo y por escrito de GSHP. Asimismo
+queda totalmente prohibida la copia, reproducción, adaptación, modificación, distribución,
+comercialización, comunicación pública y/o cualquier otra acción que comporte una
+infracción de las leyes aplicables en materia de propiedad intelectual y/o industrial, así
+como el uso de los contenidos del PROGRAMA si no es con la autorización previa y por
+escrito de GSHP.
+GSHP no concede licencia o autorización implícita alguna sobre los derechos de
+propiedad intelectual y/o industrial o sobre cualquier otro derecho, titularidad o
+propiedad relacionada, directa o indirectamente, con los contenidos incluidos en el
+PROGRAMA.
+7.
+Acceso y estancia en el PROGRAMA. Nuestros contenidos.
+Los Usuarios son responsables de manera personal e intransferible respecto de su
+conducta al acceder al PROGRAMA. Como consecuencia de lo anterior, los Usuarios serán
+los únicos responsables, frente a GSHP, sus clientes y/o cualquier tercero, de:
+8.
+(i) las consecuencias que se puedan derivar de una utilización, con fines o
+efectos ilícitos o contrarios al presente documento, publicado o no bajo su
+nombre de forma oficial; y
+(ii) las consecuencias que se puedan derivar de la utilización contraria al
+contenido de los TCU que sea lesiva de los intereses o derechos de terceros,
+o que de cualquier forma pueda dañar, inutilizar o deteriorar el
+PROGRAMA o sus servicios o impedir el normal funcionamiento del
+PROGRAMA o de otros usuarios.
+Actualizaciones.
+GSHP se reserva el derecho a actualizar los contenidos del PROGRAMA cuando lo
+estime conveniente, así como a eliminarlos, limitarlos o impedir el acceso a ellos, de
+manera temporal o definitiva, así como denegar el acceso al PROGRAMA a los Usuarios, ya
+por el mal uso de los contenidos, el incumplimiento a cualesquiera de las condiciones
+establecidas en el presente documento o por cualquier otra causa.
+GSHP informa que no garantiza:
+(i) que el acceso al PROGRAMA y/o a los sitios web de enlace sea
+ininterrumpido o libre de errores;
+(ii) que el contenido o software al que los Clientes y usuarios accedan a través
+del PROGRAMA o de los sitios web de enlace no contenga error alguno,
+virus informático u otros elementos en los contenidos que puedan producir
+alteraciones en su sistema o en los documentos electrónicos y ficheros
+almacenados en su sistema informático o de cualquier forma causen algún
+daño; y
+Página 3 de 6(iii)
+el aprovechamiento que de la información o contenido del PROGRAMA o
+sitios webs de enlace que los Clientes y Usuarios pudieran realizar para sus
+propósitos personales.
+La información contenida en el PROGRAMA debe ser considerada por los Clientes y
+Usuarios como divulgativa y orientadora, motivo por el cual GSHP no garantiza la
+exactitud de la información contenida en el PROGRAMA y por consiguiente no asume
+responsabilidad alguna sobre los posibles perjuicios o incomodidades para los Clientes o
+Usuarios que pudiesen derivarse de alguna inexactitud presente en el mismo.
+9.
+Responsabilidad.
+GSHP no asume responsabilidad alguna derivada, de manera enunciativa más no
+limitativa de:
+(i) la utilización que los Clientes o Usuarios puedan hacer de la información
+derivada de este PROGRAMA o de los sitios web de enlace, ya sean
+prohibidos o permitidos, en infracción de los derechos de propiedad
+intelectual y/o industrial del PROGRAMA o de terceros;
+(ii) los eventuales daños y perjuicios causados a los Clientes o Usuarios por la
+organización o la localización de los contenidos y/o acceso al PROGRAMA y,
+en general, del PROGRAMA, incluyendo los errores o problemas que se
+pudieran generar en el desarrollo o instrumentación de los elementos del
+PROGRAMA;
+(iii) los contenidos de aquellas páginas a las que los Clientes o Usuarios puedan
+acceder desde el equipo en el que está instalado el PROGRAMA, ya sean
+autorizados o no;
+(iv) los actos u omisiones de terceros, independientemente de la relación que
+dichos terceros pudieran tener con GSHP; ni
+(v) el acceso de menores de edad a el PROGRAMA, así como el envío de
+información personal que estos pudieran realizar
+Asimismo GSHP no será responsable en forma alguna, cuando se produzcan:
+(i) errores o retrasos en el acceso al PROGRAMA a la hora de introducir los
+datos requeridos por el mismo, la lentitud o imposibilidad de recepción por
+parte de los destinatarios de la información o cualquier anomalía que
+pueda surgir cuando tales incidencias sean debidas a problemas en la red
+Internet, caso fortuito o fuerza mayor o cualquier otra contingencia
+imprevisible ajena a GSHP;
+(ii) fallos o incidencias que pudieran producirse en las comunicaciones, ya sea
+borrándose o por transmisiones incompletas, de manera que no se
+garantiza que los servicios del PROGRAMA estén constantemente
+operativos;
+(iii) de los errores o daños producidos al PROGRAMA por un mal uso del
+servicio por parte del Usuario; y
+Página 4 de 6(iv)
+de la no operatividad o problemas en la dirección de correo electrónico
+facilitada por el Cliente y/o Usuario para el envío de la confirmación del
+Contrato de Seguro celebrado.
+En todo caso, GSHP se compromete a solucionar los problemas que puedan surgir y
+a ofrecer todo el apoyo necesario al Cliente y al Usuario para llegar a una solución rápida y
+satisfactoria de la incidencia.
+10. Políticas de privacidad y confidencialidad.
+La información proporcionada por los Usuarios del PROGRAMA, ya sea mediante la
+cumplimentación de cualquier formulario a través del PROGRAMA, implica la autorización
+a GSHP para usar la información y los datos facilitados por el Cliente o Usuario, dichos
+datos serán utilizados para brindar información a los clientes relacionada con sus
+productos.
+El ordenador y el equipo móvil donde está alojado el PROGRAMA utiliza cookies
+para mejorar el servicio prestado por GSHP, los cuales se instalan automáticamente en la
+computadora o equipo móvil usada por los Clientes y Usuarios pero no almacenan ningún
+tipo de información relativa a éstos.
+GSHP presume que los datos proporcionados han sido introducidos por su titular o
+por persona autorizada por éste, así como que son correctos y exactos. Corresponde a los
+Usuarios la actualización de sus propios datos. En cualquier momento el Usuario tendrá el
+derecho de acceso, rectificación, cancelación y oposición a sus datos personales. Para
+ejercitar esta facultad el Usuario deberá acceder al apartado señalado para tal efecto en el
+PROGRAMA. Por lo tanto, el Usuario es responsable de la veracidad y exactitud de sus
+datos personales, así como del resguardo y uso de su contraseña. Sin embargo si dicho
+cambio, rectificación u oposición se relaciona con el tercero proveedor del servicio de voz
+y datos lo deberá de realizar directamente con el mismo.
+GSHP se compromete a guardar la máxima reserva y confidencialidad sobre la
+información que le sea facilitada y a utilizarla únicamente para los fines indicados, para lo
+cual ha instalado todos los medios y medidas a su alcance para evitar la pérdida, mal uso,
+alteración, acceso no autorizado y extracción de los mismos. Sin embargo, GSHP no asume
+ninguna responsabilidad por los daños o perjuicios que se deriven o se relacionen con el
+hecho de que otra persona logre tener un acceso no autorizado a su información.
+11. Confidencialidad de Datos.
+GSHP deberá garantizar la confidencialidad y buen uso de los datos obtenidos a
+través del uso de la plataforma y que tenga en su poder. La Información Confidencial y en
+especial la correspondiente a información de mercado de los clientes, entre otros, no
+podrán ser copiada, reproducidas ni reveladas en forma alguna, por lo que en ningún
+caso GSHP podrá de manera directa ni indirecta, ya sea de forma total o parcial, mostrar,
+extraer, guardar, compartir la información propiedad de el Cliente y/o de los Usuarios.
+12.
+Nulidad.
+Página 5 de 6En caso de que cualquier cláusula de los presentes TCU sea declarada nula, las
+demás cláusulas seguirán vigentes y se interpretarán teniendo en cuenta la voluntad de las
+partes y la finalidad misma de los presentes TCU.
+GSHP podrá no ejercitar alguno de los derechos y facultades conferidos en este
+documento lo que no implicará en ningún caso la renuncia a los mismos salvo
+reconocimiento expreso por parte de GSHP o prescripción de la acción que en cada caso
+corresponda.
+13. Modificación de los Términos y Condiciones de Uso.
+GSHP se reserva el derecho de modificar, en cualquier momento, la presentación y
+configuración del PROGRAMA, así como los presentes TCU. Por ello, GSHP recomienda al
+Cliente leerlas atentamente cada vez que acceda al PROGRAMA. Los Clientes y Usuarios
+siempre dispondrán de los TCU en un sitio visible, libremente accesible para cuantas
+consultas quiera realizar. En cualquier caso, la aceptación de los TCU será un paso previo e
+indispensable a la adquisición de cualquier producto o servicio disponible a través del
+PROGRAMA.
+14. Ley y jurisdicción aplicable.
+Las presentes TCU se rigen por la legislación mexicana aplicable. Para resolver
+cualquier controversia o conflicto que se derive de los presentes TCU, las partes se
+someten a la jurisdicción de los tribunales de la ciudad de México, Distrito Federal.
+Página 6 de 6</string>
 </resources>

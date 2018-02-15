@@ -12,8 +12,18 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.common.GooglePlayServicesUtil;
+
+import net.gshp.observatoriociudadano.contextApp.ContextApp;
+import net.gshp.observatoriociudadano.dao.DaoPolitic;
+import net.gshp.observatoriociudadano.dialog.DialogChangePassword;
+import net.gshp.observatoriociudadano.dialog.DialogPrivacyPolitics;
+import net.gshp.observatoriociudadano.dialog.DialogUpdateApp;
 import net.gshp.observatoriociudadano.dto.DtoPolitic;
 import net.gshp.observatoriociudadano.listener.OnProgressSync;
+import net.gshp.observatoriociudadano.model.ModelSincronizar;
+
+import org.apache.http.HttpStatus;
 
 import java.io.File;
 
@@ -25,7 +35,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, On
     private EditText edt_user_name, edt_pass;
     private RelativeLayout rlt_authentication, rlyt_delete_data, rlyt_sync;
     private TextView txtPorcent;
-//    private ModelSincronizar model;
+    private ModelSincronizar model;
     private int statusSync;
 
     @Override
@@ -54,30 +64,28 @@ public class Login extends AppCompatActivity implements View.OnClickListener, On
             dialogPrivacyPolitics.show(getSupportFragmentManager(), "DialogPolitic");
         }
 
-        if (googlePlayServicesAvailability()) {
-            if ((System.currentTimeMillis() - prefs.getLong(getResources().getString(R.string.app_share_preference_time_synch), 0L))
-                    > getResources().getInteger(R.integer.time_synch)) {
-                id_progressbar = (ProgressBar) findViewById(R.id.id_progressbar);
-                btn_sync = (Button) findViewById(R.id.btn_sync);
-                btn_sync_agree = (Button) findViewById(R.id.btn_sync_agree);
-                btn_sync_cancel = (Button) findViewById(R.id.btn_sync_cancel);
-                btn_next = (Button) findViewById(R.id.btn_next);
-                edt_user_name = (EditText) findViewById(R.id.edt_user_name);
-                edt_pass = (EditText) findViewById(R.id.edt_pass);
-                rlt_authentication = (RelativeLayout) findViewById(R.id.rlt_authentication);
-                rlyt_delete_data = (RelativeLayout) findViewById(R.id.rlyt_delete_data);
-                rlyt_sync = (RelativeLayout) findViewById(R.id.rlyt_sync);
-                txtPorcent = (TextView) findViewById(R.id.txtPorcent);
-                btn_sync.setOnClickListener(this);
-                btn_sync_agree.setOnClickListener(this);
-                btn_sync_cancel.setOnClickListener(this);
-                btn_next.setOnClickListener(this);
-                edt_user_name.setText(prefs.getString(getString(R.string.app_share_preference_user_account), ""));
-                edt_pass.setText(prefs.getString(getString(R.string.app_share_preference_user_pass), ""));
-            } else {
-                startActivity(new Intent(this, Home.class));
-                finish();
-            }
+        if ((System.currentTimeMillis() - prefs.getLong(getResources().getString(R.string.app_share_preference_time_synch), 0L))
+                > getResources().getInteger(R.integer.time_synch)) {
+            id_progressbar = findViewById(R.id.id_progressbar);
+            btn_sync = findViewById(R.id.btn_sync);
+            btn_sync_agree = findViewById(R.id.btn_sync_agree);
+            btn_sync_cancel = findViewById(R.id.btn_sync_cancel);
+            btn_next = findViewById(R.id.btn_next);
+            edt_user_name = findViewById(R.id.edt_user_name);
+            edt_pass = findViewById(R.id.edt_pass);
+            rlt_authentication = findViewById(R.id.rlt_authentication);
+            rlyt_delete_data = findViewById(R.id.rlyt_delete_data);
+            rlyt_sync = findViewById(R.id.rlyt_sync);
+            txtPorcent = findViewById(R.id.txtPorcent);
+            btn_sync.setOnClickListener(this);
+            btn_sync_agree.setOnClickListener(this);
+            btn_sync_cancel.setOnClickListener(this);
+            btn_next.setOnClickListener(this);
+            edt_user_name.setText(prefs.getString(getString(R.string.app_share_preference_user_account), ""));
+            edt_pass.setText(prefs.getString(getString(R.string.app_share_preference_user_pass), ""));
+        } else {
+            startActivity(new Intent(this, Home.class));
+            finish();
         }
 
     }
@@ -119,7 +127,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, On
                 prefs.edit().putString(getString(R.string.app_share_preference_user_account), edt_user_name.getText().toString().trim()).apply();
                 prefs.edit().putString(getString(R.string.app_share_preference_user_pass), edt_pass.getText().toString().trim()).apply();
                 deleteDatabase(getResources().getString(R.string.app_db_name));
-                startActivity(new Intent(this,Splash.class));
+                startActivity(new Intent(this, Splash.class));
                 finish();
                 break;
             case R.id.btn_sync_cancel:
@@ -145,7 +153,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, On
                     case HttpStatus.SC_PAYMENT_REQUIRED:
 
                         DialogChangePassword dialogChangePassword = new DialogChangePassword();
-                        dialogChangePassword.show(getSupportFragmentManager(),"dialogChange" );
+                        dialogChangePassword.show(getSupportFragmentManager(), "dialogChange");
                         rlt_authentication.setVisibility(View.VISIBLE);
                         btn_next.setVisibility(View.GONE);
                         rlyt_delete_data.setVisibility(View.GONE);
@@ -164,15 +172,11 @@ public class Login extends AppCompatActivity implements View.OnClickListener, On
 
     }
 
-    @Override
-    public void onProgresSync(int porcentOfProgress) {
-        id_progressbar.setProgress(porcentOfProgress);
-        txtPorcent.setText("%" + porcentOfProgress);
-    }
 
     @Override
     public void onProgresSync(int porcentOfProgress, int httpstatus, String service) {
-
+        id_progressbar.setProgress(porcentOfProgress);
+        txtPorcent.setText("%" + porcentOfProgress);
     }
 
     @Override
@@ -227,25 +231,4 @@ public class Login extends AppCompatActivity implements View.OnClickListener, On
         }
     }
 
-    private boolean googlePlayServicesAvailability() {
-        int checkGooglePlayServices = GooglePlayServicesUtil.isGooglePlayServicesAvailable(ContextApp.context);
-        if (checkGooglePlayServices != ConnectionResult.SUCCESS) {
-            GooglePlayServicesUtil.getErrorDialog(checkGooglePlayServices, this, 1122).show();
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    @Subscribe
-    public void onEvent(Integer event) {
-        startActivity(new Intent(this, Home.class));
-        finish();
-    }
-
-    @Override
-    protected void onDestroy() {
-        EventBus.getDefault().unregister(this);
-        super.onDestroy();
-    }
 }

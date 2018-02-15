@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "336217257615",
+    "firebase_url": "https://observatorio-ciudadano.firebaseio.com",
+    "project_id": "observatorio-ciudadano",
+    "storage_bucket": "observatorio-ciudadano.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:336217257615:android:f53dc248755954e9",
+        "android_client_info": {
+          "package_name": "net.gshp.observatoriociudadano"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "336217257615-4jmknamofst1ko1f0emkn4je76fuh62o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "net.gshp.observatoriociudadano",
+            "certificate_hash": "754b36ac7675a206ca00d26debee2bd64b509dda"
+          }
+        },
+        {
+          "client_id": "336217257615-1f44jkm46jf2m0bqf2e3ctu005026qoi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCC5aX1_2D_gu0ITnPYZmjJkmp_kNxs_a0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "336217257615-1f44jkm46jf2m0bqf2e3ctu005026qoi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

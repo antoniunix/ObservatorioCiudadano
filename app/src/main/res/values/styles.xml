@@ -13,4 +13,32 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
+    <style name="title_text_toolbar_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/size_text_title_bar</item>
+        <item name="android:inputType">text</item>
+        <item name="android:textColor">@color/colorTextTitleBar</item>
+    </style>
+
+    <style name="title_text_toolbar_style_dialog" parent="title_text_toolbar_style">
+        <item name="android:textColor">@color/colorTextTitleDialog</item>
+        <item name="android:textSize">@dimen/size_text_title_dialog</item>
+    </style>
+
+    <style name="style_activity">
+        <item name="android:background">@color/colorBackgroundGeneral</item>
+    </style>
+
+    <style name="style_dialog" parent="style_activity">
+        <item name="android:minWidth">@dimen/minWidthDialog</item>
+    </style>
+
+    <style name="style_Button">
+        <item name="android:background">@drawable/shape_button</item>
+        <item name="android:textColor">@color/colorTextButton</item>
+    </style>
+
 </resources>
