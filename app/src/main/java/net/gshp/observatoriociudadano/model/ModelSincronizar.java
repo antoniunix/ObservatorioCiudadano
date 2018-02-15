@@ -55,7 +55,7 @@ public class ModelSincronizar {
     private int numReportGuardados = 0;
     private SharedPreferences mySharedPreferences;
 
-    private final int NUMCATALOGOS = 21; //se usa para saber cuando ya se descargaron todos los catalogos y enviar mensaje de terminado
+    private final int NUMCATALOGOS = 20; //se usa para saber cuando ya se descargaron todos los catalogos y enviar mensaje de terminado
     private int numReportDownload = 0;
 
 
@@ -86,7 +86,7 @@ public class ModelSincronizar {
     private void Actualizar() {
         new Thread() {
             public void run() {
-                networkConfig.GET("version/data/android-app-nroc", "version");
+                networkConfig.GET("version/data/android-app", "version");
             }
 
             ;
@@ -97,7 +97,7 @@ public class ModelSincronizar {
         new Thread() {
             public void run() {
                 networkConfig.GET("multireport/catalog/pdv_pdv", "pdv_pdv");
-                networkConfig.GET("schedule", "schedule");
+//                networkConfig.GET("schedule", "schedule");
                 networkConfig.GET("multireport/catalog/c_client", "c_client");
                 networkConfig.GET("multireport/catalog/c_rtm", "c_rtm");
                 networkConfig.GET("multireport/catalog/c_canal", "c_canal");

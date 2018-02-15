@@ -11,8 +11,9 @@
 
     <integer name="rollSupervisor">1</integer>
     <integer name="rollRepresentanteCasilla">2</integer>
-    <integer name="idPollSupervisor">1</integer>
+    <integer name="idPollSupervisor">1001</integer>
     <integer name="idPollRepresentanteCasilla">2</integer>
+    <integer name="idPollCasilla">3</integer>
     <integer name="type_check_in">1</integer>
     <integer name="type_check_out">2</integer>
 </resources>
