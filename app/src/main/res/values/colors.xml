@@ -18,5 +18,8 @@
     <color name="colorAHBottonAccentColor">#FF0000</color>
     <color name="colorAHBottonInactive">#00FF00</color>
 
+    <color name="colorBackground">#f6f6f6</color>
+    <color name="black_text">#404753</color>
+    <color name="light_text">#999999</color>
 
 </resources>

@@ -54,6 +54,8 @@ public class AppDb extends SQLiteOpenHelper {
         db.execSQL(tables.TableMeasurementModuleRtm);
         db.execSQL(tables.TableMeasurementModuleRegion);
 
+        db.execSQL(tables.TablePhoto);
+        db.execSQL(tables.TableImageLogin);
     }
 
     @Override

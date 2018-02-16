@@ -20,6 +20,7 @@ import net.gshp.observatoriociudadano.dialog.DialogChangePassword;
 import net.gshp.observatoriociudadano.dialog.DialogPrivacyPolitics;
 import net.gshp.observatoriociudadano.dialog.DialogUpdateApp;
 import net.gshp.observatoriociudadano.dto.DtoPolitic;
+import net.gshp.observatoriociudadano.faceDetection.FaceDetectionActivity;
 import net.gshp.observatoriociudadano.listener.OnProgressSync;
 import net.gshp.observatoriociudadano.model.ModelSincronizar;
 
@@ -138,7 +139,10 @@ public class Login extends AppCompatActivity implements View.OnClickListener, On
             case R.id.btn_next:
                 switch (statusSync) {
                     case HttpStatus.SC_OK:
-                        startActivity(new Intent(this, Home.class));
+                        //startActivity(new Intent(this, Home.class));
+                        Intent intent = new Intent(this, FaceDetectionActivity.class);
+                        //intent.putExtra()
+                        startActivity(intent);
                         finish();
                         break;
                     case HttpStatus.SC_UNAUTHORIZED:
