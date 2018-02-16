@@ -29,7 +29,7 @@ public class MenuReport extends AppCompatActivity implements AHBottomNavigation.
         txtTBDate = findViewById(R.id.txtTBDate);
 
         modelMenuReport = new ModelMenuReport(dtoBundle);
-        modelAHBottomNavigationMenuReport = new ModelAHBottomNavigationMenuReport(this, modelMenuReport, this,dtoBundle);
+        modelAHBottomNavigationMenuReport = new ModelAHBottomNavigationMenuReport(this, modelMenuReport, this, dtoBundle);
     }
 
     @Override
@@ -68,7 +68,7 @@ public class MenuReport extends AppCompatActivity implements AHBottomNavigation.
                     startService(new Intent(ContextApp.context, ServiceCheck.class).
                             putExtra(getString(R.string.app_bundle_name), dtoBundle).
                             putExtra("typeCheck", getResources().getInteger(R.integer.type_check_out)));
-                finish();
+                    finish();
                     break;
             }
 
