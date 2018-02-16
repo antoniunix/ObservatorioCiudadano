@@ -66,13 +66,16 @@
         </service>
         <service android:name=".geolocation.ServiceCheck" />
 
-        <activity android:name=".Splash">
+        <activity android:name=".Permisson">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".Splash"
+            android:screenOrientation="nosensor" />
         <activity android:name=".Login" />
         <activity android:name=".Home" />
         <activity android:name=".MenuReport" />

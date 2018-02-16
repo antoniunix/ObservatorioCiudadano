@@ -188,4 +188,11 @@ public class Tables {
             "id_measurement INTEGER NOT NULL," +
             "last_update TEXT)";
 
+    public final String TableSepomex = "CREATE TABLE sepomex(" +
+            "postal_code TEXT," +
+            "suburb INTEGER," +
+            "type_suburb INTEGER," +
+            "town TEXT," +
+            "state TEXT)";
+
 }

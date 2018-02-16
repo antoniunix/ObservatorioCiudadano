@@ -23,6 +23,7 @@ public class AppDb extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        db.execSQL(tables.TableSepomex);
         db.execSQL(tables.TABLE_PDV);
         db.execSQL(tables.TABLE_SCHEDULE);
         db.execSQL(tables.TableReportGeo);
