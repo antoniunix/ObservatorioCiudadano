@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimary">#c62828</color>
     <color name="colorPrimaryDark">#c62828</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="colorBackgroundGeneral">#f6f7fb</color>
+    <color name="colorBackgroundGeneral">#000000</color>
 
     <color name="colorProgressBarback">#FFFFFF</color>
     <color name="colorProgressProgress">#c62828</color>
