@@ -1,17 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimaryDark">#c62828</color>
     <color name="colorAccent">#FF4081</color>
     <color name="colorBackgroundGeneral">#f6f7fb</color>
 
-    <color name="colorShapeButtonInit">#2067d9</color>
-    <color name="colorShapeButtonFinish">#194c9a</color>
+    <color name="colorProgressBarback">#FFFFFF</color>
+    <color name="colorProgressProgress">#c62828</color>
+
+    <color name="colorShapeBackgroundTitleDialogInit">#f2f2f2</color>
+    <color name="colorShapeBackgroundTitleDialogEnd">#f2f2f2</color>
+
+    <color name="colorShapeButtonInit">#ab2527</color>
+    <color name="colorShapeButtonFinish">#ab2527</color>
 
     <color name="colorTextTitleBar">#ffffff</color>
-    <color name="colorTextTitleDialog">#ffffff</color>
+    <color name="colorTextTitleDialog">#000000</color>
     <color name="colorTextButton">#ffffff</color>
-    <color name="colorTextEdt">#ffffff</color>
+    <color name="colorTextEdt">#bebebe</color>
     <color name="colorTextNavigationBotton">#ffffff</color>
 
     <color name="colorAHBottonDefaul">#000000</color>

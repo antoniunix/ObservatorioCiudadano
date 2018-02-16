@@ -39,6 +39,8 @@
     <string name="label_created">GENERAR</string>
     <string name="label_account">CREDENCIALES</string>
     <string name="label_synck">SINCRONIZACIÓN</string>
+    <string name="label_visit">VISITAS</string>
+    <string name="label_station">CASILLAS</string>
 
     <!--Login-->
     <string name="loggin_hint_user">Nombre de usuario</string>

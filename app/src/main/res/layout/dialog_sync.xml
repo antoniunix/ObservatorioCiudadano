@@ -29,7 +29,8 @@
         android:layout_margin="@dimen/activity_horizontal_margin_middle"
         android:layout_weight="1"
         android:max="100"
-        android:progress="1" />
+        android:progress="1"
+        android:progressDrawable="@drawable/custom_progressbar" />
 
     <TextView
         android:id="@+id/txtPorcent"

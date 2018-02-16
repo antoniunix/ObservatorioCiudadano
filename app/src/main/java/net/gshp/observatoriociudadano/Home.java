@@ -28,6 +28,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 
 import net.gshp.observatoriociudadano.dialog.DialogAccount;
@@ -176,7 +177,10 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
 //        mLastLocation = location;
         //Place current location marker
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+
+        CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(20).bearing(45).tilt(90).build();
+        mGoogleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
         mGoogleMap.clear();
 
     }
