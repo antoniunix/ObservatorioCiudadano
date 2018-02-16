@@ -40,7 +40,6 @@ public class ServiceCheck extends IntentService implements OnApiGeolocation {
 
     private Geolocation geolocation;
     private DtoBundle dtoBundle;
-    private HandlerSendCheck handlerSendCheck;
     private List<DtoCheckSend> lstCheckSends;
     private NetworkConfig networkConfig;
     private Timer timer;
@@ -56,7 +55,7 @@ public class ServiceCheck extends IntentService implements OnApiGeolocation {
                 .setTimeUpdateLocation(ContextApp.context.getResources().getInteger(R.integer.geolocation_time_update));
         geolocation.stopGeo();
         geolocation.startGeo();
-        networkConfig = new NetworkConfig(handlerSendCheck, ContextApp.context);
+        networkConfig = new NetworkConfig(new HandlerSendCheck(), ContextApp.context);
     }
 
     @Override
@@ -148,6 +147,7 @@ public class ServiceCheck extends IntentService implements OnApiGeolocation {
     class HandlerSendCheck extends Handler {
         @Override
         public void handleMessage(Message msg) {
+            Log.e("kkk","hhhh");
             NetworkTask nt = (NetworkTask) msg.obj;
             if (nt.getResponseStatus() == HttpStatus.SC_OK || nt.getResponseStatus() == HttpStatus.SC_CREATED) {
                 new DaoReportCheck().markAsSent(nt.getTag().substring(4));

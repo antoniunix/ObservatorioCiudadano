@@ -25,9 +25,8 @@ public class Splash extends AppCompatActivity implements OnFinishThread{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash);
+        getSupportActionBar().hide();
         init();
 
     }
