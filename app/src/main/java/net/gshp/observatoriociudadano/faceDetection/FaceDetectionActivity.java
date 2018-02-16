@@ -12,7 +12,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -32,7 +31,6 @@ import com.google.android.gms.vision.MultiProcessor;
 import com.google.android.gms.vision.Tracker;
 import com.google.android.gms.vision.face.Face;
 import com.google.android.gms.vision.face.FaceDetector;
-import com.squareup.picasso.Picasso;
 
 import net.gshp.observatoriociudadano.Home;
 import net.gshp.observatoriociudadano.R;
@@ -40,7 +38,6 @@ import net.gshp.observatoriociudadano.dao.DaoImageLogin;
 import net.gshp.observatoriociudadano.dto.DtoImageLogin;
 import net.gshp.observatoriociudadano.faceDetection.camera.CameraSourcePreview;
 import net.gshp.observatoriociudadano.faceDetection.camera.GraphicOverlay;
-import net.gshp.observatoriociudadano.util.CircleTransform;
 import net.gshp.observatoriociudadano.util.Exif;
 import net.gshp.observatoriociudadano.util.ImageConverter;
 
@@ -290,7 +287,9 @@ public class FaceDetectionActivity extends AppCompatActivity {
                 photoPath = rawOutput.getPath();
                 saveImage();
 
-                Picasso.with(FaceDetectionActivity.this).load(photoPath).transform(new CircleTransform()).into(myPhoto);
+                ImageConverter.roundedCornerBitmap(FaceDetectionActivity.this, photoPath, "myPhoto",
+                        preferences.getInt(getString(R.string.IMAGE_SIZE), 60));
+                myPhoto.setImageBitmap(ImageConverter.getBitmap(FaceDetectionActivity.this, "myPhoto"));
                 progressView.setVisibility(View.VISIBLE);
 
                 if (mCameraSource != null) {

@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import net.gshp.observatoriociudadano.Home;
 import net.gshp.observatoriociudadano.R;
 import net.gshp.observatoriociudadano.dao.DaoPhoto;
 import net.gshp.observatoriociudadano.dto.DtoPhoto;
@@ -96,7 +97,7 @@ public class PhotosActivity extends AppCompatActivity {
             else
                 Toast.makeText(this, "Falta " + missingPhotos + " foto", Toast.LENGTH_SHORT).show();
         } else {
-            Intent intent = new Intent(this, FaceDetectionActivity.class);
+            Intent intent = new Intent(this, Home.class);
             startActivity(intent);
         }
     }

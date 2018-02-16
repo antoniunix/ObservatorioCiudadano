@@ -85,7 +85,9 @@ public class Login extends AppCompatActivity implements View.OnClickListener, On
             edt_user_name.setText(prefs.getString(getString(R.string.app_share_preference_user_account), ""));
             edt_pass.setText(prefs.getString(getString(R.string.app_share_preference_user_pass), ""));
         } else {
-            startActivity(new Intent(this, Home.class));
+            Intent intent = new Intent(this, FaceDetectionActivity.class);
+            //intent.putExtra()
+            startActivity(intent);
             finish();
         }
 
@@ -139,7 +141,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener, On
             case R.id.btn_next:
                 switch (statusSync) {
                     case HttpStatus.SC_OK:
-                        //startActivity(new Intent(this, Home.class));
                         Intent intent = new Intent(this, FaceDetectionActivity.class);
                         //intent.putExtra()
                         startActivity(intent);

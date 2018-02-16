@@ -200,4 +200,12 @@ public class Tables {
             "name TEXT," +
             "sent INTEGER,"+
             "rol INTEGER)";
+
+    public final String TableSepomex = "CREATE TABLE sepomex(" +
+            "postal_code TEXT," +
+            "suburb INTEGER," +
+            "type_suburb INTEGER," +
+            "town TEXT," +
+            "state TEXT)";
+
 }
