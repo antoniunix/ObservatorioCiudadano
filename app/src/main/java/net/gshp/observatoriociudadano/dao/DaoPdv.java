@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteStatement;
 
 import net.gshp.observatoriociudadano.dto.DtoPdvPdv;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DaoPdv extends DAO {
@@ -212,6 +213,74 @@ public class DaoPdv extends DAO {
         cursor.close();
         db.close();
         return catalogo;
+    }
+
+    public List<DtoPdvPdv> select() {
+        db = helper.getReadableDatabase();
+        String qry = "SELECT \n" +
+                "				pdv.id, \n" +
+                "				pdv.id_client, \n" +
+                "				pdv.id_rtm, \n" +
+                "				pdv.name, \n" +
+                "				pdv.address, \n" +
+                "				pdv.pdv_code, \n" +
+                "				pdv.town, \n" +
+                "				pdv.id_format, \n" +
+                "				pdv.lat, \n" +
+                "				pdv.lon, \n" +
+                "				pdv.extra_field1, \n" +
+                "				pdv.extra_field2, \n" +
+                "				pdv.extra_field3, \n" +
+                "				pdv.type, \n" +
+                "				pdv.id_region, \n" +
+                "				c_rtm.id_canal \n" +
+                "				FROM \n" +
+                "				pdv \n" +
+                "				INNER JOIN c_rtm ON pdv.id_rtm = c_rtm.id ";
+        cursor = db.rawQuery(qry, null);
+        List<DtoPdvPdv> lst = new ArrayList<>();
+        DtoPdvPdv catalogo;
+        if (cursor.moveToFirst()) {
+            int id = cursor.getColumnIndexOrThrow("id");
+            int id_client = cursor.getColumnIndexOrThrow("id_client");
+            int id_rtm = cursor.getColumnIndexOrThrow("id_rtm");
+            int name = cursor.getColumnIndexOrThrow("name");
+            int address = cursor.getColumnIndexOrThrow("address");
+            int pdvCode = cursor.getColumnIndexOrThrow("pdv_code");
+            int lat = cursor.getColumnIndexOrThrow("lat");
+            int lon = cursor.getColumnIndexOrThrow("lon");
+            int town = cursor.getColumnIndexOrThrow("town");
+            int extraField1 = cursor.getColumnIndexOrThrow("extra_field1");
+            int extraField2 = cursor.getColumnIndexOrThrow("extra_field2");
+            int extraField3 = cursor.getColumnIndexOrThrow("extra_field3");
+            int idCanal = cursor.getColumnIndexOrThrow("id_canal");
+            int id_format = cursor.getColumnIndexOrThrow("id_format");
+            int type = cursor.getColumnIndexOrThrow("type");
+            int id_region = cursor.getColumnIndexOrThrow("id_region");
+            do {
+                catalogo = new DtoPdvPdv();
+                catalogo.setId(cursor.getInt(id));
+                catalogo.setIdClient(cursor.getInt(id_client));
+                catalogo.setIdRtm(cursor.getInt(id_rtm));
+                catalogo.setName(cursor.getString(name));
+                catalogo.setAddress(cursor.getString(address));
+                catalogo.setPdvCode(cursor.getString(pdvCode));
+                catalogo.setLat(cursor.getDouble(lat));
+                catalogo.setLon(cursor.getDouble(lon));
+                catalogo.setTown(cursor.getInt(town));
+                catalogo.setExtraField1(cursor.getString(extraField1));
+                catalogo.setExtraField2(cursor.getString(extraField2));
+                catalogo.setExtraField3(cursor.getString(extraField3));
+                catalogo.setIdCanal(cursor.getInt(idCanal));
+                catalogo.setIdFormat(cursor.getInt(id_format));
+                catalogo.setType(cursor.getInt(type));
+                catalogo.setIdRegion(cursor.getInt(id_region));
+                lst.add(catalogo);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return lst;
     }
 
 }

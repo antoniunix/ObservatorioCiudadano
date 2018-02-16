@@ -3,7 +3,7 @@
     <color name="colorPrimary">#c62828</color>
     <color name="colorPrimaryDark">#c62828</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="colorBackgroundGeneral">#000000</color>
+    <color name="colorBackgroundGeneral">#FFFFFF</color>
 
     <color name="colorProgressBarback">#FFFFFF</color>
     <color name="colorProgressProgress">#c62828</color>
@@ -24,6 +24,12 @@
     <color name="colorAHBottonAccentColor">#b72a2b</color>
     <color name="colorAHBottonInactive">#b6b6b6</color>
     <color name="colorBottonNavigationBackground">#FFFFFF</color>
+
+    <color name="colorScheduleIncomplete">#ECCF0B</color>
+    <color name="colorScheduleComplete">#27E255</color>
+    <color name="colorScheduleNotDone">#FE0000</color>
+    <color name="colorScheduleActive">#0085B2</color>
+    <color name="colorScheduleInactive">#999999</color>
 
 
 </resources>

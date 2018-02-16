@@ -27,16 +27,16 @@ public class ChangeFontStyle {
 
         switch (typeFont) {
             case NORMAL:
-                type = Typeface.createFromAsset(ContextApp.context.getAssets(), "fonts/Dosis-Regular.ttf");
+                type = Typeface.createFromAsset(ContextApp.context.getAssets(), "fonts/Lato-Regular.ttf");
                 break;
             case BOLD:
-                type = Typeface.createFromAsset(ContextApp.context.getAssets(), "fonts/Dosis-SemiBold.ttf");
+                type = Typeface.createFromAsset(ContextApp.context.getAssets(), "fonts/Lato-Semibold.ttf");
                 break;
             case BLACK:
-                type = Typeface.createFromAsset(ContextApp.context.getAssets(), "fonts/Dosis-Bold.ttf");
+                type = Typeface.createFromAsset(ContextApp.context.getAssets(), "fonts/Lato-Black.ttf");
                 break;
             default:
-                type = Typeface.createFromAsset(ContextApp.context.getAssets(), "fonts/Dosis-Regular.ttf");
+                type = Typeface.createFromAsset(ContextApp.context.getAssets(), "fonts/Lato-Regular.ttf");
                 break;
         }
 
@@ -61,16 +61,16 @@ public class ChangeFontStyle {
 
         switch (typeFont) {
             case NORMAL:
-                type = Typeface.createFromAsset(ContextApp.context.getAssets(), "fonts/Dosis-Regular.ttf");
+                type = Typeface.createFromAsset(ContextApp.context.getAssets(), "fonts/Lato-Regular.ttf");
                 break;
             case BOLD:
-                type = Typeface.createFromAsset(ContextApp.context.getAssets(), "fonts/Dosis-SemiBold.ttf");
+                type = Typeface.createFromAsset(ContextApp.context.getAssets(), "fonts/Lato-Semibold.ttf");
                 break;
             case BLACK:
-                type = Typeface.createFromAsset(ContextApp.context.getAssets(), "fonts/Dosis-Bold.ttf");
+                type = Typeface.createFromAsset(ContextApp.context.getAssets(), "fonts/Lato-Black.ttf");
                 break;
             default:
-                type = Typeface.createFromAsset(ContextApp.context.getAssets(), "fonts/Dosis-Regular.ttf");
+                type = Typeface.createFromAsset(ContextApp.context.getAssets(), "fonts/Lato-Regular.ttf");
                 break;
         }
 
@@ -92,7 +92,7 @@ public class ChangeFontStyle {
     }
 
     public static void changeFont(View... view) {
-        Typeface type = Typeface.createFromAsset(ContextApp.context.getAssets(), "fonts/Dosis-Regular.ttf");
+        Typeface type = Typeface.createFromAsset(ContextApp.context.getAssets(), "fonts/Lato-Regular.ttf");
         for (int position = 0; position < view.length; position++) {
             if (view[position] instanceof TextView) {
                 ((TextView) view[position]).setTypeface(type);

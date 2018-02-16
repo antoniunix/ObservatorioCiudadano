@@ -422,7 +422,7 @@ public class DaoReport extends DAO {
                 dtoReportVisit.setId(cursor.getLong(id));
                 dtoReportVisit.setSend(cursor.getInt(send));
                 dtoReportVisit.setIdPdv(cursor.getLong(idPdv));
-                dtoReportVisit.setNombrePdv(cursor.getString(nombrePdv));
+                dtoReportVisit.setName(cursor.getString(nombrePdv));
                 dtoReportVisit.setDateCheckIn(cursor.getLong(dateCheckIn));
                 dtoReportVisit.setDateCheckOut(cursor.getLong(dateCheckOut));
 
@@ -436,7 +436,7 @@ public class DaoReport extends DAO {
                 dtoReportVisit.setId(cursor.getInt(id));
                 dtoReportVisit.setSend(cursor.getInt(send));
                 dtoReportVisit.setIdPdv(cursor.getLong(idPdv));
-                dtoReportVisit.setNombrePdv(cursor.getString(nombrePdv));
+                dtoReportVisit.setName(cursor.getString(nombrePdv));
                 dtoReportVisit.setDateCheckIn(cursor.getLong(dateCheckIn));
                 dtoReportVisit.setDateCheckOut(cursor.getLong(dateCheckOut));
 
@@ -450,7 +450,7 @@ public class DaoReport extends DAO {
                 dtoReportVisit.setId(cursor.getInt(id));
                 dtoReportVisit.setSend(cursor.getInt(send));
                 dtoReportVisit.setIdPdv(cursor.getLong(idPdv));
-                dtoReportVisit.setNombrePdv(cursor.getString(nombrePdv));
+                dtoReportVisit.setName(cursor.getString(nombrePdv));
                 dtoReportVisit.setDateCheckIn(cursor.getLong(dateCheckIn));
                 dtoReportVisit.setDateCheckOut(cursor.getLong(dateCheckOut));
 
