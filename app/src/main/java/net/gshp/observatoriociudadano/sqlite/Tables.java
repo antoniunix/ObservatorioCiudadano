@@ -187,6 +187,19 @@ public class Tables {
             "id_item_relation INTEGER NOT NULL," +
             "id_measurement INTEGER NOT NULL," +
             "last_update TEXT)";
+    public final String TablePhoto = "CREATE TABLE photo(" +
+            "id INTEGER PRIMARY KEY," +
+            "path TEXT," +
+            "name TEXT," +
+            "face_id INTEGER,"+
+            "sent INTEGER,"+
+            "rol INTEGER)";
+    public final String TableImageLogin = "CREATE TABLE image_login(" +
+            "id INTEGER PRIMARY KEY," +
+            "path TEXT," +
+            "name TEXT," +
+            "sent INTEGER,"+
+            "rol INTEGER)";
 
     public final String TableSepomex = "CREATE TABLE sepomex(" +
             "postal_code TEXT," +

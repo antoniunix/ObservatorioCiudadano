@@ -81,6 +81,10 @@
         <activity android:name=".MenuReport" />
         <activity android:name=".ListStation" />
         <activity android:name=".Visit"></activity>
+        <activity android:name=".faceDetection.FaceDetectionActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".faceDetection.PhotosActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".faceDetection.PhotoActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".faceDetection.PhotoWizardActivity" android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

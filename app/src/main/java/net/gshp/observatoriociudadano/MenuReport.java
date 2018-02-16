@@ -12,6 +12,7 @@ import net.gshp.apiencuesta.Encuesta;
 import net.gshp.observatoriociudadano.contextApp.ContextApp;
 import net.gshp.observatoriociudadano.dto.DtoBundle;
 import net.gshp.observatoriociudadano.geolocation.ServiceCheck;
+import net.gshp.observatoriociudadano.faceDetection.PhotoWizardActivity;
 import net.gshp.observatoriociudadano.model.ModelAHBottomNavigationMenuReport;
 import net.gshp.observatoriociudadano.model.ModelMenuReport;
 import net.gshp.observatoriociudadano.util.Config;
@@ -63,6 +64,9 @@ public class MenuReport extends AppCompatActivity implements AHBottomNavigation.
                 case 1:// census
                     break;
                 case 2://Photos
+                    Intent intent = new Intent(this, PhotoWizardActivity.class);
+                    intent.putExtra(getString(R.string.user_roll),getResources().getInteger(R.integer.rollSupervisor));
+                    startActivity(intent);
                     break;
                 case 3://check out
                     startService(new Intent(ContextApp.context, ServiceCheck.class).

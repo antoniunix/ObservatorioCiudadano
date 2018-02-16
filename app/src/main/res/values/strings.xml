@@ -293,4 +293,26 @@ cualquier controversia o conflicto que se derive de los presentes TCU, las parte
 someten a la jurisdicción de los tribunales de la ciudad de México, Distrito Federal.
 Página 6 de 6</string>
     <string name="Splash_configuration_init">Configuración inicial, espere un momento</string>
+
+    <!-- Face detection -->
+    <string name="ok">OK</string>
+    <string name="permission_camera_rationale">Access to the camera is needed for detection</string>
+    <string name="no_camera_permission">This application cannot run because it does not have the camera permission.  The application will now exit.</string>
+    <string name="low_storage_error">Face detector dependencies cannot be downloaded due to low device storage</string>
+    <string name="process">PROCESANDO...</string>
+    <string name="title_detection">RECONOCIMIENTO FACIAL</string>
+    <string name="start">INICIO</string>
+    <string name="initial_reco">RECONOCIMIENTO INICIAL</string>
+    <string name="firs_step">Dar click en inicio</string>
+    <string name="second_step">Tomar las 10 fotos\ncon las expresiones\nsolicitadas</string>
+    <string name="third_step">Dar click en guardar\ne iniciar el recono-\ncimiento facial</string>
+    <string name="save">GUARDAR</string>
+    <string name="PHOTO_TYPE">PHOTO_TYPE</string>
+    <string name="PICTURE_POSITION">PICTURE_POSITION</string>
+    <string name="PHOTO_PATH">PHOTO_PATH</string>
+    <string name="PHOTO_ID">PHOTO_ID</string>
+    <string name="DPI">DPI</string>
+    <string name="IMAGE_SIZE">IMAGE_SIZE</string>
+    <string name="user_roll">user_roll</string>
+
 </resources>
