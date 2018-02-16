@@ -33,6 +33,7 @@ import com.google.android.gms.maps.model.LatLng;
 import net.gshp.observatoriociudadano.dialog.DialogAccount;
 import net.gshp.observatoriociudadano.dialog.DialogSync;
 import net.gshp.observatoriociudadano.dto.DtoBundle;
+import net.gshp.observatoriociudadano.util.BottomNavigationViewHelper;
 import net.gshp.observatoriociudadano.util.Config;
 
 public class Home extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener,
@@ -61,6 +62,7 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
         btnTBSync = findViewById(R.id.btnTBSync);
         btnTBAccount = findViewById(R.id.btnTBAccount);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
+        BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
         mapFrag = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
 
         preferences = getSharedPreferences(getString(R.string.app_share_preference_name), Context.MODE_PRIVATE);

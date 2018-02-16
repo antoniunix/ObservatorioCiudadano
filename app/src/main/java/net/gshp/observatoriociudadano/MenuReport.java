@@ -11,6 +11,7 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import net.gshp.apiencuesta.Encuesta;
 import net.gshp.observatoriociudadano.contextApp.ContextApp;
 import net.gshp.observatoriociudadano.dto.DtoBundle;
+import net.gshp.observatoriociudadano.geolocation.ServiceCheck;
 import net.gshp.observatoriociudadano.model.ModelAHBottomNavigationMenuReport;
 import net.gshp.observatoriociudadano.model.ModelMenuReport;
 import net.gshp.observatoriociudadano.util.Config;
@@ -28,7 +29,7 @@ public class MenuReport extends AppCompatActivity implements AHBottomNavigation.
         txtTBDate = findViewById(R.id.txtTBDate);
 
         modelMenuReport = new ModelMenuReport(dtoBundle);
-        modelAHBottomNavigationMenuReport = new ModelAHBottomNavigationMenuReport(this, modelMenuReport, this);
+        modelAHBottomNavigationMenuReport = new ModelAHBottomNavigationMenuReport(this, modelMenuReport, this,dtoBundle);
     }
 
     @Override
@@ -64,6 +65,10 @@ public class MenuReport extends AppCompatActivity implements AHBottomNavigation.
                 case 2://Photos
                     break;
                 case 3://check out
+                    startService(new Intent(ContextApp.context, ServiceCheck.class).
+                            putExtra(getString(R.string.app_bundle_name), dtoBundle).
+                            putExtra("typeCheck", getResources().getInteger(R.integer.type_check_out)));
+                finish();
                     break;
             }
 
