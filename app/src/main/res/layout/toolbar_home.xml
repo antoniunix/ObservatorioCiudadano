@@ -19,8 +19,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_marginBottom="@dimen/activity_horizontal_margin_middle"
-            android:drawablePadding="@dimen/activity_horizontal_margin_middle"
-            android:drawableLeft="@drawable/calendar" />
+            android:drawableLeft="@drawable/calendar"
+            android:drawablePadding="@dimen/activity_horizontal_margin_middle" />
 
 
         <TextView
@@ -43,6 +43,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_below="@id/txtTBDate"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin_middle"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin_middle"
             android:background="@null"
             android:src="@drawable/help" />
 
@@ -51,6 +53,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/txtTBDate"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin_middle"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin_middle"
             android:layout_toLeftOf="@id/btnTBSettings"
             android:background="@null"
             android:src="@drawable/help" />
@@ -60,6 +64,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/txtTBDate"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin_middle"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin_middle"
             android:layout_toLeftOf="@id/btnTBHelp"
             android:background="@null"
             android:src="@drawable/sync" />
@@ -69,6 +75,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/txtTBDate"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin_middle"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin_middle"
             android:layout_toLeftOf="@id/btnTBSync"
             android:background="@null"
             android:src="@drawable/key" />

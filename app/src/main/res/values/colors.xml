@@ -15,8 +15,9 @@
     <color name="colorTextNavigationBotton">#ffffff</color>
 
     <color name="colorAHBottonDefaul">#000000</color>
-    <color name="colorAHBottonAccentColor">#FF0000</color>
-    <color name="colorAHBottonInactive">#00FF00</color>
+    <color name="colorAHBottonAccentColor">#b72a2b</color>
+    <color name="colorAHBottonInactive">#b6b6b6</color>
+    <color name="colorBottonNavigationBackground">#FFFFFF</color>
 
     <color name="colorBackground">#f6f6f6</color>
     <color name="black_text">#404753</color>

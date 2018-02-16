@@ -20,9 +20,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        app:itemBackground="@color/colorPrimary"
-        app:itemIconTint="@color/colorPrimaryDark"
-        app:itemTextColor="@color/colorTextNavigationBotton"
+        app:itemBackground="@color/colorBottonNavigationBackground"
+        app:itemIconTint="@color/colorAHBottonInactive"
+        app:itemTextColor="@null"
         app:menu="@menu/bottom_navigation_home" />
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
