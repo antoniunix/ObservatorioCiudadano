@@ -28,13 +28,14 @@ public class PlaceAutocompleteActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment) getFragmentManager()
                 .findFragmentById(R.id.place_autocomplete_fragment);
-        AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
-                .setTypeFilter(AutocompleteFilter.TYPE_FILTER_GEOCODE)
-                .setTypeFilter(AutocompleteFilter.TYPE_FILTER_REGIONS).build();
         if (bundle != null) {
             Log.e("leo","add "+bundle.getString("address"));
             autocompleteFragment.setText(bundle.getString("address"));
         }
+        AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
+                .setTypeFilter(AutocompleteFilter.TYPE_FILTER_GEOCODE)
+                .build();
+
         autocompleteFragment.setFilter(typeFilter);
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
