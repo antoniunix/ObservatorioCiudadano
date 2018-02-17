@@ -34,14 +34,20 @@ public class ModelInfoPerson {
     }
 
     public ModelInfoPerson loadImage(Activity activity) {
-        File fileImageProfile = new File(dtoImageLogin.getPath());
-        Uri imageUri;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            imageUri = FileProvider.getUriForFile(activity, BuildConfig.APPLICATION_ID + ".provider", fileImageProfile);
-        } else {
-            imageUri = Uri.fromFile(fileImageProfile);
+        try {
+            File fileImageProfile = new File(dtoImageLogin.getPath());
+            Uri imageUri;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                imageUri = FileProvider.getUriForFile(activity, BuildConfig.APPLICATION_ID + ".provider", fileImageProfile);
+            } else {
+                imageUri = Uri.fromFile(fileImageProfile);
+            }
+            imgTBPerson.setImageURI(imageUri);
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
-        imgTBPerson.setImageURI(imageUri);
+
         return this;
     }
 
