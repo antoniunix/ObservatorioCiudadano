@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -85,9 +86,12 @@ public class Login extends AppCompatActivity implements View.OnClickListener, On
             edt_user_name.setText(prefs.getString(getString(R.string.app_share_preference_user_account), ""));
             edt_pass.setText(prefs.getString(getString(R.string.app_share_preference_user_pass), ""));
         } else {
-            Intent intent = new Intent(this, FaceDetectionActivity.class);
-            //intent.putExtra()
-            startActivity(intent);
+            if (prefs.getLong(getResources().getString(R.string.app_share_preference_time_synch), 0L) > 0) {
+                Intent intent = new Intent(this, FaceDetectionActivity.class);
+                startActivity(intent);
+            } else {
+                startActivity(new Intent(this, Home.class));
+            }
             finish();
         }
 
@@ -141,9 +145,14 @@ public class Login extends AppCompatActivity implements View.OnClickListener, On
             case R.id.btn_next:
                 switch (statusSync) {
                     case HttpStatus.SC_OK:
-                        Intent intent = new Intent(this, FaceDetectionActivity.class);
-                        //intent.putExtra()
-                        startActivity(intent);
+                        Log.w("Login","time "+prefs.getLong(getResources().getString(R.string.app_share_preference_time_synch), 0L));
+                        if ((System.currentTimeMillis() - prefs.getLong(getResources().getString(R.string.app_share_preference_time_synch), 0L))
+                                > 60000) {
+                            Intent intent = new Intent(this, FaceDetectionActivity.class);
+                            startActivity(intent);
+                        } else {
+                            startActivity(new Intent(this, Home.class));
+                        }
                         finish();
                         break;
                     case HttpStatus.SC_UNAUTHORIZED:
