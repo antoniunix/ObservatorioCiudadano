@@ -1,5 +1,6 @@
 package net.gshp.observatoriociudadano;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,8 @@ import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+
+import net.gshp.observatoriociudadano.dto.DtoSepomex;
 
 /**
  * Created by leo on 16/02/18.
@@ -29,7 +32,7 @@ public class PlaceAutocompleteActivity extends AppCompatActivity {
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment) getFragmentManager()
                 .findFragmentById(R.id.place_autocomplete_fragment);
         if (bundle != null) {
-            Log.e("leo","add "+bundle.getString("address"));
+            Log.e("leo", "add " + bundle.getString("address"));
             autocompleteFragment.setText(bundle.getString("address"));
         }
         AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
@@ -41,7 +44,6 @@ public class PlaceAutocompleteActivity extends AppCompatActivity {
             @Override
             public void onPlaceSelected(Place place) {
                 Log.i("leo", "Place: " + place.getName());
-
             }
 
             @Override

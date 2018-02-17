@@ -182,7 +182,8 @@ public class Census extends AppCompatActivity implements OnMapReadyCallback, OnF
 
     @Override
     public void onClick(View view) {
-        startActivity(new Intent(this, PlaceAutocompleteActivity.class).putExtra("address", edt_address.getText().toString()));
+        Intent intent = new Intent(this, PlaceAutocompleteActivity.class).putExtra("address", edt_address.getText().toString());
+        startActivityForResult(intent,RESULT_OK);
     }
 
 
