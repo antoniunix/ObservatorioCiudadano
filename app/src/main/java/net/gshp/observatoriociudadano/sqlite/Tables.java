@@ -83,7 +83,8 @@ public class Tables {
             "type_report INTEGER," +
             "id_report_server INTEGER," +
             "date_inactive TEXT," +
-            "active INTEGER)";
+            "active INTEGER," +
+            "type_poll INTEGER)";// es para saber si es reporte de alta supervisor o representante
 
     public final String TableReportCheck = "CREATE TABLE report_check(" +
             "id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +

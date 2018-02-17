@@ -12,6 +12,7 @@ import net.gshp.observatoriociudadano.R;
 import net.gshp.observatoriociudadano.contextApp.ContextApp;
 import net.gshp.observatoriociudadano.dao.DaoEAEncuesta;
 import net.gshp.observatoriociudadano.dao.DaoEARespuesta;
+import net.gshp.observatoriociudadano.dao.DaoEaAnswerPdv;
 import net.gshp.observatoriociudadano.dao.DaoReport;
 import net.gshp.observatoriociudadano.dto.DtoBundle;
 import net.gshp.observatoriociudadano.dto.DtoReport;
@@ -45,7 +46,7 @@ public class ModelMenuReport {
             dtoReport.setIdPdv(1).setIdSchedule(1).setVersion(version).setDate(System.currentTimeMillis()).
                     setTz(Config.getTimeZone()).setImei(Config.getIMEI()).
                     setHash(Crypto.MD5(System.currentTimeMillis() + " " + Math.random())).
-                    setSend(0).setTypeReport(1).setActive(1);
+                    setSend(0).setTypeReport(1).setActive(1).setTypePoll((int) dtoBundle.getIdTypeMenuReport());
             dtoBundle.setIdReportLocal(new DaoReport().insert(dtoReport));
             activity.startService(new Intent(ContextApp.context, ServiceCheck.class).
                     putExtra(context.getString(R.string.app_bundle_name), dtoBundle).
@@ -54,16 +55,22 @@ public class ModelMenuReport {
     }
 
 
-    public int isReportPollSup(long idPoll) {
+    public int isReportPollSup() {
         DaoEAEncuesta dao = new DaoEAEncuesta();
-        if (!dao.existPoll(idPoll)) {
+        DaoEaAnswerPdv daoAnswer=new DaoEaAnswerPdv();
+        if (!dao.existPoll(ContextApp.context.getResources().getInteger(R.integer.idPollSupervisor))) {
             return context.getResources().getInteger(R.integer.statusModuleReportWithOut);
-        } else if (dao.isResponsePollById(idPoll)) {
+        } else if (dao.isResponsePollById(ContextApp.context.getResources().getInteger(R.integer.idPollSupervisor))||
+                daoAnswer.isResponsePollSupervisor()) {
             return context.getResources().getInteger(R.integer.statusModuleReportDone);
         } else {
             return context.getResources().getInteger(R.integer.statusModuleReportNotDone);
         }
     }
+
+//    public int isReportSupComplete(){
+//
+//    }
 
     public int isReportPoll(long idPoll, long idReport) {
         DaoEAEncuesta dao = new DaoEAEncuesta();
