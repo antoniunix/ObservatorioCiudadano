@@ -11,6 +11,7 @@ import com.gshp.api.utils.Util;
 import net.gshp.observatoriociudadano.R;
 import net.gshp.observatoriociudadano.contextApp.ContextApp;
 import net.gshp.observatoriociudadano.dao.DaoEAEncuesta;
+import net.gshp.observatoriociudadano.dao.DaoEARespuesta;
 import net.gshp.observatoriociudadano.dao.DaoReport;
 import net.gshp.observatoriociudadano.dto.DtoBundle;
 import net.gshp.observatoriociudadano.dto.DtoReport;
@@ -51,4 +52,29 @@ public class ModelMenuReport {
                     putExtra("typeCheck", context.getResources().getInteger(R.integer.type_check_in)));
         }
     }
+
+
+    public int isReportPollSup(long idPoll) {
+        DaoEAEncuesta dao = new DaoEAEncuesta();
+        if (!dao.existPoll(idPoll)) {
+            return context.getResources().getInteger(R.integer.statusModuleReportWithOut);
+        } else if (dao.isResponsePollById(idPoll)) {
+            return context.getResources().getInteger(R.integer.statusModuleReportDone);
+        } else {
+            return context.getResources().getInteger(R.integer.statusModuleReportNotDone);
+        }
+    }
+
+    public int isReportPoll(long idPoll, long idReport) {
+        DaoEAEncuesta dao = new DaoEAEncuesta();
+        if (!dao.existPoll(idPoll)) {
+            return context.getResources().getInteger(R.integer.statusModuleReportWithOut);
+        } else if (dao.isResponsePollById(idReport, idPoll)) {
+            return context.getResources().getInteger(R.integer.statusModuleReportDone);
+        } else {
+            return context.getResources().getInteger(R.integer.statusModuleReportNotDone);
+        }
+    }
+
+
 }

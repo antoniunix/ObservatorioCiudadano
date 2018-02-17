@@ -171,7 +171,7 @@ public class DaoReport extends DAO {
         String qry = "SELECT  * FROM(\n" +
                 "SELECT\n" +
                 "report.id,\n" +
-                "report.id_schedule,\n" +
+                "report.id_agenda,\n" +
                 "report.version ,\n" +
                 "report.type_report AS tipo_report ,\n" +
                 "report.id_pdv AS place ,\n" +
@@ -213,7 +213,7 @@ public class DaoReport extends DAO {
         DtoReportToSend catalogo;
         if (cursor.moveToFirst()) {
             int id = cursor.getColumnIndexOrThrow("id");
-            int id_schedule = cursor.getColumnIndexOrThrow("id_schedule");
+            int id_schedule = cursor.getColumnIndexOrThrow("id_agenda");
             int version = cursor.getColumnIndexOrThrow("version");
             int tipo_report = cursor.getColumnIndexOrThrow("tipo_report");
             int place = cursor.getColumnIndexOrThrow("place");
@@ -310,6 +310,7 @@ public class DaoReport extends DAO {
         db = helper.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(ID_REPORT_SERVER, id_reporte_server);
+        cv.put(SEND, 1);
         db.update(TABLE_NAME, cv, "id=" + id_reporte, null);
         db.close();
     }

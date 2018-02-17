@@ -7,6 +7,7 @@ import android.util.Log;
 
 import net.gshp.observatoriociudadano.R;
 import net.gshp.observatoriociudadano.contextApp.ContextApp;
+import net.gshp.observatoriociudadano.model.ModelSend;
 import net.gshp.observatoriociudadano.util.Config;
 
 import java.util.Calendar;
@@ -28,6 +29,6 @@ public class Wakelock extends BroadcastReceiver {
                 && calendar.get(Calendar.HOUR_OF_DAY) <= ContextApp.context.getResources().getInteger(R.integer.geolocation_schedule_end)) {
             ContextApp.context.startService(new Intent(ContextApp.context, ServicesGeolocation.class));
         }
-//        new ModelSend().start();
+        new ModelSend().start();
     }
 }

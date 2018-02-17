@@ -86,20 +86,20 @@ public class DaoImageLogin extends DAO {
         db.close();
     }
 
-    public void insertOrReplace(DtoImageLogin dto){
+    public void insertOrReplace(DtoImageLogin dto) {
         db = helper.getReadableDatabase();
         cursor = db.rawQuery("SELECT\n" +
-                "id\n"+
+                "id\n" +
                 "FROM\n" +
                 TABLE_NAME, null);
-        if(cursor.getCount()>0){
+        if (cursor.getCount() > 0) {
             if (cursor.moveToFirst()) {
                 int id = cursor.getColumnIndexOrThrow("id");
                 dto.setId(cursor.getInt(id));
 
                 update(dto);
             }
-        }else {
+        } else {
             insert(dto);
         }
     }
@@ -132,6 +132,29 @@ public class DaoImageLogin extends DAO {
         return obj;
     }
 
+    public DtoImageLogin selectLast() {
+        db = helper.getReadableDatabase();
+        cursor = db.rawQuery("SELECT\n" +
+                "max(id) id,\n" +
+                "path,\n" +
+                "name\n" +
+                "FROM\n" +
+                TABLE_NAME, null);
+        DtoImageLogin dto = new DtoImageLogin();
+        if (cursor.moveToFirst()) {
+            int id = cursor.getColumnIndexOrThrow("id");
+            int path = cursor.getColumnIndexOrThrow("path");
+            int name = cursor.getColumnIndexOrThrow("name");
+
+            dto.setId(cursor.getInt(id));
+            dto.setPath(cursor.getString(path));
+            dto.setName(cursor.getString(name));
+        }
+        cursor.close();
+        db.close();
+        return dto;
+    }
+
     public DtoImageLogin select(int idPhoto) {
         db = helper.getReadableDatabase();
         cursor = db.rawQuery("SELECT\n" +
@@ -140,7 +163,7 @@ public class DaoImageLogin extends DAO {
                 "name,\n" +
                 "face_id\n" +
                 "FROM\n" +
-                TABLE_NAME+"\n" +
+                TABLE_NAME + "\n" +
                 "WHERE id = " + idPhoto, null);
 
         DtoImageLogin dto = null;

@@ -48,6 +48,7 @@
     <string name="dialog_account_delete_data">Ha cambiado de usuario, todos los datos anteriores seran eliminados\n ¿Desea continuar?</string>
     <string name="dialog_account">CREDENCIALES</string>
     <string name="dialog_synch">SINCRONIZACIÓN</string>
+    <string name="dialog_generic">GÉNERICO</string>
 
     <string name="dialog_update_error">No se pudo actualizar, favor de verivicar su conexion a red y vuelva a intentarlo</string>
 

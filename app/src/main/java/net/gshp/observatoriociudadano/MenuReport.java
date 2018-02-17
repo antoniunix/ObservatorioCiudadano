@@ -14,21 +14,19 @@ import net.gshp.observatoriociudadano.dto.DtoBundle;
 import net.gshp.observatoriociudadano.geolocation.ServiceCheck;
 import net.gshp.observatoriociudadano.faceDetection.PhotoWizardActivity;
 import net.gshp.observatoriociudadano.model.ModelAHBottomNavigationMenuReport;
+import net.gshp.observatoriociudadano.model.ModelInfoPerson;
 import net.gshp.observatoriociudadano.model.ModelMenuReport;
 import net.gshp.observatoriociudadano.util.Config;
 
 public class MenuReport extends AppCompatActivity implements AHBottomNavigation.OnTabSelectedListener {
 
-    private TextView txtTBDate;
     private ModelMenuReport modelMenuReport;
     private ModelAHBottomNavigationMenuReport modelAHBottomNavigationMenuReport;
     private DtoBundle dtoBundle;
 
     private void init() {
         dtoBundle = (DtoBundle) getIntent().getExtras().get(getString(R.string.app_bundle_name));
-
-        txtTBDate = findViewById(R.id.txtTBDate);
-
+        new ModelInfoPerson(this).loadImage(this);
         modelMenuReport = new ModelMenuReport(dtoBundle);
         modelAHBottomNavigationMenuReport = new ModelAHBottomNavigationMenuReport(this, modelMenuReport, this, dtoBundle);
     }
@@ -44,7 +42,6 @@ public class MenuReport extends AppCompatActivity implements AHBottomNavigation.
     @Override
     protected void onResume() {
         super.onResume();
-        txtTBDate.setText(Config.formatDate());
         if (dtoBundle.getIdTypeMenuReport() == getResources().getInteger(R.integer.idPollSupervisor)) {
             modelMenuReport.createNewReportSupervisor(this);
         }
@@ -65,7 +62,7 @@ public class MenuReport extends AppCompatActivity implements AHBottomNavigation.
                     break;
                 case 2://Photos
                     Intent intent = new Intent(this, PhotoWizardActivity.class);
-                    intent.putExtra(getString(R.string.user_roll),getResources().getInteger(R.integer.rollSupervisor));
+                    intent.putExtra(getString(R.string.user_roll), getResources().getInteger(R.integer.rollSupervisor));
                     startActivity(intent);
                     break;
                 case 3://check out

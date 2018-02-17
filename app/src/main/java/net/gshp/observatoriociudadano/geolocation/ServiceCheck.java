@@ -19,6 +19,7 @@ import net.gshp.observatoriociudadano.dao.DaoReportCheck;
 import net.gshp.observatoriociudadano.dto.DtoBundle;
 import net.gshp.observatoriociudadano.dto.DtoCheckSend;
 import net.gshp.observatoriociudadano.dto.DtoReportCheck;
+import net.gshp.observatoriociudadano.model.ModelSend;
 import net.gshp.observatoriociudadano.util.Config;
 import net.panamiur.geolocation.Geolocation;
 import net.panamiur.geolocation.interfaces.OnApiGeolocation;
@@ -87,7 +88,7 @@ public class ServiceCheck extends IntentService implements OnApiGeolocation {
             public void run() {
                 geolocation.stopGeo();
                 if (typeCheck == 2) {
-                    // new ModelSendReport().sendReport();
+                    new ModelSend().start();
                 }
                 stopSelf();
             }
@@ -147,7 +148,7 @@ public class ServiceCheck extends IntentService implements OnApiGeolocation {
     class HandlerSendCheck extends Handler {
         @Override
         public void handleMessage(Message msg) {
-            Log.e("kkk","hhhh");
+            Log.e("kkk", "hhhh");
             NetworkTask nt = (NetworkTask) msg.obj;
             if (nt.getResponseStatus() == HttpStatus.SC_OK || nt.getResponseStatus() == HttpStatus.SC_CREATED) {
                 new DaoReportCheck().markAsSent(nt.getTag().substring(4));

@@ -8,10 +8,13 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/activity_horizontal_margin">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/imgTBPerson"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:layout_marginTop="@dimen/activity_horizontal_margin_middle"
+            app:civ_border_color="#FF000000"
+            app:civ_border_width="2dp" />
 
         <TextView
             android:id="@+id/txtTBDate"
