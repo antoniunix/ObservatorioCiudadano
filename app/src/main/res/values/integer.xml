@@ -16,4 +16,12 @@
     <integer name="idPollCasilla">3</integer>
     <integer name="type_check_in">1</integer>
     <integer name="type_check_out">2</integer>
+
+    <integer name="statusModuleReportDone">1000</integer>
+    <integer name="statusModuleReportNotDone">2000</integer>
+    <integer name="statusModuleReportWithOut">3000</integer>
+    <integer name="statusModuleReportIncomplete">4000</integer>
+    <integer name="statusModuleReportDoneBeforeVisit">6000</integer>
+    <integer name="statusModuleReportWithMoreVisit">7000</integer>
+    <integer name="statusModuleReportIncompleteForced">8000</integer>
 </resources>

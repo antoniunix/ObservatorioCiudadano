@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rltMain"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/activity_vertical_margin"
+    android:background="@color/color_withe">
+
+    <View
+        android:id="@+id/viewStatus"
+        android:layout_width="@dimen/activity_horizontal_margin_middle"
+        android:layout_height="match_parent"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:background="@color/colorBackgroundGeneral"
+        android:minHeight="@dimen/minHeightStatus" />
+
+    <TextView
+        android:id="@+id/txtName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_toRightOf="@id/viewStatus"
+        android:textSize="@dimen/sizeTextBig" />
+
+    <TextView
+        android:id="@+id/txtAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtName"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_toRightOf="@id/viewStatus"
+        android:textSize="@dimen/sizeTextNormal" />
+
+
+    <TextView
+        android:id="@+id/txtPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtAddress"
+        android:layout_toRightOf="@id/viewStatus"
+        android:textSize="@dimen/sizeTextNormal" />
+
+    <TextView
+        android:id="@+id/txtStatusText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtAddress"
+        android:layout_toRightOf="@id/txtPassword"
+        android:textSize="@dimen/sizeTextNormal" />
+
+    <TextView
+        android:id="@+id/txtCreated"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtPassword"
+        android:layout_toRightOf="@id/viewStatus"
+        android:textSize="@dimen/sizeTextNormal" />
+
+    <TextView
+        android:id="@+id/txtLabelInit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtCreated"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_toRightOf="@id/viewStatus"
+        android:text="INICIO"
+        android:textSize="@dimen/sizeTextNormal" />
+
+    <TextView
+        android:id="@+id/txtInit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtCreated"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_toRightOf="@id/txtLabelInit"
+        android:textSize="@dimen/sizeTextNormal" />
+
+    <TextView
+        android:id="@+id/txtLabelFinish"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtCreated"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_toRightOf="@+id/txtInit"
+        android:text="FIN"
+        android:textSize="@dimen/sizeTextNormal" />
+
+    <TextView
+        android:id="@+id/txtFinish"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtCreated"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_toRightOf="@+id/txtLabelFinish"
+        android:textSize="@dimen/sizeTextNormal" />
+
+    <ImageView
+        android:id="@+id/imgTrash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/txtPassword"
+        android:layout_marginRight="@dimen/activity_vertical_margin"
+        android:src="@drawable/ic_delete_forever_black_24dp" />
+
+
+</RelativeLayout>

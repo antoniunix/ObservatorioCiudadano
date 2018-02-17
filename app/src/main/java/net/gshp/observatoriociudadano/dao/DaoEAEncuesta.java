@@ -248,4 +248,45 @@ public class DaoEAEncuesta extends DAO {
         db.close();
         return isResponsPoll;
     }
+
+    /**
+     * Select
+     */
+    public boolean isResponsePollById(long idReportLocal,long idPoll)
+    {
+        boolean isDone=false;
+        db=helper.getReadableDatabase();
+        cursor=db.rawQuery("SELECT\n" +
+                "count(*) as count\n" +
+                "FROM\n" +
+                "EARespuesta\n" +
+                "WHERE \n" +
+                "EARespuesta.idReporteLocal="+idReportLocal+" AND EARespuesta.idEncuesta="+idPoll,null);
+        if(cursor.moveToFirst())
+        {
+            isDone=cursor.getInt(cursor.getColumnIndexOrThrow("count"))>0;
+
+        }
+        cursor.close();
+        db.close();
+        return isDone;
+    }
+
+    public boolean existPoll(long idPoll) {
+        db = helper.getReadableDatabase();
+        String qry = "SELECT\n" +
+                "COUNT(*) count\n" +
+                "FROM\n" +
+                "EAEncuesta\n" +
+                "WHERE EAEncuesta.id=" + idPoll;
+        Log.e("qry", "qry poll " + qry);
+        cursor = db.rawQuery(qry, null);
+        boolean isResponsPoll = false;
+        if (cursor.moveToFirst()) {
+            isResponsPoll = cursor.getInt(cursor.getColumnIndexOrThrow("count")) > 0;
+        }
+        cursor.close();
+        db.close();
+        return isResponsPoll;
+    }
 }

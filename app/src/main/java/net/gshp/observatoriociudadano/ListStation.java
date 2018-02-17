@@ -5,24 +5,40 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
+import net.gshp.observatoriociudadano.adapter.RVListStation;
 import net.gshp.observatoriociudadano.dto.DtoBundle;
+import net.gshp.observatoriociudadano.dto.DtoPdvPdv;
+import net.gshp.observatoriociudadano.listener.OnItemClickListenerRV;
+import net.gshp.observatoriociudadano.model.ModelListStation;
 import net.gshp.observatoriociudadano.util.BottomNavigationViewHelper;
 import net.gshp.observatoriociudadano.util.Config;
 
-public class ListStation extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
+public class ListStation extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener,
+        OnItemClickListenerRV {
 
     private TextView txtTBDate, txtTBTitle;
+    private RecyclerView rcvVisit;
     private BottomNavigationView bottomNavigationView;
+    private LinearLayoutManager lmy;
+    private ModelListStation model;
+    private RVListStation adapter;
 
     private void init() {
         txtTBDate = findViewById(R.id.txtTBDate);
         txtTBTitle = findViewById(R.id.txtTBTitle);
+        rcvVisit = findViewById(R.id.rcvVisit);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
+        model = new ModelListStation();
         BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
+        lmy = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        adapter = model.getAdapter(this);
 
     }
 
@@ -39,6 +55,8 @@ public class ListStation extends AppCompatActivity implements BottomNavigationVi
         super.onResume();
         txtTBDate.setText(Config.formatDate());
         txtTBTitle.setText(R.string.label_station);
+        rcvVisit.setLayoutManager(lmy);
+        rcvVisit.setAdapter(adapter);
     }
 
     @Override
@@ -61,5 +79,15 @@ public class ListStation extends AppCompatActivity implements BottomNavigationVi
                 break;
         }
         return true;
+    }
+
+    @Override
+    public void onItemClickListener(View v, int position) {
+        DtoPdvPdv dtoPdvPdv = adapter.getItem(position);
+        DtoBundle dtoBundle = new DtoBundle();
+        dtoBundle.setIdTypeMenuReport(getResources().getInteger(R.integer.idPollRepresentanteCasilla)).
+                setIdPdv(dtoPdvPdv.getId());
+        startActivity(new Intent(this, MenuReport.class).putExtra(getString(R.string.app_bundle_name), dtoBundle));
+        finish();
     }
 }

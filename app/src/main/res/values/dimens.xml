@@ -9,6 +9,7 @@
     <dimen name="size_text_title_dialog">20sp</dimen>
 
     <dimen name="minWidthDialog">300dp</dimen>
+    <dimen name="minHeightStatus">90dp</dimen>
     <dimen name="sizeTextSmall">10sp</dimen>
     <dimen name="sizeTextNormal">12sp</dimen>
     <dimen name="sizeTextBig">18sp</dimen>

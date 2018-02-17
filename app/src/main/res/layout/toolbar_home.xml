@@ -8,10 +8,14 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/activity_horizontal_margin">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/imgTBPerson"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:layout_marginTop="@dimen/activity_horizontal_margin_middle"
+            app:civ_border_color="#FF000000"
+            app:civ_border_width="2dp" />
+
 
         <TextView
             android:id="@+id/txtTBDate"
@@ -19,6 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_marginBottom="@dimen/activity_horizontal_margin_middle"
+            android:layout_marginTop="@dimen/activity_horizontal_margin_middle"
             android:drawableLeft="@drawable/calendar"
             android:drawablePadding="@dimen/activity_horizontal_margin_middle" />
 
@@ -28,6 +33,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/imgTBPerson"
+            android:ellipsize="end"
+            android:maxLength="15"
             android:textSize="@dimen/sizeTextVeryBig" />
 
         <TextView
@@ -79,7 +86,7 @@
             android:layout_marginLeft="@dimen/activity_horizontal_margin_middle"
             android:layout_toLeftOf="@id/btnTBSync"
             android:background="@null"
-            android:src="@drawable/key" />
+            android:src="@drawable/ic_more_vert_black_24dp" />
     </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>

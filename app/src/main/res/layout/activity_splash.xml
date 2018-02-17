@@ -7,6 +7,4 @@
     android:layout_height="match_parent"
     android:background="@drawable/splash"
     tools:context="net.gshp.observatoriociudadano.Splash">
-
-
 </android.support.constraint.ConstraintLayout>

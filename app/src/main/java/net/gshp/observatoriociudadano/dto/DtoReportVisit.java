@@ -8,86 +8,96 @@ public class DtoReportVisit {
     private long id;
     private long idPdv;
     private int send;
-    private String nombrePdv;
-    private String codigoPdv;
-    private String tipoPdv;
+    private String name;
+    private String address;
+    private String password;
     private long dateCheckIn;
     private long dateCheckOut;
 
-    public long getIdPdv() {
-        return idPdv;
-    }
-
-    public void setIdPdv(long idPdv) {
-        this.idPdv = idPdv;
-    }
 
     public long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public DtoReportVisit setId(long id) {
         this.id = id;
+        return this;
+    }
+
+    public long getIdPdv() {
+        return idPdv;
+    }
+
+    public DtoReportVisit setIdPdv(long idPdv) {
+        this.idPdv = idPdv;
+        return this;
     }
 
     public int getSend() {
         return send;
     }
 
-    public void setSend(int send) {
+    public DtoReportVisit setSend(int send) {
         this.send = send;
+        return this;
     }
 
-    public String getNombrePdv() {
-        return nombrePdv;
+    public String getName() {
+        return name;
     }
 
-    public void setNombrePdv(String nombrePdv) {
-        this.nombrePdv = nombrePdv;
+    public DtoReportVisit setName(String name) {
+        this.name = name;
+        return this;
     }
 
-    public String getCodigoPdv() {
-        return codigoPdv;
+    public String getAddress() {
+        return address;
     }
 
-    public void setCodigoPdv(String codigoPdv) {
-        this.codigoPdv = codigoPdv;
+    public DtoReportVisit setAddress(String address) {
+        this.address = address;
+        return this;
     }
 
-    public String getTipoPdv() {
-        return tipoPdv;
+    public String getPassword() {
+        return password;
     }
 
-    public void setTipoPdv(String tipoPdv) {
-        this.tipoPdv = tipoPdv;
+    public DtoReportVisit setPassword(String password) {
+        this.password = password;
+        return this;
     }
 
     public long getDateCheckIn() {
         return dateCheckIn;
     }
 
-    public void setDateCheckIn(long dateCheckIn) {
+    public DtoReportVisit setDateCheckIn(long dateCheckIn) {
         this.dateCheckIn = dateCheckIn;
+        return this;
     }
 
     public long getDateCheckOut() {
         return dateCheckOut;
     }
 
-    public void setDateCheckOut(long dateCheckOut) {
+    public DtoReportVisit setDateCheckOut(long dateCheckOut) {
         this.dateCheckOut = dateCheckOut;
+        return this;
     }
 
     @Override
     public String toString() {
         return "DtoReportVisit{" +
                 "id=" + id +
+                ", idPdv=" + idPdv +
                 ", send=" + send +
-                ", nombrePdv='" + nombrePdv + '\'' +
-                ", codigoPdv='" + codigoPdv + '\'' +
-                ", tipoPdv='" + tipoPdv + '\'' +
-                ", dateCheckIn='" + dateCheckIn + '\'' +
-                ", dateCheckOut='" + dateCheckOut + '\'' +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", password='" + password + '\'' +
+                ", dateCheckIn=" + dateCheckIn +
+                ", dateCheckOut=" + dateCheckOut +
                 '}';
     }
 }
