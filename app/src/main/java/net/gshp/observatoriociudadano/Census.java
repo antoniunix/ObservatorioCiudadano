@@ -13,6 +13,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -42,8 +47,8 @@ public class Census extends AppCompatActivity implements OnMapReadyCallback, OnF
     private MapView mapView;
     public boolean setLocation = false;
     private double lat, lon;
+    String address;
     private GoogleMap.OnCameraChangeListener onCameraChangeListener;
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,6 +66,7 @@ public class Census extends AppCompatActivity implements OnMapReadyCallback, OnF
         mapView = findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
         setUpMapIfNeeded();
+        edt_address.setOnClickListener(this);
 
     }
 
@@ -135,6 +141,8 @@ public class Census extends AppCompatActivity implements OnMapReadyCallback, OnF
                             + "Locale: " + addresses.get(0).getLocale() + ", "
                             + " size: " + addresses.size());
                     edt_address.setText(addresses.get(0).getAddressLine(0));
+
+
                 }
             }
         } catch (IOException e) {
@@ -142,7 +150,7 @@ public class Census extends AppCompatActivity implements OnMapReadyCallback, OnF
         }
     }
 
-     public void configureCameraIdle() {
+    public void configureCameraIdle() {
         onCameraChangeListener = new GoogleMap.OnCameraChangeListener() {
             @Override
             public void onCameraChange(CameraPosition cameraPosition) {
@@ -174,8 +182,10 @@ public class Census extends AppCompatActivity implements OnMapReadyCallback, OnF
 
     @Override
     public void onClick(View view) {
-      //  startActivity(new Intent(this,PlaceAutocompleteActivity.class).putExtra(ContextApp.context.getResources().getString()));
+        startActivity(new Intent(this, PlaceAutocompleteActivity.class).putExtra("address", edt_address.getText().toString()));
     }
+
+
 }
 
 

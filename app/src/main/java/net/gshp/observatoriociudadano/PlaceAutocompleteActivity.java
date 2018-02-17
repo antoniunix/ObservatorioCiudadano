@@ -21,16 +21,20 @@ import com.google.android.gms.maps.model.LatLngBounds;
 public class PlaceAutocompleteActivity extends AppCompatActivity {
 
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place);
+        Bundle bundle = getIntent().getExtras();
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment) getFragmentManager()
                 .findFragmentById(R.id.place_autocomplete_fragment);
         AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
                 .setTypeFilter(AutocompleteFilter.TYPE_FILTER_GEOCODE)
                 .setTypeFilter(AutocompleteFilter.TYPE_FILTER_REGIONS).build();
+        if (bundle != null) {
+            Log.e("leo","add "+bundle.getString("address"));
+            autocompleteFragment.setText(bundle.getString("address"));
+        }
         autocompleteFragment.setFilter(typeFilter);
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
