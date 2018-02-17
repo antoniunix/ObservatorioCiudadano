@@ -41,6 +41,7 @@ public class DaoReport extends DAO {
     private final String ID_REPORT_SERVER = "id_report_server";
     private final String DATE_INACTIVE = "date_inactive";
     private final String ACTIVE = "active";
+    private final String TYPE_POLL = "type_poll";
 
     public DaoReport() {
         super(TABLE_NAME, PK_FIELD);
@@ -55,8 +56,8 @@ public class DaoReport extends DAO {
         try {
             String qry = "INSERT INTO " + TABLE_NAME + " (" + ID_PDV + "," + ID_SCHEDULE +
                     "," + VERSION + "," + DATE + "," + TZ + "," + IMEI + "," + HASH + "," + SEND + "," + TYPE_REPORT +
-                    "," + ID_REPORT_SERVER + "," + DATE_INACTIVE + "," + ACTIVE + ")"
-                    + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?);";
+                    "," + ID_REPORT_SERVER + "," + DATE_INACTIVE + "," + ACTIVE +","+TYPE_POLL+ ")"
+                    + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?);";
             SQLiteStatement insStatement = db.compileStatement(qry);
             db.beginTransaction();
 
@@ -120,6 +121,11 @@ public class DaoReport extends DAO {
             } catch (Exception e) {
                 insStatement.bindNull(12);
             }
+            try {
+                insStatement.bindLong(13, dto.getTypePoll());
+            } catch (Exception e) {
+                insStatement.bindNull(13);
+            }
             resp = insStatement.executeInsert();
 
             db.setTransactionSuccessful();
@@ -146,6 +152,37 @@ public class DaoReport extends DAO {
                 + "pdv.name,\n"
                 + "pdv.address,\n"
                 + "report.id as id_report,\n"
+                + "CHECK_in.date as datecheckin,\n"
+                + "CHECK_out.date as datecheckout\n"
+                + "FROM\n"
+                + "c_client\n"
+                + "INNER JOIN pdv ON pdv.id_client = c_client.id \n"
+                + "INNER JOIN report on report.id_pdv=pdv.id and report.send==0 AND report.active=1\n"
+                + "LEFT JOIN report_check  as CHECK_in ON CHECK_in.id_report_local = report.id   and CHECK_in.type=1\n"
+                + "LEFT JOIN report_check as CHECK_out on  CHECK_out.id_report_local = report.id   and CHECK_out.type=2\n"
+                + ") as q1\n"
+                + "where    q1.datecheckin   is not NULL  and  q1.datecheckout   is  NULL  ";
+        cursor = db.rawQuery(query, null);
+        isReport = cursor.getCount() != 0;
+        cursor.close();
+        db.close();
+        return isReport;
+    }
+
+    public boolean isReportSupervisorIncomplete() {
+        boolean isReport = false;
+        db = helper.getReadableDatabase();
+        String query = "SELECT  * FROM(\n"
+                + "SELECT DISTINCT\n"
+                + "c_client.id,\n"
+                + "c_client.value,\n"
+                + "pdv.id as id_pdv,\n"
+                + "pdv.id_client,\n"
+                + "pdv.id_rtm,				 \n"
+                + "pdv.name,\n"
+                + "pdv.address,\n"
+                + "report.id as id_report,\n"
+                + "report.type_poll ,\n"
                 + "CHECK_in.date as datecheckin,\n"
                 + "CHECK_out.date as datecheckout\n"
                 + "FROM\n"

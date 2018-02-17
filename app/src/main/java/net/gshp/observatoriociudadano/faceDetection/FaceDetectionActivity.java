@@ -342,6 +342,7 @@ public class FaceDetectionActivity extends AppCompatActivity {
 
                 saveImage();
                 sendImage();
+                finish();
             } catch (Exception e) {
                 Log.v(TAG, e.toString());
             }

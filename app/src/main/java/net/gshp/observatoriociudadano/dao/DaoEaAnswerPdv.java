@@ -4,6 +4,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 
+import net.gshp.observatoriociudadano.R;
+import net.gshp.observatoriociudadano.contextApp.ContextApp;
 import net.gshp.observatoriociudadano.dto.DtoEaAnswerPdv;
 
 import java.util.List;
@@ -59,5 +61,28 @@ public class DaoEaAnswerPdv extends DAO {
         }
         db.close();
         return resp;
+    }
+
+    /**
+     * Select
+     */
+    public boolean isResponsePollSupervisor()
+    {
+        boolean isDone=false;
+        db=helper.getReadableDatabase();
+        cursor=db.rawQuery("SELECT\n" +
+                "count(*) as count\n" +
+                "FROM\n" +
+                "EAAnwerPdv\n" +
+                "WHERE \n" +
+                "EAAnwerPdv.id_poll="+ ContextApp.context.getResources().getInteger(R.integer.idPollSupervisor),null);
+        if(cursor.moveToFirst())
+        {
+            isDone=cursor.getInt(cursor.getColumnIndexOrThrow("count"))>0;
+
+        }
+        cursor.close();
+        db.close();
+        return isDone;
     }
 }

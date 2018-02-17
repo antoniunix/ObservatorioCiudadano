@@ -55,7 +55,6 @@ public class ModelAHBottomNavigationMenuReport {
         ahBottomNavigation.addItem(ahCheckOut);
 
         ahBottomNavigation.setOnTabSelectedListener(onTabSelectedListener);
-        ahBottomNavigation.setCurrentItem(0,true);
     }
 
     public void onResume() {

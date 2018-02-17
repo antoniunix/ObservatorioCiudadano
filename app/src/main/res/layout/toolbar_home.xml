@@ -53,7 +53,7 @@
             android:layout_marginBottom="@dimen/activity_horizontal_margin_middle"
             android:layout_marginLeft="@dimen/activity_horizontal_margin_middle"
             android:background="@null"
-            android:src="@drawable/help" />
+            android:src="@drawable/ic_more_vert_black_24dp" />
 
         <ImageButton
             android:id="@+id/btnTBHelp"
@@ -86,7 +86,7 @@
             android:layout_marginLeft="@dimen/activity_horizontal_margin_middle"
             android:layout_toLeftOf="@id/btnTBSync"
             android:background="@null"
-            android:src="@drawable/ic_more_vert_black_24dp" />
+            android:src="@drawable/key" />
     </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>

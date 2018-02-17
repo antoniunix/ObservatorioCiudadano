@@ -18,6 +18,16 @@ public class DtoReport {
     private long idReportServer;
     private String dateInactive;
     private int active;
+    private int typePoll;
+
+    public int getTypePoll() {
+        return typePoll;
+    }
+
+    public DtoReport setTypePoll(int typePoll) {
+        this.typePoll = typePoll;
+        return this;
+    }
 
     public long getId() {
         return id;
