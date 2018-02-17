@@ -109,15 +109,43 @@ public class DaoSepomex extends DAO {
     /**
      * Select
      */
+    public List<String> selectAutoComplete() {
+        db = helper.getReadableDatabase();
+        cursor = db.rawQuery("SELECT *\n" +
+                "FROM\n" +
+                TABLE_NAME + "\n" +
+                "ORDER BY suburb ASC", null);
+        List<String> obj = new ArrayList<String>();
+        DtoSepomex catalogo;
+        String address = "";
+        if (cursor.moveToFirst()) {
+            do {
+                catalogo = new DtoSepomex();
+                catalogo.setPostalCode(cursor.getString(cursor.getColumnIndexOrThrow(POSTAL_CODE)));
+                catalogo.setSuburb(cursor.getString(cursor.getColumnIndexOrThrow(SUBURB)));
+                catalogo.setTown(cursor.getString(cursor.getColumnIndexOrThrow(TOWN)));
+                catalogo.setState(cursor.getString(cursor.getColumnIndexOrThrow(STATE)));
+                address = "" + catalogo.getPostalCode() + "," + catalogo.getTown() + "," + catalogo.getState();
+                obj.add(address);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return obj;
+    }
+
+    /**
+     * Select
+     */
     public List<String> SelectCp() {
         db = helper.getReadableDatabase();
         cursor = db.rawQuery("SELECT DISTINCT\n" +
-                POSTAL_CODE+"\n" +
+                POSTAL_CODE + "\n" +
                 "FROM\n" +
                 TABLE_NAME + "\n" +
-                "ORDER BY "+POSTAL_CODE+" ASC", null);
+                "ORDER BY " + POSTAL_CODE + " ASC", null);
         List<String> obj = new ArrayList<String>();
-        String catalogo="";
+        String catalogo = "";
         if (cursor.moveToFirst()) {
             do {
                 catalogo = cursor.getString(cursor.getColumnIndexOrThrow(POSTAL_CODE));
