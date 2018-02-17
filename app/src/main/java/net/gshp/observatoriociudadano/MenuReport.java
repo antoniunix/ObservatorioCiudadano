@@ -28,6 +28,7 @@ public class MenuReport extends AppCompatActivity implements AHBottomNavigation.
         dtoBundle = (DtoBundle) getIntent().getExtras().get(getString(R.string.app_bundle_name));
         new ModelInfoPerson(this).loadImage(this);
         modelMenuReport = new ModelMenuReport(dtoBundle);
+        new ModelInfoPerson(this).loadImage(this).loadInfo();
         modelAHBottomNavigationMenuReport = new ModelAHBottomNavigationMenuReport(this, modelMenuReport, this, dtoBundle);
     }
 
@@ -95,6 +96,10 @@ public class MenuReport extends AppCompatActivity implements AHBottomNavigation.
                     startActivity(intent);
                     break;
                 case 4://CHECKOUT
+                    startService(new Intent(ContextApp.context, ServiceCheck.class).
+                            putExtra(getString(R.string.app_bundle_name), dtoBundle).
+                            putExtra("typeCheck", getResources().getInteger(R.integer.type_check_out)));
+                    finish();
                     break;
             }
         }

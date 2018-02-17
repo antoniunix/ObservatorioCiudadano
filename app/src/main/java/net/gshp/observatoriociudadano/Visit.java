@@ -14,6 +14,7 @@ import android.widget.TextView;
 import net.gshp.observatoriociudadano.adapter.RVVisit;
 import net.gshp.observatoriociudadano.dto.DtoBundle;
 import net.gshp.observatoriociudadano.listener.OnItemClickListenerRV;
+import net.gshp.observatoriociudadano.model.ModelInfoPerson;
 import net.gshp.observatoriociudadano.model.ModelVisit;
 import net.gshp.observatoriociudadano.util.BottomNavigationViewHelper;
 import net.gshp.observatoriociudadano.util.Config;
@@ -41,6 +42,7 @@ public class Visit extends AppCompatActivity implements OnItemClickListenerRV,
         adapter = model.getAdapter(this);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
         bottomNavigationView.setSelectedItemId(R.id.action_visit);
+        new ModelInfoPerson(this).loadImage(this).loadInfo();
     }
 
     @Override
