@@ -541,7 +541,6 @@ public class FaceDetectionActivity extends AppCompatActivity {
         @Override
         public void handleMessage(Message msg) {
             NetworkTask nt = (NetworkTask) msg.obj;
-            Log.e(TAG, nt.getResponse());
             if (nt.getResponseStatus() == HttpStatus.SC_OK || nt.getResponseStatus() == HttpStatus.SC_CREATED) {
                 if (reco) {
                     ImageConverter.roundedCornerBitmap(FaceDetectionActivity.this, photoPath, "myPhoto",
@@ -557,9 +556,9 @@ public class FaceDetectionActivity extends AppCompatActivity {
 
                     progress.setProgress(10);
                     finishProcess();
-                } else {
-                    finish();
                 }
+            }else {
+                finish();
             }
         }
     }
