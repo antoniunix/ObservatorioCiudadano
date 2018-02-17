@@ -61,6 +61,7 @@ public class MenuReport extends AppCompatActivity implements AHBottomNavigation.
                             .putExtra("idEncuesta", (long) ContextApp.context.getResources().getInteger(R.integer.idPollSupervisor)));
                     break;
                 case 1:// census
+                    startActivity(new Intent(this,Census.class));
                     break;
                 case 2://Photos
                     break;
