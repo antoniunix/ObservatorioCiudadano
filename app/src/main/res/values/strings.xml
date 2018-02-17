@@ -297,9 +297,9 @@ Página 6 de 6</string>
 
     <!-- Face detection -->
     <string name="ok">OK</string>
-    <string name="permission_camera_rationale">Access to the camera is needed for detection</string>
-    <string name="no_camera_permission">This application cannot run because it does not have the camera permission.  The application will now exit.</string>
-    <string name="low_storage_error">Face detector dependencies cannot be downloaded due to low device storage</string>
+    <string name="permission_camera_rationale">Se necesita permiso para utilizar la cámara</string>
+    <string name="no_camera_permission">Es necesario permitir a la aplicación usar la cámara</string>
+    <string name="low_storage_error">Poco espacio de almacenamiento</string>
     <string name="process">PROCESANDO...</string>
     <string name="title_detection">RECONOCIMIENTO FACIAL</string>
     <string name="start">INICIO</string>
@@ -315,5 +315,7 @@ Página 6 de 6</string>
     <string name="DPI">DPI</string>
     <string name="IMAGE_SIZE">IMAGE_SIZE</string>
     <string name="user_roll">user_roll</string>
+    <string name="is_reco">is_reco</string>
+    <string name="images_ip">http://172.16.41.77:80</string>
 
 </resources>

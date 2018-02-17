@@ -90,6 +90,9 @@ public class MenuReport extends AppCompatActivity implements AHBottomNavigation.
                 case 2://census
                     break;
                 case 3://photo
+                    Intent intent = new Intent(this, PhotoWizardActivity.class);
+                    intent.putExtra(getString(R.string.user_roll), getResources().getInteger(R.integer.rollRepresentanteCasilla));
+                    startActivity(intent);
                     break;
                 case 4://CHECKOUT
                     break;

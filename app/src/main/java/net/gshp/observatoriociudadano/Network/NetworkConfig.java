@@ -36,6 +36,17 @@ public class NetworkConfig {
         Log.e("NETWORK", "INTENTOS User= " + APINetwork.getUSERNAME() + "  " + APINetwork.getPASSWORD());
     }
 
+    public NetworkConfig(Handler handler, Context context, String serviceName) {
+        this.handler = handler;
+
+        mSharedPreferences = context.getSharedPreferences(context.getString(R.string.app_share_preference_name), Context.MODE_PRIVATE);
+
+        APINetwork.setSOCKET_TIMEOUT(1000 * 20);
+
+        APINetwork.setSERVICE_IP(context.getString(R.string.images_ip));
+        APINetwork.setSERVICE_NAME(serviceName);
+    }
+
 
     public void GET(String params, String tag) {
         Map<String, String> mapHeader = new HashMap<String, String>();

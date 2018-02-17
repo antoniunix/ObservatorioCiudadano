@@ -41,10 +41,11 @@ public class PhotosActivity extends AppCompatActivity {
     private static final int PHOTO_REQUEST_CODE = 2000;
 
     private PhotosAdapter adapter;
-    private List<Photo> pictureList;
+    private List<Photo> pictureList = new ArrayList<>();
     private int photoPosition;
 
     private SharedPreferences preferences;
+    private int rol;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,12 +55,18 @@ public class PhotosActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
         SimpleDateFormat df = new SimpleDateFormat("MMM dd yyyy");
-        TextView timestamp = (TextView) findViewById(R.id.date);
+        TextView timestamp = findViewById(R.id.date);
         timestamp.setText(df.format(System.currentTimeMillis()).toUpperCase());
+
+        if (getIntent().hasExtra(getString(R.string.user_roll)) || getIntent().getIntExtra(getString(R.string.user_roll),
+                getResources().getInteger(R.integer.rollSupervisor)) == getResources().getInteger(R.integer.rollSupervisor))
+            rol = getResources().getInteger(R.integer.rollSupervisor);
+        else
+            rol = getResources().getInteger(R.integer.rollRepresentanteCasilla);
 
         preferences = getSharedPreferences(getString(R.string.app_share_preference_name), Context.MODE_PRIVATE);
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
 
         prepareAlbums();
         adapter = new PhotosAdapter(pictureList);
@@ -70,7 +77,7 @@ public class PhotosActivity extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
-        Button saveButton = (Button) findViewById(R.id.save);
+        Button saveButton = findViewById(R.id.save);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -97,8 +104,9 @@ public class PhotosActivity extends AppCompatActivity {
             else
                 Toast.makeText(this, "Falta " + missingPhotos + " foto", Toast.LENGTH_SHORT).show();
         } else {
-            Intent intent = new Intent(this, Home.class);
-            startActivity(intent);
+            //Intent intent = new Intent(this, Home.class);
+            //startActivity(intent);
+            finish();
         }
     }
 
@@ -106,8 +114,6 @@ public class PhotosActivity extends AppCompatActivity {
      * Adding few albums for testing
      */
     private void prepareAlbums() {
-        pictureList = new ArrayList<>();
-
         int[] covers = new int[]{
                 R.drawable.cara2,
                 R.drawable.cara3,
@@ -192,9 +198,11 @@ public class PhotosActivity extends AppCompatActivity {
     }
 
     private void openCamera(String name, int index) {
-        Intent intent = new Intent(this, PhotoActivity.class);
+        Intent intent = new Intent(this, FaceDetectionActivity.class);
         intent.putExtra(getString(R.string.PHOTO_TYPE), name);
         intent.putExtra(getString(R.string.PICTURE_POSITION), index);
+        intent.putExtra(getString(R.string.is_reco), false);
+        intent.putExtra(getString(R.string.user_roll), rol);
         startActivityForResult(intent, PICTURE_REQUEST_CODE);
     }
 
@@ -210,8 +218,6 @@ public class PhotosActivity extends AppCompatActivity {
         public PhotoItem onCreateViewHolder(ViewGroup parent, int viewType) {
             View itemView = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.photo_card, parent, false);
-
-            //itemView.setOnClickListener(photoClickListener);
 
             return new PhotoItem(itemView);
         }
@@ -234,11 +240,8 @@ public class PhotosActivity extends AppCompatActivity {
                 if (imgFile.exists()) {
                     Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
                     holder.thumbnail.setImageBitmap(myBitmap);
-                    //Glide.with(getApplicationContext()).load(imgFile).into(holder.thumbnail);
                 }
             } else {
-                // loading image using Glide library
-                //Glide.with(getApplicationContext()).load(photo.getThumbnail()).into(holder.thumbnail);
                 holder.thumbnail.setImageResource(photo.getThumbnail());
             }
         }

@@ -13,8 +13,7 @@ public class DtoPhoto {
     private int sent;
     private int rol;
 
-    public DtoPhoto(int id, String path, String name, int face_id, int sent, int rol) {
-        this.id = id;
+    public DtoPhoto(String path, String name, int face_id, int sent, int rol) {
         this.path = path;
         this.name = name;
         this.face_id = face_id;

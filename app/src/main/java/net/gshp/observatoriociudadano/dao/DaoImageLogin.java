@@ -160,8 +160,7 @@ public class DaoImageLogin extends DAO {
         cursor = db.rawQuery("SELECT\n" +
                 "id,\n" +
                 "path,\n" +
-                "name,\n" +
-                "face_id\n" +
+                "name\n" +
                 "FROM\n" +
                 TABLE_NAME + "\n" +
                 "WHERE id = " + idPhoto, null);
@@ -171,7 +170,6 @@ public class DaoImageLogin extends DAO {
             int id = cursor.getColumnIndexOrThrow("id");
             int path = cursor.getColumnIndexOrThrow("path");
             int name = cursor.getColumnIndexOrThrow("name");
-            int face_id = cursor.getColumnIndexOrThrow("face_id");
 
             dto = new DtoImageLogin();
             dto.setId(cursor.getInt(id));
