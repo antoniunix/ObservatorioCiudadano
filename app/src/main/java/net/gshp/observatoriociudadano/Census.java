@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -24,7 +25,7 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 
 import net.gshp.observatoriociudadano.contextApp.ContextApp;
-import net.gshp.observatoriociudadano.dialog.DialogSaveCensus;
+
 import net.gshp.observatoriociudadano.dto.DtoBundle;
 import net.gshp.observatoriociudadano.dto.DtoReportCensus;
 import net.gshp.observatoriociudadano.listener.OnFinishLocation;
@@ -48,7 +49,7 @@ public class Census extends AppCompatActivity implements OnMapReadyCallback, OnF
     private MapView mapView;
     public boolean setLocation = false;
     private double lat, lon;
-    private DialogSaveCensus dialogSaveCensus;
+
     private DtoReportCensus dtoReportCensus;
     private GoogleMap.OnCameraChangeListener onCameraChangeListener;
 
@@ -164,6 +165,7 @@ public class Census extends AppCompatActivity implements OnMapReadyCallback, OnF
                 }
             }
         } catch (IOException e) {
+            Log.e("error","leo error adress");
             e.printStackTrace();
         }
     }
@@ -206,12 +208,9 @@ public class Census extends AppCompatActivity implements OnMapReadyCallback, OnF
                 startActivityForResult(intent, 1);
                 break;
             case R.id.btn_save:
-                Log.e("leo", "census " + dtoReportCensus.toString());
-                FragmentManager fm = getSupportFragmentManager();
-                dialogSaveCensus = new DialogSaveCensus();
-                dialogSaveCensus.setBundle(dtoReportCensus);
-                dialogSaveCensus.show(fm, "dialog");
-                break;
+                modelCensus.saveCensus(dtoReportCensus);
+                Toast.makeText(this, "Se guardo ", Toast.LENGTH_SHORT).show();
+                finish();
         }
 
     }

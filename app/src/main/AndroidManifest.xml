@@ -86,10 +86,19 @@
         <activity android:name=".Census" />
         <activity android:name=".PlaceAutocompleteActivity" />
 
-        <activity android:name=".faceDetection.FaceDetectionActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".faceDetection.PhotosActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".faceDetection.PhotoActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".faceDetection.PhotoWizardActivity" android:screenOrientation="portrait"/>
+        <activity
+            android:name=".faceDetection.FaceDetectionActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".faceDetection.PhotosActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".faceDetection.PhotoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".faceDetection.PhotoWizardActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".CensusManual" />
 
     </application>
 

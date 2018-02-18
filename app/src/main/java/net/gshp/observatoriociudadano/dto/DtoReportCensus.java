@@ -22,7 +22,6 @@ public class DtoReportCensus implements Parcelable {
     private long date;
     private String address;
     private String provider;
-    private String path;
     private String name_street;
 
     @Override
@@ -41,18 +40,8 @@ public class DtoReportCensus implements Parcelable {
                 ", date=" + date +
                 ", address='" + address + '\'' +
                 ", provider='" + provider + '\'' +
-                ", path='" + path + '\'' +
                 ", name_street='" + name_street + '\'' +
                 '}';
-    }
-
-    public String getName_street() {
-        return name_street;
-    }
-
-    public DtoReportCensus setName_street(String name_street) {
-        this.name_street = name_street;
-        return this;
     }
 
     public long getIdReporteLocal() {
@@ -172,16 +161,13 @@ public class DtoReportCensus implements Parcelable {
         return this;
     }
 
-    public String getPath() {
-        return path;
+    public String getName_street() {
+        return name_street;
     }
 
-    public DtoReportCensus setPath(String path) {
-        this.path = path;
+    public DtoReportCensus setName_street(String name_street) {
+        this.name_street = name_street;
         return this;
-    }
-
-    public DtoReportCensus() {
     }
 
     @Override
@@ -204,8 +190,10 @@ public class DtoReportCensus implements Parcelable {
         dest.writeLong(this.date);
         dest.writeString(this.address);
         dest.writeString(this.provider);
-        dest.writeString(this.path);
         dest.writeString(this.name_street);
+    }
+
+    public DtoReportCensus() {
     }
 
     protected DtoReportCensus(Parcel in) {
@@ -222,7 +210,6 @@ public class DtoReportCensus implements Parcelable {
         this.date = in.readLong();
         this.address = in.readString();
         this.provider = in.readString();
-        this.path = in.readString();
         this.name_street = in.readString();
     }
 

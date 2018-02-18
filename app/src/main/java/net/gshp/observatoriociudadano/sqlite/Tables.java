@@ -223,7 +223,6 @@ public class Tables {
             "name_street TEXT,"+
             "hash TEXT," +
             "provider TEXT," +
-            "path TEXT," +
             "send INTEGER)";
 
 

@@ -322,5 +322,12 @@ Página 6 de 6</string>
     <string name="photo">Foto</string>
     <string name="providerAutomatic">Automatico</string>
     <string name="app_bundle_census">bundleCensus</string>
+    <string name="postal_code">Código Postal:</string>
+    <string name="suburb">Colonia:</string>
+    <string name="street">Calle:</string>
+    <string name="street_left">Calle Izquierda:</string>
+    <string name="street_right">Calle Derecha:</string>
+    <string name="number_out">Número Exterior:</string>
+    <string name="number_in">Número Inerior:</string>
 
 </resources>
