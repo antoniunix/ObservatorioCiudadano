@@ -8,6 +8,9 @@ import com.gshp.api.utils.Crypto;
 
 import net.gshp.observatoriociudadano.dto.DtoReportCensus;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by leo on 17/02/18.
  */
@@ -79,4 +82,78 @@ public class DaoReportCensus extends DAO {
         return resp;
     }
 
+    public List<List<DtoReportCensus>> selectToSend() {
+        db = helper.getWritableDatabase();
+        String qry = "SELECT DISTINCT\n" +
+                "report_census.id_report_local,\n" +
+                "report_census.lat,\n" +
+                "report_census.lon,\n" +
+                "report_census.suburb,\n" +
+                "report_census.town,\n" +
+                "report_census.state,\n" +
+                "report_census.cp,\n" +
+                "report_census.external_number,\n" +
+                "report_census.internal_number,\n" +
+                "report_census.address,\n" +
+                "report_census.address_left,\n" +
+                "report_census.address_right,\n" +
+                "report_census.provider,\n" +
+                "report_census.hash,\n" +
+                "report.id_report_server\n" +
+                "FROM\n" +
+                "report_census\n" +
+                "INNER JOIN report ON report.id=report_census.id_report_local AND report.id_report_server>0\n" +
+                "WHERE report_census.send=0\n" +
+                "ORDER BY report_census.id_report_local ASC";
+        cursor = db.rawQuery(qry, null);
+        List<List<DtoReportCensus>> lst = new ArrayList<>();
+        List<DtoReportCensus> subLst = new ArrayList<>();
+        DtoReportCensus catalogo;
+        long tmpidReport;
+
+        if (cursor.moveToFirst()) {
+            tmpidReport = cursor.getLong(cursor.getColumnIndexOrThrow("id_report_local"));
+            do {
+                catalogo = new DtoReportCensus();
+                catalogo.setIdReport(cursor.getInt(cursor.getColumnIndexOrThrow("id_report_server")));
+                catalogo.setState(cursor.getString(cursor.getColumnIndexOrThrow(STATE)));
+                catalogo.setSuburb(cursor.getString(cursor.getColumnIndexOrThrow(SUBURB)));
+                catalogo.setTown(cursor.getString(cursor.getColumnIndexOrThrow(TOWN)));
+                catalogo.setAddress(cursor.getString(cursor.getColumnIndexOrThrow(ADDRESS)));
+                catalogo.setAddress_right(cursor.getString(cursor.getColumnIndexOrThrow(ADDRESSRIGHT)));
+                catalogo.setAddress_left(cursor.getString(cursor.getColumnIndexOrThrow(ADDRESSLEFT)));
+                catalogo.setCp(cursor.getString(cursor.getColumnIndexOrThrow(CP)));
+                catalogo.setProvider(cursor.getString(cursor.getColumnIndexOrThrow(PROVIDER)));
+                catalogo.setHash(cursor.getString(cursor.getColumnIndexOrThrow(HASH)));
+                catalogo.setIdReporteLocal(cursor.getLong(cursor.getColumnIndexOrThrow(IDREPORTLOCAL)));
+                if (tmpidReport == cursor.getInt(cursor.getColumnIndexOrThrow(IDREPORTLOCAL))) {
+                    subLst.add(catalogo);
+                } else if (tmpidReport != cursor.getInt(cursor.getColumnIndexOrThrow(IDREPORTLOCAL))) {
+                    tmpidReport = cursor.getInt(cursor.getColumnIndexOrThrow(IDREPORTLOCAL));
+                    lst.add(subLst);
+                    subLst = new ArrayList<>();
+                    subLst.add(catalogo);
+
+                }
+
+                if (cursor.isLast())
+                    lst.add(subLst);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return lst;
+    }
+
+    public void updateSend(String idReporteLocal) {
+        db = helper.getWritableDatabase();
+        try {
+            ContentValues cv = new ContentValues();
+            cv.put("send", 1);
+            db.update(TABLE_NAME, cv, IDREPORTLOCAL+"=" + idReporteLocal, null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        db.close();
+    }
 }

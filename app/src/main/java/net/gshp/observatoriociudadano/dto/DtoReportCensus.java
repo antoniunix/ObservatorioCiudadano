@@ -10,6 +10,7 @@ import android.os.Parcelable;
 public class DtoReportCensus implements Parcelable {
 
     private long idReporteLocal;
+    private long idReport;
     private double lat;
     private double lon;
     private String suburb;
@@ -26,11 +27,11 @@ public class DtoReportCensus implements Parcelable {
     private String address_right;
     private String internalNumber;
 
-
     @Override
     public String toString() {
         return "DtoReportCensus{" +
                 "idReporteLocal=" + idReporteLocal +
+                ", idReport=" + idReport +
                 ", lat=" + lat +
                 ", lon=" + lon +
                 ", suburb='" + suburb + '\'' +
@@ -47,6 +48,15 @@ public class DtoReportCensus implements Parcelable {
                 ", address_right='" + address_right + '\'' +
                 ", internalNumber='" + internalNumber + '\'' +
                 '}';
+    }
+
+    public long getIdReport() {
+        return idReport;
+    }
+
+    public DtoReportCensus setIdReport(long idReport) {
+        this.idReport = idReport;
+        return this;
     }
 
     public long getIdReporteLocal() {
@@ -193,6 +203,9 @@ public class DtoReportCensus implements Parcelable {
         return this;
     }
 
+    public DtoReportCensus() {
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -201,6 +214,7 @@ public class DtoReportCensus implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(this.idReporteLocal);
+        dest.writeLong(this.idReport);
         dest.writeDouble(this.lat);
         dest.writeDouble(this.lon);
         dest.writeString(this.suburb);
@@ -218,11 +232,9 @@ public class DtoReportCensus implements Parcelable {
         dest.writeString(this.internalNumber);
     }
 
-    public DtoReportCensus() {
-    }
-
     protected DtoReportCensus(Parcel in) {
         this.idReporteLocal = in.readLong();
+        this.idReport = in.readLong();
         this.lat = in.readDouble();
         this.lon = in.readDouble();
         this.suburb = in.readString();

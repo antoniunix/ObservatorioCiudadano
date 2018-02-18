@@ -13,7 +13,9 @@ import net.gshp.observatoriociudadano.R;
 import net.gshp.observatoriociudadano.contextApp.ContextApp;
 import net.gshp.observatoriociudadano.dao.DaoEARespuesta;
 import net.gshp.observatoriociudadano.dao.DaoReport;
+import net.gshp.observatoriociudadano.dao.DaoReportCensus;
 import net.gshp.observatoriociudadano.dto.DtoEARespuesta;
+import net.gshp.observatoriociudadano.dto.DtoReportCensus;
 import net.gshp.observatoriociudadano.dto.DtoReportToSend;
 
 import org.apache.http.HttpStatus;
@@ -74,10 +76,12 @@ public class ModelSend {
 
     private DaoReport daoReportReport;
     private DaoEARespuesta daoeaRespuesta;
+    private DaoReportCensus daoReportCensus;
 
     private List<DtoReportToSend> lstReports;
 
     private List<List<DtoEARespuesta>> respuestas;
+    private List<List<DtoReportCensus>> lstReportCensus;
 
     private List<DtoEARespuesta> lstDtoReportRespuestasFotos;
 
@@ -88,6 +92,7 @@ public class ModelSend {
 
         daoReportReport = new DaoReport();
         daoeaRespuesta = new DaoEARespuesta();
+        daoReportCensus = new DaoReportCensus();
     }
 
     public void start() {
@@ -125,8 +130,9 @@ public class ModelSend {
     private void sendSubReportes() {
         Log.e("send", "sendsubreportes");
         respuestas = daoeaRespuesta.selectToSend();
+        lstReportCensus = daoReportCensus.selectToSend();
 
-        SubReportAEnviar = respuestas.size();
+        SubReportAEnviar = respuestas.size() + lstReportCensus.size();
 
         if (SubReportAEnviar != 0) {
              /*
@@ -146,6 +152,19 @@ public class ModelSend {
                         networkConfig.POST("multireport/insertnt/poll/1", json, "rsaa" + respuestas.get(i).get(0)
                                 .getIdReporteLocal(), header);
                     }
+
+                    //Census
+                    Log.e("Observador", "Report Census" + lstReportCensus.size());
+                    for (int i = 0; i < lstReportCensus.size(); i++) {
+                        String json = new Gson().toJson(lstReportCensus.get(i));
+                        System.out.println(json);
+                        Map<String, String> header = new HashMap<>();
+                        header.put(ContextApp.context.getString(R.string.network_header_name_application_json),
+                                ContextApp.context.getString(R.string.network_header_application_json));
+                        networkConfig.POST("multireport/insertnt/census/1", json, "rsab" + lstReportCensus.get(i).get(0)
+                                .getIdReporteLocal(), header);
+                    }
+
                 }
 
             }.start();
@@ -251,7 +270,9 @@ public class ModelSend {
 
             if (completedTask.getTag().contains("rprt")) {
                 REPORTESENVIADOS++;
-            } else if (completedTask.getTag().contains("rsaa"))
+            } else if (completedTask.getTag().contains("rsaa")
+                    || completedTask.getTag().contains("rsab")
+                    )
 
                 SubReportesEnviados++;
 
@@ -283,6 +304,8 @@ public class ModelSend {
 
                 } else if (completedTask.getTag().contains("rsaa")) {
                     daoeaRespuesta.updateEnviado(completedTask.getTag().substring(4));
+                } else if (completedTask.getTag().contains("rsab")) {
+                    daoReportCensus.updateSend(completedTask.getTag().substring(4));
                 }
                 //fotos
                 else if (completedTask.getTag().contains("rfaa")) {

@@ -103,7 +103,7 @@ public class Census extends AppCompatActivity implements OnMapReadyCallback, OnF
                 || ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != -1) {
         }
         CameraUpdate zoom = CameraUpdateFactory.newLatLngZoom(new LatLng(22.7,
-                -102.6), 3);
+                -102.6), 18);
         map.moveCamera(zoom);
 
     }
@@ -237,6 +237,10 @@ public class Census extends AppCompatActivity implements OnMapReadyCallback, OnF
             if (resultCode == Activity.RESULT_OK) {
                 DtoReportCensus dtoReportCensus = (DtoReportCensus) data.getExtras().get(getString(R.string.address));
                 setDirections(dtoReportCensus.getLat(), dtoReportCensus.getLon());
+                CameraUpdate zoom = CameraUpdateFactory.newLatLngZoom(new LatLng(dtoReportCensus.getLat(),
+                        dtoReportCensus.getLon()), 18);
+                map.moveCamera(zoom);
+
             }
 
         }

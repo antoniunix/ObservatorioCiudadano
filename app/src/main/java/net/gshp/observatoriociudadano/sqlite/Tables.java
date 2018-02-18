@@ -163,7 +163,7 @@ public class Tables {
             "suburb TEXT," +
             "town TEXT," +
             "state TEXT," +
-            "cp real INTEGER," +
+            "cp INTEGER," +
             "external_number TEXT," +
             "internal_number TEXT,"+
             "address TEXT," +
