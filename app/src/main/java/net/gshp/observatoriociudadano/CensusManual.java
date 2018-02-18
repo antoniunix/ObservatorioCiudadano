@@ -19,6 +19,7 @@ import com.google.android.gms.maps.model.LatLng;
 import net.gshp.observatoriociudadano.dto.DtoBundle;
 import net.gshp.observatoriociudadano.dto.DtoReportCensus;
 import net.gshp.observatoriociudadano.model.ModelCensus;
+import net.gshp.observatoriociudadano.model.ModelInfoPerson;
 
 /**
  * Created by leo on 17/02/18.
@@ -39,6 +40,7 @@ public class CensusManual extends AppCompatActivity implements TextWatcher, View
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.census_manual);
+        getSupportActionBar().hide();
         init();
     }
 
@@ -66,6 +68,8 @@ public class CensusManual extends AppCompatActivity implements TextWatcher, View
         edtcp.setAdapter(modelCensus.getAdapterCp());
         edtcp.setThreshold(1);
         btn_save.setOnClickListener(this);
+        new ModelInfoPerson(this).loadImage(this);
+        new ModelInfoPerson(this).loadImage(this).loadInfo();
 
     }
 

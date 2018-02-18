@@ -13,7 +13,16 @@ public class DtoReportVisit {
     private String password;
     private long dateCheckIn;
     private long dateCheckOut;
+    private String hash;
 
+    public String getHash() {
+        return hash;
+    }
+
+    public DtoReportVisit setHash(String hash) {
+        this.hash = hash;
+        return this;
+    }
 
     public long getId() {
         return id;

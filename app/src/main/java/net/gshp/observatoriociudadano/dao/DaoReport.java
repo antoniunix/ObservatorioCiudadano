@@ -144,27 +144,24 @@ public class DaoReport extends DAO {
     public boolean isReportIncomplete() {
         boolean isReport = false;
         db = helper.getReadableDatabase();
-        String query = "SELECT  * FROM(\n"
-                + "SELECT DISTINCT\n"
-                + "c_client.id,\n"
-                + "c_client.value,\n"
-                + "pdv.id as id_pdv,\n"
-                + "pdv.id_client,\n"
-                + "pdv.id_rtm,				 \n"
-                + "pdv.name,\n"
-                + "pdv.address,\n"
-                + "report.id as id_report,\n"
-                + "CHECK_in.date as datecheckin,\n"
-                + "CHECK_out.date as datecheckout\n"
-                + "FROM\n"
-                + "c_client\n"
-                + "INNER JOIN pdv ON pdv.id_client = c_client.id \n"
-                + "INNER JOIN report on report.id_pdv=pdv.id and report.send==0 AND report.active=1\n"
-                + "LEFT JOIN report_check  as CHECK_in ON CHECK_in.id_report_local = report.id   and CHECK_in.type=1\n"
-                + "LEFT JOIN report_check as CHECK_out on  CHECK_out.id_report_local = report.id   and CHECK_out.type=2\n"
-                + ") as q1\n"
-                + "where    q1.datecheckin   is not NULL  and  q1.datecheckout   is  NULL  ";
-        cursor = db.rawQuery(query, null);
+        String queryIncomplete = "SELECT  * FROM( \n" +
+                "                SELECT DISTINCT \n" +
+                "                report.id, \n" +
+                "                report.send, \n" +
+                "                report.hash, \n" +
+                "                pdv.name, \n" +
+                "                report.id_pdv,                \n" +
+                "                CHECK_in.date  datecheckin, \n" +
+                "                CHECK_out.date datecheckout \n" +
+                "                FROM \n" +
+                "                report  \n" +
+                "                LEFT JOIN pdv ON pdv.id=report.id_pdv AND report.active=1\n" +
+                "                LEFT JOIN report_check  as CHECK_in ON CHECK_in.id_report_local = report.id   and CHECK_in.type=1 \n" +
+                "                LEFT JOIN report_check as CHECK_out on  CHECK_out.id_report_local = report.id   and CHECK_out.type=2 \n" +
+                "                WHERE report.active=1\n"+
+                "                ) as q1 \n" +
+                "                where    q1.datecheckin   is not NULL  and  q1.datecheckout   is NULL";
+        cursor = db.rawQuery(queryIncomplete, null);
         isReport = cursor.getCount() != 0;
         cursor.close();
         db.close();
@@ -395,6 +392,7 @@ public class DaoReport extends DAO {
         return count > 0 ? true : false;
     }
 
+
     public List<DtoReportVisit> SelectReportVisit() {
         db = helper.getReadableDatabase();
 
@@ -402,15 +400,17 @@ public class DaoReport extends DAO {
                 "                SELECT DISTINCT \n" +
                 "                report.id, \n" +
                 "                report.send, \n" +
+                "                report.hash, \n" +
                 "                pdv.name, \n" +
                 "                report.id_pdv,                \n" +
                 "                CHECK_in.date  datecheckin, \n" +
                 "                CHECK_out.date datecheckout \n" +
                 "                FROM \n" +
                 "                report  \n" +
-                "                LEFT JOIN pdv ON pdv.id=report.id_pdv \n" +
+                "                LEFT JOIN pdv ON pdv.id=report.id_pdv AND report.active=1\n" +
                 "                LEFT JOIN report_check  as CHECK_in ON CHECK_in.id_report_local = report.id   and CHECK_in.type=1 \n" +
                 "                LEFT JOIN report_check as CHECK_out on  CHECK_out.id_report_local = report.id   and CHECK_out.type=2 \n" +
+                "                WHERE report.active=1\n"+
                 "                ) as q1 \n" +
                 "                where    q1.datecheckin   is not NULL  and  q1.datecheckout   is NULL";
 
@@ -418,15 +418,17 @@ public class DaoReport extends DAO {
                 "                SELECT DISTINCT \n" +
                 "                report.id, \n" +
                 "                report.send, \n" +
+                "                report.hash, \n" +
                 "                pdv.name, \n" +
                 "                report.id_pdv,                \n" +
                 "                CHECK_in.date  datecheckin, \n" +
                 "                CHECK_out.date datecheckout \n" +
                 "                FROM \n" +
                 "                report  \n" +
-                "                LEFT JOIN pdv ON pdv.id=report.id_pdv \n" +
+                "                LEFT JOIN pdv ON pdv.id=report.id_pdv AND report.active=1\n" +
                 "                LEFT JOIN report_check  as CHECK_in ON CHECK_in.id_report_local = report.id   and CHECK_in.type=1 \n" +
                 "                LEFT JOIN report_check as CHECK_out on  CHECK_out.id_report_local = report.id   and CHECK_out.type=2 \n" +
+                "                WHERE report.active=1\n"+
                 "                ) as q1 \n" +
                 "                where    q1.datecheckin   is not NULL  and  q1.datecheckout   is not NULL  and q1.send=0";
 
@@ -435,19 +437,21 @@ public class DaoReport extends DAO {
                 "                SELECT DISTINCT \n" +
                 "                report.id, \n" +
                 "                report.send, \n" +
+                "                report.hash, \n" +
                 "                pdv.name, \n" +
                 "                report.id_pdv,                \n" +
                 "                CHECK_in.date  datecheckin, \n" +
                 "                CHECK_out.date datecheckout \n" +
                 "                FROM \n" +
                 "                report  \n" +
-                "                LEFT JOIN pdv ON pdv.id=report.id_pdv \n" +
+                "                LEFT JOIN pdv ON pdv.id=report.id_pdv AND report.active=1\n" +
                 "                LEFT JOIN report_check  as CHECK_in ON CHECK_in.id_report_local = report.id   and CHECK_in.type=1 \n" +
                 "                LEFT JOIN report_check as CHECK_out on  CHECK_out.id_report_local = report.id   and CHECK_out.type=2 \n" +
+                "                WHERE report.active=1\n"+
                 "                ) as q1 \n" +
                 "                where    q1.datecheckin   is not NULL  and  q1.datecheckout   is not NULL  and q1.send>0";
 
-
+Log.e("send","qry incomplete \n "+queryIncomplete+"\n not send "+queryCompleteNotSend+"\n completed "+queryCompleteSend);
         cursor = db.rawQuery(queryIncomplete, null);
         List<DtoReportVisit> obj = new ArrayList<>();
         DtoReportVisit dtoReportVisit;
@@ -457,6 +461,7 @@ public class DaoReport extends DAO {
         int idPdv = cursor.getColumnIndexOrThrow("id_pdv");
         int dateCheckIn = cursor.getColumnIndexOrThrow("datecheckin");
         int dateCheckOut = cursor.getColumnIndexOrThrow("datecheckout");
+        int hash = cursor.getColumnIndexOrThrow("hash");
         if (cursor.moveToFirst()) {
             do {
                 dtoReportVisit = new DtoReportVisit();
@@ -466,6 +471,7 @@ public class DaoReport extends DAO {
                 dtoReportVisit.setName(cursor.getString(nombrePdv));
                 dtoReportVisit.setDateCheckIn(cursor.getLong(dateCheckIn));
                 dtoReportVisit.setDateCheckOut(cursor.getLong(dateCheckOut));
+                dtoReportVisit.setHash(cursor.getString(hash));
 
                 obj.add(dtoReportVisit);
             } while (cursor.moveToNext());
@@ -480,6 +486,7 @@ public class DaoReport extends DAO {
                 dtoReportVisit.setName(cursor.getString(nombrePdv));
                 dtoReportVisit.setDateCheckIn(cursor.getLong(dateCheckIn));
                 dtoReportVisit.setDateCheckOut(cursor.getLong(dateCheckOut));
+                dtoReportVisit.setHash(cursor.getString(hash));
 
                 obj.add(dtoReportVisit);
             } while (cursor.moveToNext());
@@ -494,6 +501,7 @@ public class DaoReport extends DAO {
                 dtoReportVisit.setName(cursor.getString(nombrePdv));
                 dtoReportVisit.setDateCheckIn(cursor.getLong(dateCheckIn));
                 dtoReportVisit.setDateCheckOut(cursor.getLong(dateCheckOut));
+                dtoReportVisit.setHash(cursor.getString(hash));
 
                 obj.add(dtoReportVisit);
             } while (cursor.moveToNext());

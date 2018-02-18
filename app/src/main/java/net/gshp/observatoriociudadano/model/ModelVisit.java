@@ -24,4 +24,12 @@ public class ModelVisit {
         lstVisit = new DaoReport().SelectReportVisit();
         return adapter = new RVVisit(lstVisit, onItemClickListenerRV);
     }
+
+    public DtoReportVisit getItem(int position) {
+        return lstVisit.get(position);
+    }
+
+    public void inactivateReport(long id,String hash) {
+        new DaoReport().inactivate(id,hash);
+    }
 }

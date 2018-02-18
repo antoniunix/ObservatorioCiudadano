@@ -12,7 +12,10 @@ import android.view.View;
 import android.widget.TextView;
 
 import net.gshp.observatoriociudadano.adapter.RVVisit;
+import net.gshp.observatoriociudadano.dialog.DialogDeleteVisit;
 import net.gshp.observatoriociudadano.dto.DtoBundle;
+import net.gshp.observatoriociudadano.dto.DtoReportVisit;
+import net.gshp.observatoriociudadano.listener.OnFinishSendReports;
 import net.gshp.observatoriociudadano.listener.OnItemClickListenerRV;
 import net.gshp.observatoriociudadano.model.ModelInfoPerson;
 import net.gshp.observatoriociudadano.model.ModelVisit;
@@ -20,7 +23,7 @@ import net.gshp.observatoriociudadano.util.BottomNavigationViewHelper;
 import net.gshp.observatoriociudadano.util.Config;
 
 public class Visit extends AppCompatActivity implements OnItemClickListenerRV,
-        BottomNavigationView.OnNavigationItemSelectedListener {
+        BottomNavigationView.OnNavigationItemSelectedListener, OnFinishSendReports {
 
     private TextView txtTBDate, txtTBTitle;
     private BottomNavigationView bottomNavigationView;
@@ -85,6 +88,30 @@ public class Visit extends AppCompatActivity implements OnItemClickListenerRV,
 
     @Override
     public void onItemClickListener(View v, int position) {
+        switch (v.getId()) {
+            case R.id.rltMain:
+                DtoBundle dtoBundle = new DtoBundle();
+                dtoBundle.setIdReportLocal(model.getItem(position).getId());
+                dtoBundle.setIdPdv(model.getItem(position).getIdPdv());
+                startActivity(new Intent(this, MenuReport.class).putExtra(getString(R.string.app_bundle_name), dtoBundle));
+                finish();
+                break;
+            case R.id.imgTrash:
+                DtoReportVisit dtoReportVisit = new DtoReportVisit();
+                dtoReportVisit.setId(model.getItem(position).getId());
+                dtoReportVisit.setHash(model.getItem(position).getHash());
+                dtoReportVisit.setDateCheckIn(model.getItem(position).getDateCheckIn());
+                dtoReportVisit.setDateCheckOut(model.getItem(position).getDateCheckOut());
+                dtoReportVisit.setName(model.getItem(position).getName());
+                DialogDeleteVisit dialogDeleteVisit = new DialogDeleteVisit();
+                dialogDeleteVisit.setDtoReportVisit(dtoReportVisit);
+                dialogDeleteVisit.show(getSupportFragmentManager(), "dialogDelete");
+                break;
+        }
+    }
 
+    @Override
+    public void onFinishSendReports() {
+        rcvVisit.setAdapter(model.getAdapter(this));
     }
 }

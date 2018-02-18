@@ -52,35 +52,35 @@
 
                     <TextView android:text="@string/street" />
 
-                    <EditText android:id="@+id/edt_street" />
+                    <EditText android:id="@+id/edt_street" style="@style/style_edittext_census"/>
                 </TableRow>
 
                 <TableRow>
 
                     <TextView android:text="@string/street_left" />
 
-                    <EditText android:id="@+id/edt_street_left" />
+                    <EditText android:id="@+id/edt_street_left" style="@style/style_edittext_census"/>
                 </TableRow>
 
                 <TableRow>
 
                     <TextView android:text="@string/street_right" />
 
-                    <EditText android:id="@+id/edt_street_right" />
+                    <EditText android:id="@+id/edt_street_right" style="@style/style_edittext_census" />
                 </TableRow>
 
                 <TableRow>
 
                     <TextView android:text="@string/number_out" />
 
-                    <EditText android:id="@+id/edt_numberout" />
+                    <EditText android:id="@+id/edt_numberout" style="@style/style_edittext_census"/>
                 </TableRow>
 
                 <TableRow>
 
                     <TextView android:text="@string/number_in" />
 
-                    <EditText android:id="@+id/edt_numberin" />
+                    <EditText android:id="@+id/edt_numberin" style="@style/style_edittext_census"/>
                 </TableRow>
 
             </TableLayout>

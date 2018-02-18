@@ -69,6 +69,12 @@ public class RVVisit extends RecyclerView.Adapter<RVVisit.ViewHolder> {
                 onItemClickListenerRV.onItemClickListener(view, position);
             }
         });
+        holder.imgTrash.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onItemClickListenerRV.onItemClickListener(view, position);
+            }
+        });
     }
 
     @Override

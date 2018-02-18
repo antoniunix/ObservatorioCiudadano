@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import net.gshp.observatoriociudadano.adapter.RVListStation;
 import net.gshp.observatoriociudadano.dto.DtoBundle;
@@ -85,11 +86,18 @@ public class ListStation extends AppCompatActivity implements BottomNavigationVi
 
     @Override
     public void onItemClickListener(View v, int position) {
-        DtoPdvPdv dtoPdvPdv = adapter.getItem(position);
-        DtoBundle dtoBundle = new DtoBundle();
-        dtoBundle.setIdTypeMenuReport(getResources().getInteger(R.integer.idPollRepresentanteCasilla)).
-                setIdPdv(dtoPdvPdv.getId());
-        startActivity(new Intent(this, MenuReport.class).putExtra(getString(R.string.app_bundle_name), dtoBundle));
-        finish();
+        if(model.isReportIncomplete()){
+            Toast.makeText(this, "Tiene un reporte incompleto", Toast.LENGTH_SHORT).show();
+            finish();
+            startActivity(new Intent(this, Visit.class));
+        }else {
+            DtoPdvPdv dtoPdvPdv = adapter.getItem(position);
+            DtoBundle dtoBundle = new DtoBundle();
+            dtoBundle.setIdTypeMenuReport(getResources().getInteger(R.integer.idPollRepresentanteCasilla)).
+                    setIdPdv(dtoPdvPdv.getId());
+            startActivity(new Intent(this, MenuReport.class).putExtra(getString(R.string.app_bundle_name), dtoBundle));
+            finish();
+        }
+
     }
 }

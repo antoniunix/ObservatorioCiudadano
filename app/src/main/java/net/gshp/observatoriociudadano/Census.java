@@ -29,6 +29,8 @@ import net.gshp.observatoriociudadano.dto.DtoBundle;
 import net.gshp.observatoriociudadano.dto.DtoReportCensus;
 import net.gshp.observatoriociudadano.listener.OnFinishLocation;
 import net.gshp.observatoriociudadano.model.ModelCensus;
+import net.gshp.observatoriociudadano.model.ModelInfoPerson;
+import net.gshp.observatoriociudadano.model.ModelMenuReport;
 
 import java.io.IOException;
 import java.util.List;
@@ -72,6 +74,8 @@ public class Census extends AppCompatActivity implements OnMapReadyCallback, OnF
         mapView.onCreate(savedInstanceState);
         setUpMapIfNeeded();
         edt_address.setOnClickListener(this);
+        new ModelInfoPerson(this).loadImage(this);
+        new ModelInfoPerson(this).loadImage(this).loadInfo();
 
     }
 
