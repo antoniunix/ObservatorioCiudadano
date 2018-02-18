@@ -4,8 +4,10 @@ import android.content.Context;
 import android.location.Location;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
+import android.widget.SpinnerAdapter;
 
 import net.gshp.observatoriociudadano.R;
+import net.gshp.observatoriociudadano.adapter.AdapterSpinnerCp;
 import net.gshp.observatoriociudadano.contextApp.ContextApp;
 import net.gshp.observatoriociudadano.dao.DaoReportCensus;
 import net.gshp.observatoriociudadano.dao.DaoSepomex;
@@ -15,6 +17,7 @@ import net.gshp.observatoriociudadano.listener.OnFinishLocation;
 import net.panamiur.geolocation.Geolocation;
 import net.panamiur.geolocation.interfaces.OnApiGeolocation;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,7 +28,7 @@ public class ModelCensus implements OnApiGeolocation {
 
     private DaoSepomex daoSepomex;
     private DaoReportCensus daoReportCensus;
-    private List<String> lstDtoSepomex;
+    private List<DtoSepomex> lstDtoSepomex;
     private OnFinishLocation onFinishLocation;
     private Geolocation geolocation;
     private Context context;
@@ -70,5 +73,23 @@ public class ModelCensus implements OnApiGeolocation {
         daoReportCensus.insert(dtoReportCensus);
     }
 
+
+    public ArrayAdapter getAdapterCp() {
+        List<String> lst = daoSepomex.SelectCp();
+        return new AdapterSpinnerCp(ContextApp.context, R.layout.spinner_simple_list, lst);
+    }
+
+    public SpinnerAdapter getAdapterSuburb(String postalCode) {
+        lstDtoSepomex = daoSepomex.Select(postalCode);
+        List<String> lst = new ArrayList<>(lstDtoSepomex.size());
+        for (DtoSepomex dto : lstDtoSepomex) {
+            lst.add(dto.getSuburb().trim());
+        }
+        return new AdapterSpinnerCp(ContextApp.context, R.layout.spinner_simple_list, lst);
+    }
+
+    public DtoSepomex getItemSuburb(int position) {
+        return lstDtoSepomex.get(position);
+    }
 
 }

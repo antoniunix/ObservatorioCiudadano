@@ -31,7 +31,9 @@ public class DaoReportCensus extends DAO {
     private final String HASH = "hash";
     private final String SEND = "send";
     private final String PROVIDER = "provider";
-    private final String NAMESTREET = "name_street";
+    private final String INTERNAL_NUMBER = "internal_number";
+    private final String ADDRESSLEFT = "address_left";
+    private final String ADDRESSRIGHT = "address_right";
     private final String CP = "cp";
 
     public DaoReportCensus() {
@@ -50,19 +52,22 @@ public class DaoReportCensus extends DAO {
             db.beginTransaction();
 
             cv = new ContentValues();
-            cv.put(IDREPORTLOCAL,obj.getIdReporteLocal());
+            cv.put(IDREPORTLOCAL, obj.getIdReporteLocal());
             cv.put(STATE, obj.getState());
             cv.put(TOWN, obj.getTown());
             cv.put(SUBURB, obj.getSuburb());
             cv.put(ADDRESS, obj.getAddress());
-            cv.put(NAMESTREET, obj.getName_street());
             cv.put(EXTERNAL_NUMBER, obj.getExternalNumber());
             cv.put(CP, obj.getCp());
             cv.put(LAT, obj.getLat());
             cv.put(LON, obj.getLon());
-            cv.put(HASH, Crypto.MD5(System.currentTimeMillis() + obj.getIdReporteLocal()+" " + Math.random()));
+            cv.put(HASH, Crypto.MD5(System.currentTimeMillis() + obj.getIdReporteLocal() + " " + Math.random()));
             cv.put(SEND, obj.getSend());
             cv.put(PROVIDER, obj.getProvider());
+            cv.put(INTERNAL_NUMBER, obj.getInternalNumber());
+            cv.put(EXTERNAL_NUMBER, obj.getExternalNumber());
+            cv.put(ADDRESSLEFT, obj.getAddress_left());
+            cv.put(ADDRESSRIGHT, obj.getAddress_right());
             resp = (int) db.insert(TABLE_NAME, null, cv);
             db.setTransactionSuccessful();
         } catch (Exception e) {
