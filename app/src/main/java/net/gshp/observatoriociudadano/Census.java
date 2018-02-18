@@ -7,7 +7,6 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -25,7 +24,6 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 
 import net.gshp.observatoriociudadano.contextApp.ContextApp;
-
 import net.gshp.observatoriociudadano.dialog.DialogCensusManual;
 import net.gshp.observatoriociudadano.dto.DtoBundle;
 import net.gshp.observatoriociudadano.dto.DtoReportCensus;
@@ -171,7 +169,7 @@ public class Census extends AppCompatActivity implements OnMapReadyCallback, OnF
 
     private void setUpDialogCensusManual() {
         DialogCensusManual dialogCensusManual = new DialogCensusManual();
-        dialogCensusManual.setDtoBundle(dtoBundle);
+        dialogCensusManual.setDtoBundle(dtoBundle,lat,lon);
         Log.e("dtoBundle", "dto census " + dtoBundle.getIdReportLocal());
         dialogCensusManual.show(getSupportFragmentManager(), "dialog");
     }

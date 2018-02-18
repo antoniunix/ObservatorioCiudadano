@@ -14,6 +14,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import net.gshp.observatoriociudadano.dto.DtoBundle;
 import net.gshp.observatoriociudadano.dto.DtoReportCensus;
 import net.gshp.observatoriociudadano.model.ModelCensus;
@@ -31,6 +33,7 @@ public class CensusManual extends AppCompatActivity implements TextWatcher, View
     private AutoCompleteTextView edtcp;
     private DtoReportCensus dtoReportCensus;
     private Button btn_save;
+    private LatLng latLng;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,9 +44,14 @@ public class CensusManual extends AppCompatActivity implements TextWatcher, View
 
     private void init() {
         dtoBundle = (DtoBundle) getIntent().getExtras().get(getString(R.string.app_bundle_name));
+        latLng = (LatLng) getIntent().getExtras().get(getString(R.string.latlon));
         Log.e("dtoBunlde", "dtoBundle census manua. " + dtoBundle.getIdReportLocal());
         dtoReportCensus = new DtoReportCensus();
         modelCensus = new ModelCensus();
+        if (latLng != null) {
+            dtoReportCensus.setLat(latLng.latitude);
+            dtoReportCensus.setLon(latLng.longitude);
+        }
         edtcp = findViewById(R.id.edt_cp);
         edtNumberin = findViewById(R.id.edt_numberin);
         edtNumberOut = findViewById(R.id.edt_numberout);
@@ -105,6 +113,7 @@ public class CensusManual extends AppCompatActivity implements TextWatcher, View
             dtoReportCensus.setAddress_right(edtStreetRight.getText().toString());
             dtoReportCensus.setExternalNumber(edtNumberOut.getText().toString());
             dtoReportCensus.setInternalNumber(edtNumberOut.getText().toString());
+            dtoReportCensus.setProvider(getString(R.string.providerManual));
             modelCensus.saveCensus(dtoReportCensus);
             Toast.makeText(this, "Se guardo ", Toast.LENGTH_SHORT).show();
             finish();

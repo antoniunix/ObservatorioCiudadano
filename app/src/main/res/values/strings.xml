@@ -338,5 +338,7 @@ Página 6 de 6</string>
     <string name="empty_street_left">Ingrese Calle Izquierda.</string>
     <string name="empty_street_right">Ingrese Calle Derecha</string>
     <string name="empty_numberout">Ingresar Número Externo.</string>
+    <string name="providerManual">Manual</string>
+    <string name="latlon">latlon</string>
 
 </resources>

@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import net.gshp.observatoriociudadano.CensusManual;
 import net.gshp.observatoriociudadano.R;
 import net.gshp.observatoriociudadano.dto.DtoBundle;
@@ -23,6 +25,8 @@ public class DialogCensusManual extends DialogFragment implements View.OnClickLi
     private View view;
     private Button btn_agree;
     private DtoBundle dtoBundle;
+    private Double lat, lon;
+    private LatLng latLng;
 
     @Nullable
     @Override
@@ -33,8 +37,10 @@ public class DialogCensusManual extends DialogFragment implements View.OnClickLi
         return view;
     }
 
-    public void setDtoBundle(DtoBundle dtoBundle) {
+    public void setDtoBundle(DtoBundle dtoBundle, double lat, double lon) {
         this.dtoBundle = dtoBundle;
+        this.lat = lat;
+        this.lon = lon;
     }
 
     private void init() {
@@ -45,7 +51,11 @@ public class DialogCensusManual extends DialogFragment implements View.OnClickLi
     @Override
     public void onClick(View view) {
         Log.e("dtoBunlde", "dto dialog " + dtoBundle.getIdReportLocal());
-        startActivity(new Intent(getActivity(), CensusManual.class).putExtra(getString(R.string.app_bundle_name), dtoBundle));
+        if (lat != null & lon != null) {
+            latLng = new LatLng(lat, lon);
+        }
+        startActivity(new Intent(getActivity(), CensusManual.class).putExtra(getString(R.string.app_bundle_name), dtoBundle).
+                putExtra(getString(R.string.latlon), latLng));
         dismiss();
         getActivity().finish();
     }
