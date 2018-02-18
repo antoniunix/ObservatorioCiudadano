@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 
 import net.gshp.observatoriociudadano.R;
+import net.gshp.observatoriociudadano.dto.DtoBundle;
 
 /**
  * Created by alejandro on 16/01/18.
@@ -20,6 +21,8 @@ public class PhotoWizardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_photo_wizard);
         getSupportActionBar().hide();
 
+        final DtoBundle dtoBundle = (DtoBundle) getIntent().getExtras().get(getString(R.string.app_bundle_name));
+
         Button start = findViewById(R.id.start);
         start.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -29,7 +32,7 @@ public class PhotoWizardActivity extends AppCompatActivity {
                     startActivity(new Intent(PhotoWizardActivity.this, PhotosActivity.class)
                             .putExtra(getString(R.string.user_roll), getIntent().getIntExtra(getString(R.string.user_roll),
                                     getResources().getInteger(R.integer.rollSupervisor)))
-                            .putExtra(getString(R.string.is_reco), false));
+                            .putExtra(getString(R.string.is_reco), false).putExtra(getString(R.string.app_bundle_name), dtoBundle));
             }
         });
     }

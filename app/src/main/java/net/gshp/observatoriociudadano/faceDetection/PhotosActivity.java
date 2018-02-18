@@ -24,7 +24,9 @@ import android.widget.Toast;
 
 import net.gshp.observatoriociudadano.Home;
 import net.gshp.observatoriociudadano.R;
+import net.gshp.observatoriociudadano.dao.DaoEARespuesta;
 import net.gshp.observatoriociudadano.dao.DaoPhoto;
+import net.gshp.observatoriociudadano.dto.DtoBundle;
 import net.gshp.observatoriociudadano.dto.DtoPhoto;
 import net.gshp.observatoriociudadano.faceDetection.adapters.PhotoItem;
 import net.gshp.observatoriociudadano.faceDetection.models.Photo;
@@ -46,6 +48,8 @@ public class PhotosActivity extends AppCompatActivity {
 
     private SharedPreferences preferences;
     private int rol;
+    private DtoBundle dtoBundle;
+    private String userName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,11 +62,14 @@ public class PhotosActivity extends AppCompatActivity {
         TextView timestamp = findViewById(R.id.date);
         timestamp.setText(df.format(System.currentTimeMillis()).toUpperCase());
 
-        if (getIntent().hasExtra(getString(R.string.user_roll)) || getIntent().getIntExtra(getString(R.string.user_roll),
+        if (getIntent().getIntExtra(getString(R.string.user_roll),
                 getResources().getInteger(R.integer.rollSupervisor)) == getResources().getInteger(R.integer.rollSupervisor))
             rol = getResources().getInteger(R.integer.rollSupervisor);
         else
             rol = getResources().getInteger(R.integer.rollRepresentanteCasilla);
+
+        dtoBundle = (DtoBundle) getIntent().getExtras().get(getString(R.string.app_bundle_name));
+        Log.w(TAG, "rol: " + rol);
 
         preferences = getSharedPreferences(getString(R.string.app_share_preference_name), Context.MODE_PRIVATE);
 
@@ -84,6 +91,13 @@ public class PhotosActivity extends AppCompatActivity {
                 saveAndCheck();
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        prepareAlbums();
+        adapter = new PhotosAdapter(pictureList);
+        super.onResume();
     }
 
     private void saveAndCheck() {
@@ -144,10 +158,22 @@ public class PhotosActivity extends AppCompatActivity {
         a = new Photo("Frunciendo ceño", covers[6], "");
         pictureList.add(a);
 
-        List<DtoPhoto> pictures = new DaoPhoto().selectAll();
+        if (rol == getResources().getInteger(R.integer.rollSupervisor)) {
+            userName = preferences.getString(getString(R.string.app_share_preference_user_account), "");
+            Log.w(TAG, "userName: " + userName);
+            List<DtoPhoto> pictures = new DaoPhoto().selectAll(userName);
 
-        for (DtoPhoto picture : pictures) {
-            pictureList.get(picture.getFace_id()).setPicture(picture.getPath());
+            for (DtoPhoto picture : pictures) {
+                pictureList.get(picture.getFace_id()).setPicture(picture.getPath());
+            }
+        } else {
+            userName = new DaoEARespuesta().selectUserName(1, 2, dtoBundle.getIdReportLocal());
+            Log.w(TAG, "userName: " + userName);
+            List<DtoPhoto> pictures = new DaoPhoto().selectAll(userName);
+
+            for (DtoPhoto picture : pictures) {
+                pictureList.get(picture.getFace_id()).setPicture(picture.getPath());
+            }
         }
     }
 
@@ -203,6 +229,7 @@ public class PhotosActivity extends AppCompatActivity {
         intent.putExtra(getString(R.string.PICTURE_POSITION), index);
         intent.putExtra(getString(R.string.is_reco), false);
         intent.putExtra(getString(R.string.user_roll), rol);
+        intent.putExtra("userName", userName);
         startActivityForResult(intent, PICTURE_REQUEST_CODE);
     }
 

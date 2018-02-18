@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -89,6 +90,10 @@ public class FaceDetectionActivity extends AppCompatActivity {
 
     private int rol;
     private boolean reco;
+    private boolean frontCamera;
+    private String userName;
+
+    private FloatingActionButton switchCamera;
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -105,6 +110,11 @@ public class FaceDetectionActivity extends AppCompatActivity {
             rol = getResources().getInteger(R.integer.rollRepresentanteCasilla);
 
         reco = !getIntent().hasExtra(getString(R.string.is_reco)) || getIntent().getBooleanExtra(getString(R.string.is_reco), true);
+        if (getIntent().hasExtra("userName")) {
+            userName = getIntent().getStringExtra("userName");
+            Log.w(TAG, "userName: " + userName);
+            Log.w(TAG, "rol: " + rol);
+        }
 
         SimpleDateFormat df = new SimpleDateFormat("MMM dd yyyy - HH:mm");
         TextView timestamp = findViewById(R.id.date);
@@ -133,6 +143,67 @@ public class FaceDetectionActivity extends AppCompatActivity {
         } else {
             requestCameraPermission();
         }
+
+        switchCamera = findViewById(R.id.switch_camera);
+        if(preferences.getBoolean("front_camera", true))
+            switchCamera.setImageResource(R.drawable.ic_action_camera_rear);
+        else
+            switchCamera.setImageResource(R.drawable.ic_action_camera_front);
+        if (checkCameraFront()) {
+            switchCamera.setVisibility(View.VISIBLE);
+            switchCamera.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    switchCameraAction();
+                }
+            });
+        }
+    }
+
+    private void switchCameraAction() {
+        if (mCameraSource != null) {
+            mPreview.stop();
+            mCameraSource.release();
+            mCameraSource = null;
+        }
+
+        Context context = getApplicationContext();
+        FaceDetector detector = new FaceDetector.Builder(context)
+                .setClassificationType(FaceDetector.ALL_CLASSIFICATIONS)
+                .setLandmarkType(FaceDetector.ALL_LANDMARKS)
+                .build();
+
+        detector.setProcessor(
+                new MultiProcessor.Builder<>(new GraphicFaceTrackerFactory())
+                        .build());
+
+        if (!detector.isOperational()) {
+            Log.w(TAG, "Face detector dependencies are not yet available.");
+        }
+
+        if (!frontCamera) {
+            mCameraSource = new CameraSource.Builder(context, detector)
+                    .setAutoFocusEnabled(true)
+                    .setRequestedPreviewSize(640, 480)
+                    .setFacing(CameraSource.CAMERA_FACING_FRONT)
+                    .setRequestedFps(30.0f)
+                    .build();
+            frontCamera = true;
+            switchCamera.setImageResource(R.drawable.ic_action_camera_rear);
+            preferences.edit().putBoolean("front_camera", true).apply();
+        } else {
+            mCameraSource = new CameraSource.Builder(context, detector)
+                    .setAutoFocusEnabled(true)
+                    .setRequestedPreviewSize(640, 480)
+                    .setFacing(CameraSource.CAMERA_FACING_BACK)
+                    .setRequestedFps(30.0f)
+                    .build();
+            frontCamera = false;
+            switchCamera.setImageResource(R.drawable.ic_action_camera_front);
+            preferences.edit().putBoolean("front_camera", false).apply();
+        }
+
+        startCameraSource();
     }
 
     private boolean checkCameraFront() {
@@ -182,21 +253,26 @@ public class FaceDetectionActivity extends AppCompatActivity {
             Log.w(TAG, "Face detector dependencies are not yet available.");
         }
 
-        if (reco) {
-            if (checkCameraFront())
-                mCameraSource = new CameraSource.Builder(context, detector)
-                        .setAutoFocusEnabled(true)
-                        .setRequestedPreviewSize(640, 480)
-                        .setFacing(CameraSource.CAMERA_FACING_FRONT)
-                        .setRequestedFps(30.0f)
-                        .build();
-            else
-                mCameraSource = new CameraSource.Builder(context, detector)
-                        .setAutoFocusEnabled(true)
-                        .setRequestedPreviewSize(640, 480)
-                        .setFacing(CameraSource.CAMERA_FACING_BACK)
-                        .setRequestedFps(30.0f)
-                        .build();
+        if (checkCameraFront() && preferences.getBoolean("front_camera", true)) {
+            mCameraSource = new CameraSource.Builder(context, detector)
+                    .setAutoFocusEnabled(true)
+                    .setRequestedPreviewSize(640, 480)
+                    .setFacing(CameraSource.CAMERA_FACING_FRONT)
+                    .setRequestedFps(30.0f)
+                    .build();
+            frontCamera = true;
+        } else {
+            mCameraSource = new CameraSource.Builder(context, detector)
+                    .setAutoFocusEnabled(true)
+                    .setRequestedPreviewSize(640, 480)
+                    .setFacing(CameraSource.CAMERA_FACING_BACK)
+                    .setRequestedFps(30.0f)
+                    .build();
+            frontCamera = false;
+        }
+
+        /*if (reco) {
+
         } else if (getIntent().getIntExtra(getString(R.string.user_roll), getResources().getInteger(R.integer.rollSupervisor))
                 == getResources().getInteger(R.integer.rollSupervisor)) {
             mCameraSource = new CameraSource.Builder(context, detector)
@@ -212,7 +288,7 @@ public class FaceDetectionActivity extends AppCompatActivity {
                     .setFacing(CameraSource.CAMERA_FACING_BACK)
                     .setRequestedFps(30.0f)
                     .build();
-        }
+        }*/
     }
 
     @Override
@@ -341,7 +417,7 @@ public class FaceDetectionActivity extends AppCompatActivity {
                 photoPath = rawOutput.getPath();
 
                 saveImage();
-                sendImage();
+                //sendImage();
                 finish();
             } catch (Exception e) {
                 Log.v(TAG, e.toString());
@@ -349,7 +425,7 @@ public class FaceDetectionActivity extends AppCompatActivity {
         }
     }
 
-    private void finishProcess() {
+    private void processingImage() {
         new Thread(new Runnable() {
             int i = 0;
             int progressStatus = 10;
@@ -506,9 +582,15 @@ public class FaceDetectionActivity extends AppCompatActivity {
             DtoImageLogin image = new DtoImageLogin(photoPath, imageName, 0, rol);
             new DaoImageLogin().insertOrReplace(image);
         } else {
-            DtoPhoto photo = new DtoPhoto(photoPath, imageName,
-                    getIntent().getIntExtra(getString(R.string.PICTURE_POSITION), 0), 0, rol);
-            new DaoPhoto().insert(photo);
+            if (rol == getResources().getInteger(R.integer.rollSupervisor)) {
+                DtoPhoto photo = new DtoPhoto(photoPath, imageName,
+                        getIntent().getIntExtra(getString(R.string.PICTURE_POSITION), 0), 0, rol, userName);
+                new DaoPhoto().insert(photo);
+            } else {
+                DtoPhoto photo = new DtoPhoto(photoPath, imageName,
+                        getIntent().getIntExtra(getString(R.string.PICTURE_POSITION), 0), 0, rol, userName);
+                new DaoPhoto().insert(photo);
+            }
         }
     }
 
@@ -534,8 +616,24 @@ public class FaceDetectionActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public void onBackPressed() {
+    private void finishReturn() {
+        if (reco) {
+            ImageConverter.roundedCornerBitmap(FaceDetectionActivity.this, photoPath, "myPhoto",
+                    preferences.getInt(getString(R.string.IMAGE_SIZE), 60));
+            myPhoto.setImageBitmap(ImageConverter.getBitmap(FaceDetectionActivity.this, "myPhoto"));
+            progressView.setVisibility(View.VISIBLE);
+
+            if (mCameraSource != null) {
+                mPreview.stop();
+                mCameraSource.release();
+                mCameraSource = null;
+            }
+
+            progress.setProgress(10);
+            processingImage();
+        } else {
+            finish();
+        }
     }
 
     class HandlerSendImage extends Handler {
@@ -543,23 +641,6 @@ public class FaceDetectionActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
             NetworkTask nt = (NetworkTask) msg.obj;
             if (nt.getResponseStatus() == HttpStatus.SC_OK || nt.getResponseStatus() == HttpStatus.SC_CREATED) {
-                if (reco) {
-                    ImageConverter.roundedCornerBitmap(FaceDetectionActivity.this, photoPath, "myPhoto",
-                            preferences.getInt(getString(R.string.IMAGE_SIZE), 60));
-                    myPhoto.setImageBitmap(ImageConverter.getBitmap(FaceDetectionActivity.this, "myPhoto"));
-                    progressView.setVisibility(View.VISIBLE);
-
-                    if (mCameraSource != null) {
-                        mPreview.stop();
-                        mCameraSource.release();
-                        mCameraSource = null;
-                    }
-
-                    progress.setProgress(10);
-                    finishProcess();
-                }
-            }else {
-                finish();
             }
         }
     }
