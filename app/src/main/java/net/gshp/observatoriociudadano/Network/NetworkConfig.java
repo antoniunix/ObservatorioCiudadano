@@ -21,10 +21,11 @@ public class NetworkConfig {
 
     private Handler handler;
     private SharedPreferences mSharedPreferences;
+    private Context context;
 
     public NetworkConfig(Handler handler, Context context) {
         this.handler = handler;
-
+        this.context = context;
         mSharedPreferences = context.getSharedPreferences(context.getString(R.string.app_share_preference_name), Context.MODE_PRIVATE);
 
         APINetwork.setUSERNAME(mSharedPreferences.getString(context.getString(R.string.app_share_preference_user_account), null));
@@ -47,16 +48,41 @@ public class NetworkConfig {
         APINetwork.setSERVICE_NAME(serviceName);
     }
 
-
-    public void GET(String params, String tag) {
-        Map<String, String> mapHeader = new HashMap<String, String>();
-        mapHeader.put("GSHP-IMEI", Config.getIMEI());
-        //mapHeader.put("GSHP-ATTEMPTS", mSharedPreferences.getInt(Config.SH_COUNT_UNAUTHORIZED, 0)+"");
-        Log.e("NETWORK", "INTENTOS imei= " + mapHeader.get("GSHP-ATTEMPTS") + "   IMEI" + mapHeader.get("GSHP-IMEI"));
-        NetworkTask Ntask = new NetworkTask(handler).setMode(TaskMode.GET)
-                .setTag(tag).setParams(params).setBasicauth(true).setGzip(true);
+    public void POST(String params, String bodyText, String tag, Map<String, String> headers) {
+        NetworkTask Ntask = new NetworkTask(handler).setMode(NetworkTask.TaskMode.POST)
+                .setTag(tag).setWithOutNameValuePair(true).setBodyText(bodyText).setParams(params).setGzip(true);
+        if (headers != null) {
+            headers.put(context.getString(R.string.network_header_token), mSharedPreferences.getString(context.getString(R.string.app_share_preference_toke_webservices), ""));
+            Ntask.setCustomHeaders(headers);
+        }
         APINetwork.taskManager.addTask(Ntask);
     }
+
+    public void multipartFile(String params, String path, ArrayList<NameValuePair> nameValuePairs, String tag, boolean sendHeader) {
+        NetworkTask Ntask = new NetworkTask(handler)
+                .setMode(NetworkTask.TaskMode.POST_MULTIPART_FILE)
+                .setTag(tag)
+                .setPayloadTipe("file")
+                .setPayload(nameValuePairs)
+                .setFilepath(path)
+                .setParams(params);
+        if (sendHeader) {
+            Map<String, String> header = new HashMap<>();
+            header.put(context.getString(R.string.network_header_token), mSharedPreferences.getString(context.getString(R.string.app_share_preference_toke_webservices), ""));
+            Ntask.setCustomHeaders(header);
+        }
+
+        APINetwork.taskManager.addTask(Ntask);
+    }
+
+    public void GET(String params, String tag) {
+        Map<String, String> header = new HashMap<>();
+        header.put(context.getString(R.string.network_header_token), mSharedPreferences.getString(context.getString(R.string.app_share_preference_toke_webservices), ""));
+        NetworkTask Ntask = new NetworkTask(handler).setMode(NetworkTask.TaskMode.GET)
+                .setTag(tag).setParams(params).setBasicauth(true).setGzip(true).setCustomHeaders(header);
+        APINetwork.taskManager.addTask(Ntask);
+    }
+
 
     public void GET_MEDIA(String params, String tag) {
         NetworkTask Ntask = new NetworkTask(handler).setMode(TaskMode.GET_MEDIA)

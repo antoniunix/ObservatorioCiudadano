@@ -25,6 +25,9 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by gnu on 28/02/17.
@@ -33,14 +36,14 @@ import java.util.ArrayList;
 public class ServicesGeolocation extends IntentService implements OnApiGeolocation {
     private final int ENVIOFINALIZADO = -1000;
     private final int SINREPORTES = -2000;
-    private DtoReportGeolocation dto;
+    private List<DtoReportGeolocation> dto;
     private DaoReportGeolocation daoReportGeolocation;
     private Geolocation geolocation;
     private NetworkConfig networkConfig;
 
     public ServicesGeolocation() {
         super("geolocation");
-        Log.e("GEO","Geo Service ");
+        Log.e("GEO", "Geo Service ");
         daoReportGeolocation = new DaoReportGeolocation();
         networkConfig = new NetworkConfig(new HandlerTask(), ContextApp.context);
         geolocation = new Geolocation(ServicesGeolocation.class);
@@ -53,7 +56,7 @@ public class ServicesGeolocation extends IntentService implements OnApiGeolocati
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.e("GEO","Geo Service resume");
+        Log.e("GEO", "Geo Service resume");
         geolocation.stopGeo();
         geolocation.startGeo();
 
@@ -67,7 +70,7 @@ public class ServicesGeolocation extends IntentService implements OnApiGeolocati
     @Override
     public void onApiGeolocationChange(Location location) {
 
-        Log.e("GEO","Geo se inserta ");
+        Log.e("GEO", "Geo se inserta ");
         new DaoReportGeolocation().Insert(new DtoReportGeolocation()
                 .setLatitude(location.getLatitude())
                 .setLongitude(location.getLongitude())
@@ -85,13 +88,27 @@ public class ServicesGeolocation extends IntentService implements OnApiGeolocati
 
     }
 
-    private void sendLocation() {
+//    private void sendLocation() {
+//        dto = daoReportGeolocation.Select();
+//        new Thread() {
+//            public void run() {
+//                ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+//                nameValuePairs.add(new BasicNameValuePair("json", new Gson().toJson(dto)));
+//                networkConfig.POST_GEO("geo", nameValuePairs, "geo");
+//            }
+//        }.start();
+//    }
+
+    public void sendLocation() {
         dto = daoReportGeolocation.Select();
         new Thread() {
             public void run() {
-                ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
-                nameValuePairs.add(new BasicNameValuePair("json", new Gson().toJson(dto)));
-                networkConfig.POST_GEO("geo", nameValuePairs, "geo");
+                String json = new Gson().toJson(dto);
+                Log.e("GEO", "SEND GEO " + json);
+                Map<String, String> header = new HashMap<String, String>();
+                header.put(ContextApp.context.getString(R.string.network_header_name_application_json), ContextApp.context.getString(R.string.network_header_application_json));
+                networkConfig.POST("device/geo", json, "geo", header);
+
             }
         }.start();
     }
@@ -108,44 +125,12 @@ public class ServicesGeolocation extends IntentService implements OnApiGeolocati
             if (completedTask != null && (completedTask.getTag().equals("geo"))) {
 
                 Log.i("geo", "status GEO" + completedTask.getResponseStatus());
-                if (completedTask.getResponseStatus() == HttpStatus.SC_CREATED) {
-                    new DaoReportGeolocation().deleteById(dto.getId());
-                    dto = daoReportGeolocation.Select();
-                    if (dto.getId()>0) {
-                        ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
-                        nameValuePairs.add(new BasicNameValuePair("json", new Gson().toJson(dto)));
-                        //asegurarnos de no mandar datos null
-                        if (dto.getTz() != null)
-                            networkConfig.POST_GEO("geo", nameValuePairs, "geo");
-                    }
+                if (completedTask.getResponseStatus() == HttpStatus.SC_CREATED||completedTask.getResponseStatus() == HttpStatus.SC_OK) {
+                    new DaoReportGeolocation().delete();
                 }
                 stopSelf();
             }
         }
     }
 
-    class HandlerTaskReportsSend extends Handler {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case SINREPORTES:
-                    Log.e("ServiceGeolocation:211", "Sin reportes a enviar");
-                    break;
-                case ENVIOFINALIZADO:
-                    Log.e("ServiceGeolocation:214", "Reportes enviados");
-                    break;
-                case HttpStatus.SC_CONFLICT:
-                    Log.e("ServiceGeolocation:217", "No se pudieron enviar sus reportes,\\nintentelo más tarde");
-                    break;
-                case HttpStatus.SC_FORBIDDEN:
-                    Log.e("ServiceGeolocation:217", "El usuario que ingresó tiene estatus inactivo.\\n No puede hacer uso de la aplicación, para mayor información consultelo con su supervisor.");
-                    break;
-                case HttpStatus.SC_UNAUTHORIZED:
-                    Log.e("ServiceGeolocation:217", "Su nombre de usuario y/o contraseña son incorrectos");
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
 }

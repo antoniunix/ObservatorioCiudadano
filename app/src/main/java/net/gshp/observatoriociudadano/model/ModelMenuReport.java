@@ -6,12 +6,10 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 
 import com.gshp.api.utils.Crypto;
-import com.gshp.api.utils.Util;
 
 import net.gshp.observatoriociudadano.R;
 import net.gshp.observatoriociudadano.contextApp.ContextApp;
 import net.gshp.observatoriociudadano.dao.DaoEAEncuesta;
-import net.gshp.observatoriociudadano.dao.DaoEARespuesta;
 import net.gshp.observatoriociudadano.dao.DaoEaAnswerPdv;
 import net.gshp.observatoriociudadano.dao.DaoReport;
 import net.gshp.observatoriociudadano.dto.DtoBundle;
@@ -69,6 +67,9 @@ public class ModelMenuReport {
     }
 
 //    public int isReportSupComplete(){
+//
+//        DaoReport daoReport=new DaoReport();
+//
 //
 //    }
 

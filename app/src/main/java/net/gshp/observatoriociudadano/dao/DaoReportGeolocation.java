@@ -36,7 +36,9 @@ public class DaoReportGeolocation extends DAO {
     private final String PROVIDER = "provider";
     private final String FAKELOCATION_ENABLED = "fakelocation_enabled";
 
-    public DaoReportGeolocation(){super(TABLE_NAME,PK_FIELD);}
+    public DaoReportGeolocation() {
+        super(TABLE_NAME, PK_FIELD);
+    }
 
     /**
      * insert
@@ -203,10 +205,9 @@ public class DaoReportGeolocation extends DAO {
         return obj;
     }
 
-    public DtoReportGeolocation Select() {
+    public List<DtoReportGeolocation> Select() {
         db = helper.getReadableDatabase();
         cursor = db.rawQuery("SELECT \n"
-                + "max(report_geolocation.date) as max, \n"
                 + "report_geolocation.id, \n"
                 + "report_geolocation.latitude, \n"
                 + "report_geolocation.longitude, \n"
@@ -223,7 +224,8 @@ public class DaoReportGeolocation extends DAO {
                 + "FROM \n"
                 + "report_geolocation\n"
                 + "ORDER BY report_geolocation.id ASC", null);
-        DtoReportGeolocation catalogo = new DtoReportGeolocation();
+        List<DtoReportGeolocation> lst = new ArrayList<>();
+        DtoReportGeolocation catalogo;
         if (cursor.moveToFirst()) {
             int id = cursor.getColumnIndexOrThrow(ID);
             int lat = cursor.getColumnIndexOrThrow(LATITUDE);
@@ -238,23 +240,29 @@ public class DaoReportGeolocation extends DAO {
             int hash = cursor.getColumnIndexOrThrow(HASH);
             int provider = cursor.getColumnIndexOrThrow(PROVIDER);
             int send = cursor.getColumnIndexOrThrow(SEND);
-            catalogo.setId(cursor.getInt(id));
-            catalogo.setLatitude(cursor.getDouble(lat));
-            catalogo.setLongitude(cursor.getDouble(lon));
-            catalogo.setBattery(cursor.getString(battery));
-            catalogo.setAccuracy(cursor.getString(accuracy));
-            catalogo.setImei(cursor.getString(imei));
-            catalogo.setSatelliteUtc(cursor.getString(satelliteUTC));
-            catalogo.setDate(cursor.getString(date));
-            catalogo.setTz(cursor.getString(tz));
-            catalogo.setVersion(cursor.getString(version));
-            catalogo.setProvider(cursor.getString(provider));
-            catalogo.setHash(cursor.getString(hash));
-            catalogo.setSend(cursor.getInt(send));
+
+            do {
+                catalogo = new DtoReportGeolocation();
+                catalogo.setId(cursor.getInt(id));
+                catalogo.setLatitude(cursor.getDouble(lat));
+                catalogo.setLongitude(cursor.getDouble(lon));
+                catalogo.setBattery(cursor.getString(battery));
+                catalogo.setAccuracy(cursor.getString(accuracy));
+                catalogo.setImei(cursor.getString(imei));
+                catalogo.setSatelliteUtc(cursor.getString(satelliteUTC));
+                catalogo.setDate(cursor.getString(date));
+                catalogo.setTz(cursor.getString(tz));
+                catalogo.setVersion(cursor.getString(version));
+                catalogo.setProvider(cursor.getString(provider));
+                catalogo.setHash(cursor.getString(hash));
+                catalogo.setSend(cursor.getInt(send));
+                lst.add(catalogo);
+            } while (cursor.moveToNext());
+
         }
         cursor.close();
         db.close();
-        return catalogo;
+        return lst;
     }
 
     public void updateReportSend(byte value) {

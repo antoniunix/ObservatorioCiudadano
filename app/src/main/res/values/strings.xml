@@ -3,10 +3,12 @@
     <string name="app_path_photo">/sdcard/ObservatorioCiudadano/</string>
     <string name="app_db_name">ObservatorioCiudadano.db</string>
     <string name="app_share_preference_name">ObservatorioCiudadano</string>
-    <string name="network_ip">http://izzi.v-kontrol.com</string>
-    <string name="network_context">rest/</string>
+    <string name="network_ip">http://os.gshp-apps.com</string>
+    <string name="network_context">service/rest/</string>
     <string name="app_download_apk">https://s3-us-west-1.amazonaws.com/gshpapps/Nestle/Cop/Nestle_COP.apk</string>
     <string name="app_path_apk">sdcard/Nestle/NrocProm.apk</string>
+    <string name="network_header_name_application_json">Content-Type</string>
+    <string name="network_header_application_json">application/json</string>
 
     <string name="home_button_navigation_supervisor">SUPERVISOR</string>
     <string name="home_button_navigation_representative">REPRESENTANTE</string>
@@ -20,6 +22,8 @@
     <string name="network_error">Error de red, verifique su conexión o intentelo más tarde</string>
     <string name="network_server_disable">El servidor se encuentra en mantenimiento, Intentelo más tarde</string>
     <string name="network_forbidden">Su cuenta ha sido desactivada</string>
+    <string name="network_header_token">X-AUTH-TOKEN</string>
+    <string name="app_share_preference_toke_webservices">token_web_services</string>
 
     <string name="app_share_preference_privacy_politic">privacy_politic</string>
     <string name="app_share_preference_time_synch">time_synch</string>
