@@ -122,6 +122,10 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
                             setShowButton(false, true);
                     dialog.show(getSupportFragmentManager(), "");
 
+                } else if (statusReportSupervisor == getResources().getInteger(R.integer.statusModuleReportIncomplete)) {
+                    dtoBundle.setIdReportLocal(model.getIdReportIncompleteSupervisor());
+                    dtoBundle.setIdTypeMenuReport(getResources().getInteger(R.integer.idPollSupervisor));
+                    startActivity(new Intent(this, MenuReport.class).putExtra(getString(R.string.app_bundle_name), dtoBundle));
                 } else {
                     dtoBundle.setIdTypeMenuReport(getResources().getInteger(R.integer.idPollSupervisor));
                     startActivity(new Intent(this, MenuReport.class).putExtra(getString(R.string.app_bundle_name), dtoBundle));

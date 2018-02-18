@@ -614,6 +614,37 @@ public class DaoReport extends DAO {
         return isReportSupervisor;
     }
 
+    public long getIdReportIncompleteSupervisor() {
+        long idReport = 0;
+        db = helper.getReadableDatabase();
+        String qry = "SELECT  q1.id\n" +
+                "FROM(  \n" +
+                "SELECT DISTINCT  \n" +
+                "report.id,  \n" +
+                "report.send,  \n" +
+                "report.type_poll,\n" +
+                "pdv.name,  \n" +
+                "report.id_pdv,                 \n" +
+                "CHECK_in.date  datecheckin,  \n" +
+                "CHECK_out.date datecheckout  \n" +
+                "FROM  \n" +
+                "report   \n" +
+                "LEFT JOIN pdv ON pdv.id=report.id_pdv  \n" +
+                "LEFT JOIN report_check  as CHECK_in ON CHECK_in.id_report_local = report.id   and CHECK_in.type=1  \n" +
+                "LEFT JOIN report_check as CHECK_out on  CHECK_out.id_report_local = report.id   and CHECK_out.type=2  \n" +
+                "WHERE report.type_poll=1\n" +
+                ") as q1  \n" +
+                "where    q1.datecheckin   is not NULL  and  q1.datecheckout   is NULL ";
+        cursor = db.rawQuery(qry, null);
+        if (cursor.moveToFirst()) {
+            int id = cursor.getColumnIndexOrThrow("id");
+            idReport = cursor.getInt(id);
+        }
+        cursor.close();
+        db.close();
+        return idReport;
+    }
+
 
     /**
      * UPDATE

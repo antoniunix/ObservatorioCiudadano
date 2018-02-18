@@ -37,5 +37,11 @@ public class ModelHome {
 
     }
 
+    public long getIdReportIncompleteSupervisor(){
+        return new DaoReport().getIdReportIncompleteSupervisor();
+    }
+
+
+
 
 }

@@ -33,32 +33,30 @@ public class ModelMenuReport {
     }
 
     public void createNewReportSupervisor(Activity activity) {
-        if (!new DaoEAEncuesta().isResponsePollById(context.getResources().getInteger(R.integer.idPollSupervisor))) {
-            String version = "";
-            try {
-                version = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
-            } catch (PackageManager.NameNotFoundException e) {
-                e.printStackTrace();
-            }
-            DtoReport dtoReport = new DtoReport();
-            dtoReport.setIdPdv(1).setIdSchedule(1).setVersion(version).setDate(System.currentTimeMillis()).
-                    setTz(Config.getTimeZone()).setImei(Config.getIMEI()).
-                    setHash(Crypto.MD5(System.currentTimeMillis() + " " + Math.random())).
-                    setSend(0).setTypeReport(1).setActive(1).setTypePoll((int) dtoBundle.getIdTypeMenuReport());
-            dtoBundle.setIdReportLocal(new DaoReport().insert(dtoReport));
-            activity.startService(new Intent(ContextApp.context, ServiceCheck.class).
-                    putExtra(context.getString(R.string.app_bundle_name), dtoBundle).
-                    putExtra("typeCheck", context.getResources().getInteger(R.integer.type_check_in)));
+        String version = "";
+        try {
+            version = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
         }
+        DtoReport dtoReport = new DtoReport();
+        dtoReport.setIdPdv(1).setIdSchedule(1).setVersion(version).setDate(System.currentTimeMillis()).
+                setTz(Config.getTimeZone()).setImei(Config.getIMEI()).
+                setHash(Crypto.MD5(System.currentTimeMillis() + " " + Math.random())).
+                setSend(0).setTypeReport(1).setActive(1).setTypePoll((int) dtoBundle.getIdTypeMenuReport());
+        dtoBundle.setIdReportLocal(new DaoReport().insert(dtoReport));
+        activity.startService(new Intent(ContextApp.context, ServiceCheck.class).
+                putExtra(context.getString(R.string.app_bundle_name), dtoBundle).
+                putExtra("typeCheck", context.getResources().getInteger(R.integer.type_check_in)));
     }
 
 
     public int isReportPollSup() {
         DaoEAEncuesta dao = new DaoEAEncuesta();
-        DaoEaAnswerPdv daoAnswer=new DaoEaAnswerPdv();
+        DaoEaAnswerPdv daoAnswer = new DaoEaAnswerPdv();
         if (!dao.existPoll(ContextApp.context.getResources().getInteger(R.integer.idPollSupervisor))) {
             return context.getResources().getInteger(R.integer.statusModuleReportWithOut);
-        } else if (dao.isResponsePollById(ContextApp.context.getResources().getInteger(R.integer.idPollSupervisor))||
+        } else if (dao.isResponsePollById(ContextApp.context.getResources().getInteger(R.integer.idPollSupervisor)) ||
                 daoAnswer.isResponsePollSupervisor()) {
             return context.getResources().getInteger(R.integer.statusModuleReportDone);
         } else {
