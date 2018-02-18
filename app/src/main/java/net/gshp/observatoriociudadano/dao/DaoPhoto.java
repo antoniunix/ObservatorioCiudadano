@@ -23,6 +23,7 @@ public class DaoPhoto extends DAO {
     private final String face_id = "face_id";
     private final String sent = "sent";
     private final String rol = "rol";
+    private final String user = "user";
 
     private SQLiteDatabase db;
     private Cursor cursor;
@@ -40,8 +41,8 @@ public class DaoPhoto extends DAO {
         try {
             SQLiteStatement insStatement = db.compileStatement("INSERT INTO "
                     + TABLE_NAME + " (" + path + "," + name + "," + face_id + ","
-                    + sent + "," + rol + ")"
-                    + "VALUES(?,?,?,?,?);");
+                    + sent + "," + rol + "," + user + ")"
+                    + "VALUES(?,?,?,?,?,?);");
             db.beginTransaction();
 
             try {
@@ -69,6 +70,11 @@ public class DaoPhoto extends DAO {
             } catch (Exception e) {
                 insStatement.bindNull(5);
             }
+            try {
+                insStatement.bindString(6, dto.getUser());
+            } catch (Exception e) {
+                insStatement.bindNull(6);
+            }
             insStatement.executeInsert();
             db.setTransactionSuccessful();
         } catch (Exception e) {
@@ -80,15 +86,17 @@ public class DaoPhoto extends DAO {
         return resp;
     }
 
-    public List<DtoPhoto> selectAll() {
+    public List<DtoPhoto> selectAll(String userName) {
         db = helper.getReadableDatabase();
         cursor = db.rawQuery("SELECT\n" +
                 "id,\n" +
                 "path,\n" +
                 "name,\n" +
-                "face_id\n" +
+                "face_id,\n" +
+                "user\n" +
                 "FROM\n" +
-                "photo", null);
+                "photo\n" +
+                "WHERE user = \"" + userName + "\"", null);
         List<DtoPhoto> obj = new ArrayList<>(cursor.getCount());
         DtoPhoto dto;
         if (cursor.moveToFirst()) {
@@ -96,6 +104,7 @@ public class DaoPhoto extends DAO {
             int path = cursor.getColumnIndexOrThrow("path");
             int name = cursor.getColumnIndexOrThrow("name");
             int face_id = cursor.getColumnIndexOrThrow("face_id");
+            int user = cursor.getColumnIndexOrThrow("user");
 
             do {
                 dto = new DtoPhoto();
@@ -103,6 +112,7 @@ public class DaoPhoto extends DAO {
                 dto.setPath(cursor.getString(path));
                 dto.setName(cursor.getString(name));
                 dto.setFace_id(cursor.getInt(face_id));
+                dto.setUser(cursor.getString(user));
                 obj.add(dto);
             } while (cursor.moveToNext());
         }
@@ -117,7 +127,8 @@ public class DaoPhoto extends DAO {
                 "id,\n" +
                 "path,\n" +
                 "name,\n" +
-                "face_id\n" +
+                "face_id,\n" +
+                "user\n" +
                 "FROM\n" +
                 "photo\n" +
                 "WHERE id = " + idPhoto, null);
@@ -128,12 +139,14 @@ public class DaoPhoto extends DAO {
             int path = cursor.getColumnIndexOrThrow("path");
             int name = cursor.getColumnIndexOrThrow("name");
             int face_id = cursor.getColumnIndexOrThrow("face_id");
+            int user = cursor.getColumnIndexOrThrow("user");
 
             dto = new DtoPhoto();
             dto.setId(cursor.getInt(id));
             dto.setPath(cursor.getString(path));
             dto.setName(cursor.getString(name));
             dto.setFace_id(cursor.getInt(face_id));
+            dto.setUser(cursor.getString(user));
         }
         cursor.close();
         db.close();

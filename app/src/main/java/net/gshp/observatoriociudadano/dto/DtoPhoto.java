@@ -12,13 +12,15 @@ public class DtoPhoto {
     private int face_id;
     private int sent;
     private int rol;
+    private String user;
 
-    public DtoPhoto(String path, String name, int face_id, int sent, int rol) {
+    public DtoPhoto(String path, String name, int face_id, int sent, int rol, String user) {
         this.path = path;
         this.name = name;
         this.face_id = face_id;
         this.sent = sent;
         this.rol = rol;
+        this.user = user;
     }
 
     public DtoPhoto() {
@@ -70,5 +72,13 @@ public class DtoPhoto {
 
     public void setRol(int rol) {
         this.rol = rol;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
     }
 }
