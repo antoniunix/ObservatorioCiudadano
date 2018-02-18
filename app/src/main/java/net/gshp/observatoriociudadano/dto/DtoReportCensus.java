@@ -22,8 +22,10 @@ public class DtoReportCensus implements Parcelable {
     private long date;
     private String address;
     private String provider;
-    private String path;
-    private String name_street;
+    private String address_left;
+    private String address_right;
+    private String internalNumber;
+
 
     @Override
     public String toString() {
@@ -41,18 +43,10 @@ public class DtoReportCensus implements Parcelable {
                 ", date=" + date +
                 ", address='" + address + '\'' +
                 ", provider='" + provider + '\'' +
-                ", path='" + path + '\'' +
-                ", name_street='" + name_street + '\'' +
+                ", address_left='" + address_left + '\'' +
+                ", address_right='" + address_right + '\'' +
+                ", internalNumber='" + internalNumber + '\'' +
                 '}';
-    }
-
-    public String getName_street() {
-        return name_street;
-    }
-
-    public DtoReportCensus setName_street(String name_street) {
-        this.name_street = name_street;
-        return this;
     }
 
     public long getIdReporteLocal() {
@@ -172,16 +166,31 @@ public class DtoReportCensus implements Parcelable {
         return this;
     }
 
-    public String getPath() {
-        return path;
+    public String getAddress_left() {
+        return address_left;
     }
 
-    public DtoReportCensus setPath(String path) {
-        this.path = path;
+    public DtoReportCensus setAddress_left(String address_left) {
+        this.address_left = address_left;
         return this;
     }
 
-    public DtoReportCensus() {
+    public String getAddress_right() {
+        return address_right;
+    }
+
+    public DtoReportCensus setAddress_right(String address_right) {
+        this.address_right = address_right;
+        return this;
+    }
+
+    public String getInternalNumber() {
+        return internalNumber;
+    }
+
+    public DtoReportCensus setInternalNumber(String internalNumber) {
+        this.internalNumber = internalNumber;
+        return this;
     }
 
     @Override
@@ -204,8 +213,12 @@ public class DtoReportCensus implements Parcelable {
         dest.writeLong(this.date);
         dest.writeString(this.address);
         dest.writeString(this.provider);
-        dest.writeString(this.path);
-        dest.writeString(this.name_street);
+        dest.writeString(this.address_left);
+        dest.writeString(this.address_right);
+        dest.writeString(this.internalNumber);
+    }
+
+    public DtoReportCensus() {
     }
 
     protected DtoReportCensus(Parcel in) {
@@ -222,8 +235,9 @@ public class DtoReportCensus implements Parcelable {
         this.date = in.readLong();
         this.address = in.readString();
         this.provider = in.readString();
-        this.path = in.readString();
-        this.name_street = in.readString();
+        this.address_left = in.readString();
+        this.address_right = in.readString();
+        this.internalNumber = in.readString();
     }
 
     public static final Creator<DtoReportCensus> CREATOR = new Creator<DtoReportCensus>() {

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rlt_census_manual"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar_generic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <ScrollView
+        android:id="@+id/scrAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar">
+
+        <RelativeLayout
+            android:id="@+id/rlt_main"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TableLayout
+                android:id="@+id/table"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:stretchColumns="1">
+
+                <TableRow>
+
+                    <TextView android:text="@string/postal_code" />
+
+                    <AutoCompleteTextView
+                        android:id="@+id/edt_cp"
+                        android:inputType="number"
+                        android:maxLength="5"
+                        android:maxLines="1"
+                        android:singleLine="true" />
+
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView android:text="@string/suburb" />
+
+                    <Spinner android:id="@+id/spn_suburb" />
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView android:text="@string/street" />
+
+                    <EditText android:id="@+id/edt_street" />
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView android:text="@string/street_left" />
+
+                    <EditText android:id="@+id/edt_street_left" />
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView android:text="@string/street_right" />
+
+                    <EditText android:id="@+id/edt_street_right" />
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView android:text="@string/number_out" />
+
+                    <EditText android:id="@+id/edt_numberout" />
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView android:text="@string/number_in" />
+
+                    <EditText android:id="@+id/edt_numberin" />
+                </TableRow>
+
+            </TableLayout>
+
+            <Button
+                android:id="@+id/btn_save"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/table"
+                android:text="@string/add_address" />
+
+        </RelativeLayout>
+
+
+    </ScrollView>
+
+
+</RelativeLayout>

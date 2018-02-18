@@ -163,11 +163,12 @@ public class Tables {
             "state TEXT," +
             "cp real INTEGER," +
             "external_number TEXT," +
+            "internal_number TEXT,"+
             "address TEXT," +
-            "name_street TEXT," +
+            "address_left TEXT,"+
+            "address_right TEXT,"+
             "hash TEXT," +
             "provider TEXT," +
-            "path TEXT," +
             "send INTEGER)";
 
 

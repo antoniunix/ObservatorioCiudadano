@@ -7,13 +7,13 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -24,7 +24,7 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 
 import net.gshp.observatoriociudadano.contextApp.ContextApp;
-import net.gshp.observatoriociudadano.dialog.DialogSaveCensus;
+import net.gshp.observatoriociudadano.dialog.DialogCensusManual;
 import net.gshp.observatoriociudadano.dto.DtoBundle;
 import net.gshp.observatoriociudadano.dto.DtoReportCensus;
 import net.gshp.observatoriociudadano.listener.OnFinishLocation;
@@ -48,7 +48,7 @@ public class Census extends AppCompatActivity implements OnMapReadyCallback, OnF
     private MapView mapView;
     public boolean setLocation = false;
     private double lat, lon;
-    private DialogSaveCensus dialogSaveCensus;
+
     private DtoReportCensus dtoReportCensus;
     private GoogleMap.OnCameraChangeListener onCameraChangeListener;
 
@@ -155,7 +155,6 @@ public class Census extends AppCompatActivity implements OnMapReadyCallback, OnF
                     dtoReportCensus.setSend(0);
                     dtoReportCensus.setIdReporteLocal(dtoBundle.getIdReportLocal());
                     dtoReportCensus.setProvider(getString(R.string.providerAutomatic));
-                    dtoReportCensus.setName_street(addresses.get(0).getThoroughfare());
                     dtoReportCensus.setSuburb(addresses.get(0).getSubLocality());
                     dtoReportCensus.setTown(addresses.get(0).getLocality());
                     dtoReportCensus.setState(addresses.get(0).getAdminArea());
@@ -166,6 +165,13 @@ public class Census extends AppCompatActivity implements OnMapReadyCallback, OnF
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void setUpDialogCensusManual() {
+        DialogCensusManual dialogCensusManual = new DialogCensusManual();
+        dialogCensusManual.setDtoBundle(dtoBundle,lat,lon);
+        Log.e("dtoBundle", "dto census " + dtoBundle.getIdReportLocal());
+        dialogCensusManual.show(getSupportFragmentManager(), "dialog");
     }
 
     public void configureCameraIdle() {
@@ -201,17 +207,22 @@ public class Census extends AppCompatActivity implements OnMapReadyCallback, OnF
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.edt_address:
-                dtoReportCensus.setAddress(edt_address.getText().toString());
-                Intent intent = new Intent(this, PlaceAutocompleteActivity.class).putExtra(getString(R.string.address), dtoReportCensus);
-                startActivityForResult(intent, 1);
+                if (edt_address.getText().toString().isEmpty()) {
+                    setUpDialogCensusManual();
+                } else {
+                    dtoReportCensus.setAddress(edt_address.getText().toString());
+                    Intent intent = new Intent(this, PlaceAutocompleteActivity.class).putExtra(getString(R.string.address), dtoReportCensus);
+                    startActivityForResult(intent, 1);
+                }
                 break;
             case R.id.btn_save:
-                Log.e("leo", "census " + dtoReportCensus.toString());
-                FragmentManager fm = getSupportFragmentManager();
-                dialogSaveCensus = new DialogSaveCensus();
-                dialogSaveCensus.setBundle(dtoReportCensus);
-                dialogSaveCensus.show(fm, "dialog");
-                break;
+                if (edt_address.getText().toString().isEmpty()) {
+                    setUpDialogCensusManual();
+                } else {
+                    modelCensus.saveCensus(dtoReportCensus);
+                    Toast.makeText(this, "Se guardo ", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
         }
 
     }
@@ -228,69 +239,3 @@ public class Census extends AppCompatActivity implements OnMapReadyCallback, OnF
     }
 }
 
-
-
-
-    /*private void init() {
-        modelCensus = new ModelCensus();
-        txt_search = findViewById(R.id.txt_search);
-        txt_search.setThreshold(1);
-        txt_search.setAdapter(modelCensus.getAdapterAutocomplete());
-        edt_address = findViewById(R.id.edt_address);
-        btn = findViewById(R.id.btn);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new GetCoordinates().execute(edt_address.getText().toString().replace("", "+"));
-            }
-        });
-
-    }
-
-    private class GetCoordinates extends AsyncTask<String, Void, String> {
-        ProgressDialog dialog = new ProgressDialog(Census.this);
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            dialog.setMessage("Espere");
-            dialog.setCanceledOnTouchOutside(false);
-            dialog.show();
-        }
-
-        @Override
-        protected String doInBackground(String... strings) {
-            String response;
-            try {
-                String address = strings[0];
-                HttpDataHandler httpDataHandler = new HttpDataHandler();
-                String url = String.format("https://maps.googleapis.com/maps/api/geocode/json?address=%s&components=country:MEX&key=AIzaSyDS0DNkryOziysua2mruAiEHrOzu7a63AY", address);
-                String url1 =
-                        "http://maps.googleapis.com/maps/api/geocode/json?components=postal_code:11560&sensor=false&components=country:MEX";
-
-                response = httpDataHandler.getHTTPData(url);
-                return response;
-
-            } catch (Exception e) {
-
-            }
-            return null;
-
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            try {
-                JSONObject jsonObject = new JSONObject(s);
-                String lat = ((JSONArray) jsonObject.get("results")).getJSONObject(0).getJSONObject("geometry")
-                        .getJSONObject("location").get("lat").toString();
-                String lng = ((JSONArray) jsonObject.get("results")).getJSONObject(0).getJSONObject("geometry")
-                        .getJSONObject("location").get("lng").toString();
-                String text = ((JSONArray) jsonObject.get("results")).getJSONObject(0).get("formatted_address").toString();
-                Log.e("leo", "coordenadas lat " + lat + "lon" + lng + " text " + text);
-                dialog.dismiss();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-    }*/
