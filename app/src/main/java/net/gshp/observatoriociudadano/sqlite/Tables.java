@@ -16,9 +16,6 @@ public class Tables {
             "id_rol INTEGER)";
 
 
-    public static final String Table_CTypeReport = "CREATE TABLE c_type_report("
-            + "id INTEGER NOT NULL," + "value TEXT NOT NULL)";
-
     public final String TABLE_PDV = "CREATE TABLE pdv("
             + "id INTEGER NOT NULL,"
             + "id_client INTEGER NOT NULL,"
@@ -58,17 +55,6 @@ public class Tables {
             + "version TEXT,"
             + "politic TEXT)";
 
-    public final String Table_CClient = "CREATE TABLE c_client("
-            + "id INTEGER NOT NULL,"
-            + "value TEXT NOT NULL," +
-            "id_rol INTEGER)";
-    public final String Table_CCanal = "CREATE TABLE c_canal("
-            + "id INTEGER NOT NULL,"
-            + "value TEXT NOT NULL)";
-    public final String Table_CRtm = "CREATE TABLE c_rtm("
-            + "id INTEGER NOT NULL,"
-            + "id_canal INTEGER NOT NULL,"
-            + "value TEXT NOT NULL)";
 
     public final String TableReportReport = "CREATE TABLE report(" +
             "id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
@@ -103,8 +89,6 @@ public class Tables {
             "active INTEGER," +
             "hash TEXT)";
 
-    public final String TableModule = "CREATE TABLE c_module("
-            + "id_type_pdv INTEGER," + "id_module INTEGER)";
 
     /**
      * Encuesta
@@ -148,58 +132,18 @@ public class Tables {
     public final String Table_EATipoPregunta = "CREATE TABLE EATipoPregunta(" + "id INTEGER PRIMARY KEY NOT NULL,"
             + "tipo TEXT)";
 
-    /*MODULOS*/
-
-    public final String TableMeasurementModuleHead = "CREATE TABLE measurement_module_head(" +
-            "id INTEGER," +
-            "startDate TEXT," +
-            "endDate TEXT," +
-            "description TEXT," +
-            "last_update TEXT)";
-    public final String TableMeasurementModule = "CREATE TABLE measurement_module(" +
-            "id INTEGER," +
-            "id_measurement INTEGER," +
-            "id_item INTEGER," +
-            "value TEXT," +
-            "required INTEGER," +
-            "_orden INTEGER," +
-            "last_update TEXT)";
-    public final String TableMeasurementModuleClient = "CREATE TABLE measurement_module_client(" +
-            "id_item_relation INTEGER NOT NULL," +
-            "id_measurement INTEGER NOT NULL," +
-            "last_update TEXT)";
-    public final String TableMeasurementModuleCanal = "CREATE TABLE measurement_module_canal(" +
-            "id_item_relation INTEGER NOT NULL," +
-            "id_measurement INTEGER NOT NULL," +
-            "last_update TEXT)";
-    public final String TableMeasurementModuleFormat = "CREATE TABLE measurement_module_format(" +
-            "id_item_relation INTEGER NOT NULL," +
-            "id_measurement INTEGER NOT NULL," +
-            "last_update TEXT)";
-    public final String TableMeasurementModulePdv = "CREATE TABLE measurement_module_pdv(" +
-            "id_item_relation INTEGER NOT NULL," +
-            "id_measurement INTEGER NOT NULL," +
-            "last_update TEXT)";
-    public final String TableMeasurementModuleRtm = "CREATE TABLE measurement_module_rtm(" +
-            "id_item_relation INTEGER NOT NULL," +
-            "id_measurement INTEGER NOT NULL," +
-            "last_update TEXT)";
-    public final String TableMeasurementModuleRegion = "CREATE TABLE measurement_module_region(" +
-            "id_item_relation INTEGER NOT NULL," +
-            "id_measurement INTEGER NOT NULL," +
-            "last_update TEXT)";
     public final String TablePhoto = "CREATE TABLE photo(" +
             "id INTEGER PRIMARY KEY," +
             "path TEXT," +
             "name TEXT," +
-            "face_id INTEGER,"+
-            "sent INTEGER,"+
+            "face_id INTEGER," +
+            "sent INTEGER," +
             "rol INTEGER)";
     public final String TableImageLogin = "CREATE TABLE image_login(" +
             "id INTEGER PRIMARY KEY," +
             "path TEXT," +
             "name TEXT," +
-            "sent INTEGER,"+
+            "sent INTEGER," +
             "rol INTEGER)";
 
     public final String TableSepomex = "CREATE TABLE sepomex(" +
@@ -208,5 +152,23 @@ public class Tables {
             "type_suburb INTEGER," +
             "town TEXT," +
             "state TEXT)";
+
+    public final String TableCensus = "CREATE TABLE report_census(" +
+            "id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+            "id_report_local INTEGER," +
+            "lat TEXT," +
+            "lon TEXT," +
+            "suburb TEXT," +
+            "town TEXT," +
+            "state TEXT," +
+            "cp real INTEGER," +
+            "external_number TEXT," +
+            "address TEXT," +
+            "name_street TEXT," +
+            "hash TEXT," +
+            "provider TEXT," +
+            "path TEXT," +
+            "send INTEGER)";
+
 
 }

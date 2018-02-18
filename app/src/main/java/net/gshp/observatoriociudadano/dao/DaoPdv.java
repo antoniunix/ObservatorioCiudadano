@@ -232,11 +232,9 @@ public class DaoPdv extends DAO {
                 "				pdv.extra_field2, \n" +
                 "				pdv.extra_field3, \n" +
                 "				pdv.type, \n" +
-                "				pdv.id_region, \n" +
-                "				c_rtm.id_canal \n" +
+                "				pdv.id_region \n" +
                 "				FROM \n" +
-                "				pdv \n" +
-                "				INNER JOIN c_rtm ON pdv.id_rtm = c_rtm.id ";
+                "				pdv \n" ;
         cursor = db.rawQuery(qry, null);
         List<DtoPdvPdv> lst = new ArrayList<>();
         DtoPdvPdv catalogo;
@@ -253,7 +251,6 @@ public class DaoPdv extends DAO {
             int extraField1 = cursor.getColumnIndexOrThrow("extra_field1");
             int extraField2 = cursor.getColumnIndexOrThrow("extra_field2");
             int extraField3 = cursor.getColumnIndexOrThrow("extra_field3");
-            int idCanal = cursor.getColumnIndexOrThrow("id_canal");
             int id_format = cursor.getColumnIndexOrThrow("id_format");
             int type = cursor.getColumnIndexOrThrow("type");
             int id_region = cursor.getColumnIndexOrThrow("id_region");
@@ -271,7 +268,6 @@ public class DaoPdv extends DAO {
                 catalogo.setExtraField1(cursor.getString(extraField1));
                 catalogo.setExtraField2(cursor.getString(extraField2));
                 catalogo.setExtraField3(cursor.getString(extraField3));
-                catalogo.setIdCanal(cursor.getInt(idCanal));
                 catalogo.setIdFormat(cursor.getInt(id_format));
                 catalogo.setType(cursor.getInt(type));
                 catalogo.setIdRegion(cursor.getInt(id_region));

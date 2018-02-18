@@ -7,7 +7,9 @@ import android.widget.ListAdapter;
 
 import net.gshp.observatoriociudadano.R;
 import net.gshp.observatoriociudadano.contextApp.ContextApp;
+import net.gshp.observatoriociudadano.dao.DaoReportCensus;
 import net.gshp.observatoriociudadano.dao.DaoSepomex;
+import net.gshp.observatoriociudadano.dto.DtoReportCensus;
 import net.gshp.observatoriociudadano.dto.DtoSepomex;
 import net.gshp.observatoriociudadano.listener.OnFinishLocation;
 import net.panamiur.geolocation.Geolocation;
@@ -22,6 +24,7 @@ import java.util.List;
 public class ModelCensus implements OnApiGeolocation {
 
     private DaoSepomex daoSepomex;
+    private DaoReportCensus daoReportCensus;
     private List<String> lstDtoSepomex;
     private OnFinishLocation onFinishLocation;
     private Geolocation geolocation;
@@ -30,14 +33,14 @@ public class ModelCensus implements OnApiGeolocation {
 
     public ModelCensus(Context context, OnFinishLocation onFinishLocation) {
         daoSepomex = new DaoSepomex();
+        daoReportCensus = new DaoReportCensus();
         this.context = context;
         this.onFinishLocation = onFinishLocation;
     }
 
-    public ArrayAdapter<String> getAdapterAutocomplete() {
-        lstDtoSepomex = daoSepomex.selectAutoComplete();
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(ContextApp.context, android.R.layout.simple_list_item_1, lstDtoSepomex);
-        return adapter;
+    public ModelCensus() {
+        daoSepomex = new DaoSepomex();
+        daoReportCensus = new DaoReportCensus();
     }
 
     public void onStart() {
@@ -58,8 +61,14 @@ public class ModelCensus implements OnApiGeolocation {
         }
     }
 
-    public void onStopGeo(){
+    public void onStopGeo() {
         geolocation.stopGeo();
     }
+
+    public void saveCensus(DtoReportCensus dtoReportCensus) {
+
+        daoReportCensus.insert(dtoReportCensus);
+    }
+
 
 }

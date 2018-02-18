@@ -28,13 +28,8 @@ public class AppDb extends SQLiteOpenHelper {
         db.execSQL(tables.TABLE_SCHEDULE);
         db.execSQL(tables.TableReportGeo);
         db.execSQL(tables.TablePolitics);
-        db.execSQL(tables.Table_CClient);
-        db.execSQL(tables.Table_CCanal);
-        db.execSQL(tables.Table_CTypeReport);
-        db.execSQL(tables.Table_CRtm);
         db.execSQL(tables.TableReportReport);
         db.execSQL(tables.TableReportCheck);
-        db.execSQL(tables.TableModule);
 
         db.execSQL(tables.Table_EAEncuesta);
         db.execSQL(tables.Table_EAGrupo);
@@ -46,17 +41,12 @@ public class AppDb extends SQLiteOpenHelper {
         db.execSQL(tables.Table_EARespuestaRT);
         db.execSQL(tables.TableEAAnswerPdv);
 
-        db.execSQL(tables.TableMeasurementModuleHead);
-        db.execSQL(tables.TableMeasurementModule);
-        db.execSQL(tables.TableMeasurementModuleClient);
-        db.execSQL(tables.TableMeasurementModuleCanal);
-        db.execSQL(tables.TableMeasurementModuleFormat);
-        db.execSQL(tables.TableMeasurementModulePdv);
-        db.execSQL(tables.TableMeasurementModuleRtm);
-        db.execSQL(tables.TableMeasurementModuleRegion);
 
         db.execSQL(tables.TablePhoto);
         db.execSQL(tables.TableImageLogin);
+
+        //Census
+        db.execSQL(tables.TableCensus);
     }
 
     @Override

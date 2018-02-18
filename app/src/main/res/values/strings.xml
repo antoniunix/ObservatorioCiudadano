@@ -321,5 +321,10 @@ Página 6 de 6</string>
     <string name="user_roll">user_roll</string>
     <string name="is_reco">is_reco</string>
     <string name="images_ip">http://172.16.41.77:80</string>
+    <string name="address">address</string>
+    <string name="add_address">Guardar direccion.</string>
+    <string name="photo">Foto</string>
+    <string name="providerAutomatic">Automatico</string>
+    <string name="app_bundle_census">bundleCensus</string>
 
 </resources>

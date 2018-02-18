@@ -121,8 +121,10 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
     @Override
     protected void onPause() {
         super.onPause();
-        if (mGoogleApiClient != null) {
-            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+        if(checkBasic()){
+            if (mGoogleApiClient != null) {
+                LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+            }
         }
     }
 
@@ -287,5 +289,42 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
 
         }
 
+    }
+
+    private boolean checkBasic() {
+        boolean flag = false;
+        if (!Config.isDateAutomatic()) {
+            Toast.makeText(getApplicationContext(),
+                    "Debe poner la hora en autamatico", Toast.LENGTH_LONG)
+                    .show();
+            startActivityForResult(new Intent(
+                    android.provider.Settings.ACTION_DATE_SETTINGS), -1);
+        } else if (!Config.isGPSenabled()) {
+            Toast.makeText(
+                    getApplicationContext(),
+                    "Debe encender la localización, activar opción \"GPS\" para continuar",
+                    Toast.LENGTH_LONG).show();
+            startActivityForResult(new Intent(
+                    android.provider.Settings.ACTION_SETTINGS), -1);
+        } else if (!Config.isDateAutomatic1()) {
+            Toast.makeText(
+                    getApplicationContext(),
+                    "Debe Activar Zona Horaria Automatica",
+                    Toast.LENGTH_LONG).show();
+            startActivityForResult(new Intent(
+                            android.provider.Settings.ACTION_DATE_SETTINGS),
+                    -1);
+        } else if (Config.isMockLocation()) {
+            Toast.makeText(
+                    getApplicationContext(),
+                    "Desactivar opción \"Coordenadas falsas\" para continuar",
+                    Toast.LENGTH_LONG).show();
+            startActivityForResult(new Intent(
+                            android.provider.Settings.ACTION_APPLICATION_DEVELOPMENT_SETTINGS),
+                    -1);
+        } else {
+            flag = true;
+        }
+        return flag;
     }
 }
