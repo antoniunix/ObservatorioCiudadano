@@ -12,6 +12,7 @@ import net.gshp.observatoriociudadano.contextApp.ContextApp;
 import net.gshp.observatoriociudadano.dao.DaoEAEncuesta;
 import net.gshp.observatoriociudadano.dao.DaoEaAnswerPdv;
 import net.gshp.observatoriociudadano.dao.DaoReport;
+import net.gshp.observatoriociudadano.dao.DaoReportCensus;
 import net.gshp.observatoriociudadano.dto.DtoBundle;
 import net.gshp.observatoriociudadano.dto.DtoReport;
 import net.gshp.observatoriociudadano.geolocation.ServiceCheck;
@@ -64,12 +65,15 @@ public class ModelMenuReport {
         }
     }
 
-//    public int isReportSupComplete(){
-//
-//        DaoReport daoReport=new DaoReport();
-//
-//
-//    }
+    public int isReportSupCompleteCensus() {
+
+        if (new DaoReportCensus().isCompleteReportSupervisor()) {
+            return context.getResources().getInteger(R.integer.statusModuleReportDone);
+        } else {
+            return context.getResources().getInteger(R.integer.statusModuleReportNotDone);
+        }
+
+    }
 
     public int isReportPoll(long idPoll, long idReport) {
         DaoEAEncuesta dao = new DaoEAEncuesta();
