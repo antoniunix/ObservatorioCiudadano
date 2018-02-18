@@ -123,7 +123,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, On
                     rlyt_delete_data.setVisibility(View.GONE);
                     rlyt_sync.setVisibility(View.VISIBLE);
                     model = new ModelSincronizar(this, this);
-                    model.checkStatusSync();
+                    model.setAuthentication();
                     txtPorcent.setText("% 0");
                 }
                 break;

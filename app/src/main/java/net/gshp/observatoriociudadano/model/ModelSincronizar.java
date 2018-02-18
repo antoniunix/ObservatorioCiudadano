@@ -15,9 +15,11 @@ import net.gshp.APINetwork.NetworkTask;
 import net.gshp.observatoriociudadano.Network.NetworkConfig;
 import net.gshp.observatoriociudadano.R;
 import net.gshp.observatoriociudadano.contextApp.ContextApp;
+import net.gshp.observatoriociudadano.dto.DtoAuthentication;
 import net.gshp.observatoriociudadano.dto.DtoStatus;
 import net.gshp.observatoriociudadano.dto.DtoUpdate;
 import net.gshp.observatoriociudadano.listener.OnProgressSync;
+import net.gshp.observatoriociudadano.util.Config;
 
 import org.apache.http.HttpStatus;
 
@@ -55,7 +57,7 @@ public class ModelSincronizar {
     private int numReportGuardados = 0;
     private SharedPreferences mySharedPreferences;
 
-    private final int NUMCATALOGOS = 20; //se usa para saber cuando ya se descargaron todos los catalogos y enviar mensaje de terminado
+    private final int NUMCATALOGOS = 7; //se usa para saber cuando ya se descargaron todos los catalogos y enviar mensaje de terminado
     private int numReportDownload = 0;
 
 
@@ -73,20 +75,19 @@ public class ModelSincronizar {
     }
 
 
-    public void checkStatusSync() {
+    public void setAuthentication() {
         new Thread() {
             public void run() {
-                networkConfig.GET("psspolicy/status", "STATUS");
+                String json = new Gson().toJson(getDataToAuthentication());
+                networkConfig.POST("login/authentication", json, "token", null);
             }
-
-            ;
         }.start();
     }
 
     private void Actualizar() {
         new Thread() {
             public void run() {
-                networkConfig.GET("version/data/android-app", "version");
+                networkConfig.GET("version/android", "version");
             }
 
             ;
@@ -97,21 +98,7 @@ public class ModelSincronizar {
         new Thread() {
             public void run() {
                 networkConfig.GET("multireport/catalog/pdv_pdv", "pdv_pdv");
-//                networkConfig.GET("schedule", "schedule");
-                networkConfig.GET("multireport/catalog/c_client", "c_client");
-                networkConfig.GET("multireport/catalog/c_rtm", "c_rtm");
-                networkConfig.GET("multireport/catalog/c_canal", "c_canal");
-                networkConfig.GET("multireport/catalog/pdv_type_module", "pdv_type_module");
 
-                //Modulos
-                networkConfig.GET("multireport/catalog/mam_app_module", "mam_app_module");
-                networkConfig.GET("multireport/catalog/mam_module", "mam_module");
-                networkConfig.GET("multireport/catalog/mam_canal", "mam_canal");
-                networkConfig.GET("multireport/catalog/mam_client", "mam_client");
-                networkConfig.GET("multireport/catalog/mam_format", "mam_format");
-                networkConfig.GET("multireport/catalog/mam_pdv", "mam_pdv");
-                networkConfig.GET("multireport/catalog/mam_region", "mam_region");
-                networkConfig.GET("multireport/catalog/mam_rtm", "mam_rtm");
                 //POLL
                 networkConfig.GET("multireport/catalog/ea_poll", "ea_poll");
                 networkConfig.GET("multireport/catalog/ea_question", "ea_question");
@@ -120,7 +107,7 @@ public class ModelSincronizar {
                 networkConfig.GET("multireport/catalog/ea_section", "ea_section");
                 networkConfig.GET("multireport/catalog/ea_answers_pdv", "ea_answers_pdv");
 
-                networkConfig.GET("user/regId/" + regId, "regid");
+//                networkConfig.GET("user/regId/" + regId, "regid");
             }
         }.start();
     }
@@ -131,17 +118,16 @@ public class ModelSincronizar {
             NetworkTask nt = (NetworkTask) msg.obj;
 
 
-            if (!nt.getTag().equals("version") && !nt.getTag().equals("STATUS")) {
+            if (!nt.getTag().equals("version") && !nt.getTag().equals("STATUS") && !nt.getTag().equals("token")) {
                 numReportDownload++;
             }
             if (nt.getResponseStatus() == HttpStatus.SC_OK || nt.getResponseStatus() == HttpStatus.SC_CREATED) {
-                if (nt.getTag().equals("STATUS")) {
-                    Type typeObjectGson = new TypeToken<DtoStatus>() {
-                    }.getType();
-                    dtoStatus = new Gson().fromJson(nt.getResponse(),
-                            typeObjectGson);
+                if (nt.getTag().equals("token")) {
+                    SharedPreferences prefs = context.getSharedPreferences(context.getString(R.string.app_share_preference_name), Context.MODE_PRIVATE);
+                    prefs.edit().putString(context.getString(R.string.app_share_preference_toke_webservices), nt.getResponse()).apply();
                     Actualizar();
                 } else if (nt.getTag().equals("version")) {
+
                     String version = "";
                     try {
                         version = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName.replace(" TEMP", "");
@@ -198,7 +184,7 @@ public class ModelSincronizar {
                 SC_NO_CONTENT = true;
                 lstNoContent.add(nt.getTag().substring("DELETE".length()));
             } else {
-                if (nt.getTag().equals("version") || nt.getTag().equals("STATUS")) {
+                if (nt.getTag().equals("version") || nt.getTag().equals("STATUS") || nt.getTag().equals("token")) {
                     //si los servicios VERSION y/o MD5 fallan no deben descargarse los demas
                     //servicios, por eso se igualan las variables
                     numReportDownload = NUMCATALOGOS;
@@ -268,5 +254,18 @@ public class ModelSincronizar {
             }
 
         }
+    }
+
+    private DtoAuthentication getDataToAuthentication() {
+        return new DtoAuthentication()
+                .setUsername(mySharedPreferences.getString(context.getString(R.string.app_share_preference_user_account), ""))
+                .setPassword(mySharedPreferences.getString(context.getString(R.string.app_share_preference_user_pass), ""))
+                .setImei(Config.getIMEI())
+                .setBrand(Config.getBrandDevice())
+                .setOs(Config.getOs())
+                .setOsVersion(Config.getOsVersion())
+                .setPhone(Config.getPhoneNumber())
+                .setModel(Config.getModel())
+                .setDeviceId(FirebaseInstanceId.getInstance().getToken());
     }
 }

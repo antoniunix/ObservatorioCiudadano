@@ -25,6 +25,9 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by gnu on 28/02/17.
@@ -40,7 +43,7 @@ public class ServicesGeolocation extends IntentService implements OnApiGeolocati
 
     public ServicesGeolocation() {
         super("geolocation");
-        Log.e("GEO","Geo Service ");
+        Log.e("GEO", "Geo Service ");
         daoReportGeolocation = new DaoReportGeolocation();
         networkConfig = new NetworkConfig(new HandlerTask(), ContextApp.context);
         geolocation = new Geolocation(ServicesGeolocation.class);
@@ -53,7 +56,7 @@ public class ServicesGeolocation extends IntentService implements OnApiGeolocati
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.e("GEO","Geo Service resume");
+        Log.e("GEO", "Geo Service resume");
         geolocation.stopGeo();
         geolocation.startGeo();
 
@@ -67,7 +70,7 @@ public class ServicesGeolocation extends IntentService implements OnApiGeolocati
     @Override
     public void onApiGeolocationChange(Location location) {
 
-        Log.e("GEO","Geo se inserta ");
+        Log.e("GEO", "Geo se inserta ");
         new DaoReportGeolocation().Insert(new DtoReportGeolocation()
                 .setLatitude(location.getLatitude())
                 .setLongitude(location.getLongitude())
@@ -85,13 +88,27 @@ public class ServicesGeolocation extends IntentService implements OnApiGeolocati
 
     }
 
-    private void sendLocation() {
+//    private void sendLocation() {
+//        dto = daoReportGeolocation.Select();
+//        new Thread() {
+//            public void run() {
+//                ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+//                nameValuePairs.add(new BasicNameValuePair("json", new Gson().toJson(dto)));
+//                networkConfig.POST_GEO("geo", nameValuePairs, "geo");
+//            }
+//        }.start();
+//    }
+
+    public void sendLocation() {
         dto = daoReportGeolocation.Select();
         new Thread() {
             public void run() {
-                ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
-                nameValuePairs.add(new BasicNameValuePair("json", new Gson().toJson(dto)));
-                networkConfig.POST_GEO("geo", nameValuePairs, "geo");
+                String json = new Gson().toJson(dto);
+                Log.e("GEO", "SEND GEO " + json);
+                Map<String, String> header = new HashMap<String, String>();
+                header.put(ContextApp.context.getString(R.string.network_header_name_application_json), ContextApp.context.getString(R.string.network_header_application_json));
+                networkConfig.POST("device/geo", json, "geo", header);
+
             }
         }.start();
     }
@@ -111,7 +128,7 @@ public class ServicesGeolocation extends IntentService implements OnApiGeolocati
                 if (completedTask.getResponseStatus() == HttpStatus.SC_CREATED) {
                     new DaoReportGeolocation().deleteById(dto.getId());
                     dto = daoReportGeolocation.Select();
-                    if (dto.getId()>0) {
+                    if (dto.getId() > 0) {
                         ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
                         nameValuePairs.add(new BasicNameValuePair("json", new Gson().toJson(dto)));
                         //asegurarnos de no mandar datos null

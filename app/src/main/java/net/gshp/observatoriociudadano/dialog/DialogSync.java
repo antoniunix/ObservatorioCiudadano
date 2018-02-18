@@ -59,7 +59,7 @@ public class DialogSync extends DialogFragment implements View.OnClickListener, 
         context = ContextApp.context;
         sharedPreferences = context.getSharedPreferences(getString(R.string.app_share_preference_name), Context.MODE_PRIVATE);
         modelSync = new ModelSincronizar(this, context);
-        modelSync.checkStatusSync();
+        modelSync.setAuthentication();
         id_progressbar=(ProgressBar)view.findViewById(R.id.id_progressbar);
         txtTitle = (TextView) view.findViewById(R.id.toolbar_title);
         txtPorcent = (TextView) view.findViewById(R.id.txtPorcent);
