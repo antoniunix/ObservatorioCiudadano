@@ -3,31 +3,42 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
     <include
         android:id="@+id/toolbar"
         layout="@layout/toolbar_generic"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
 
     <com.google.android.gms.maps.MapView
         android:id="@+id/map"
-        android:layout_below="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar" />
 
     <ImageView
+        android:id="@+id/img_point"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_centerInParent="true"
         android:src="@drawable/ic_launcher" />
+
     <EditText
-        android:background="@color/color_withe"
-        android:editable="false"
-        android:layout_below="@+id/toolbar"
         android:id="@+id/edt_address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
         android:layout_margin="8dp"
-        android:maxLines="2"/>
+        android:background="@color/color_withe"
+        android:editable="false"
+        android:maxLines="2" />
+
+    <Button
+        android:id="@+id/btn_save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="@string/add_address" />
+
 
 </RelativeLayout>

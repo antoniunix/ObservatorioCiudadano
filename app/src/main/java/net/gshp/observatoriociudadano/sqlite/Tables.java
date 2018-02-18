@@ -192,14 +192,14 @@ public class Tables {
             "id INTEGER PRIMARY KEY," +
             "path TEXT," +
             "name TEXT," +
-            "face_id INTEGER,"+
-            "sent INTEGER,"+
+            "face_id INTEGER," +
+            "sent INTEGER," +
             "rol INTEGER)";
     public final String TableImageLogin = "CREATE TABLE image_login(" +
             "id INTEGER PRIMARY KEY," +
             "path TEXT," +
             "name TEXT," +
-            "sent INTEGER,"+
+            "sent INTEGER," +
             "rol INTEGER)";
 
     public final String TableSepomex = "CREATE TABLE sepomex(" +
@@ -208,5 +208,23 @@ public class Tables {
             "type_suburb INTEGER," +
             "town TEXT," +
             "state TEXT)";
+
+    public final String TableCensus = "CREATE TABLE report_census(" +
+            "id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+            "id_report_local INTEGER," +
+            "lat TEXT," +
+            "lon TEXT," +
+            "suburb TEXT," +
+            "town TEXT," +
+            "state TEXT," +
+            "cp real INTEGER," +
+            "external_number TEXT," +
+            "address TEXT," +
+            "name_street TEXT,"+
+            "hash TEXT," +
+            "provider TEXT," +
+            "path TEXT," +
+            "send INTEGER)";
+
 
 }

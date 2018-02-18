@@ -1,5 +1,6 @@
 package net.gshp.observatoriociudadano;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,6 +16,7 @@ import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
+import net.gshp.observatoriociudadano.dto.DtoReportCensus;
 import net.gshp.observatoriociudadano.dto.DtoSepomex;
 
 /**
@@ -23,17 +25,18 @@ import net.gshp.observatoriociudadano.dto.DtoSepomex;
 
 public class PlaceAutocompleteActivity extends AppCompatActivity {
 
+    private DtoReportCensus dtoReportCensusBundle;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place);
-        Bundle bundle = getIntent().getExtras();
+        dtoReportCensusBundle = (DtoReportCensus) getIntent().getExtras().get(getString(R.string.address));
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment) getFragmentManager()
                 .findFragmentById(R.id.place_autocomplete_fragment);
-        if (bundle != null) {
-            Log.e("leo", "add " + bundle.getString("address"));
-            autocompleteFragment.setText(bundle.getString("address"));
+        if (dtoReportCensusBundle != null) {
+            autocompleteFragment.setText(dtoReportCensusBundle.getAddress());
         }
         AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
                 .setTypeFilter(AutocompleteFilter.TYPE_FILTER_GEOCODE)
@@ -44,6 +47,7 @@ public class PlaceAutocompleteActivity extends AppCompatActivity {
             @Override
             public void onPlaceSelected(Place place) {
                 Log.i("leo", "Place: " + place.getName());
+                startIntent(place.getLatLng().latitude, place.getLatLng().longitude);
             }
 
             @Override
@@ -51,5 +55,16 @@ public class PlaceAutocompleteActivity extends AppCompatActivity {
                 Log.i("leo", "An error occurred: " + status);
             }
         });
+    }
+
+    private void startIntent(double lat, double lon) {
+        Log.e("leo","start");
+        dtoReportCensusBundle.setLat(lat);
+        dtoReportCensusBundle.setLon(lon);
+        Intent intent = new Intent();
+        intent.putExtra(getString(R.string.address), dtoReportCensusBundle);
+        setResult(Activity.RESULT_OK, intent);
+        finish();
+
     }
 }

@@ -57,6 +57,9 @@ public class AppDb extends SQLiteOpenHelper {
 
         db.execSQL(tables.TablePhoto);
         db.execSQL(tables.TableImageLogin);
+
+        //Census
+        db.execSQL(tables.TableCensus);
     }
 
     @Override

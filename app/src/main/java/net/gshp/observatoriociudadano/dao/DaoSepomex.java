@@ -3,8 +3,10 @@ package net.gshp.observatoriociudadano.dao;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
+import android.util.Log;
 
 import net.gshp.observatoriociudadano.contextApp.ContextApp;
+import net.gshp.observatoriociudadano.dto.DtoReportCensus;
 import net.gshp.observatoriociudadano.dto.DtoSepomex;
 
 import java.io.BufferedReader;
@@ -156,4 +158,6 @@ public class DaoSepomex extends DAO {
         db.close();
         return obj;
     }
+
+
 }

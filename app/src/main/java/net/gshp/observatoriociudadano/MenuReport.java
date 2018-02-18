@@ -60,7 +60,7 @@ public class MenuReport extends AppCompatActivity implements AHBottomNavigation.
                             .putExtra("idEncuesta", (long) ContextApp.context.getResources().getInteger(R.integer.idPollSupervisor)));
                     break;
                 case 1:// census
-                    startActivity(new Intent(this,Census.class));
+                    startActivity(new Intent(this,Census.class).putExtra(getString(R.string.app_bundle_name),dtoBundle));
                     break;
                 case 2://Photos
                     Intent intent = new Intent(this, PhotoWizardActivity.class);
@@ -90,6 +90,7 @@ public class MenuReport extends AppCompatActivity implements AHBottomNavigation.
                             .putExtra("idEncuesta", (long) ContextApp.context.getResources().getInteger(R.integer.idPollCasilla)));
                     break;
                 case 2://census
+                    startActivity(new Intent(this,Census.class).putExtra(getString(R.string.app_bundle_name),dtoBundle));
                     break;
                 case 3://photo
                     Intent intent = new Intent(this, PhotoWizardActivity.class);
