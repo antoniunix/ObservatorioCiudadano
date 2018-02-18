@@ -6,6 +6,8 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.gshp.api.utils.Crypto;
 
+import net.gshp.observatoriociudadano.R;
+import net.gshp.observatoriociudadano.contextApp.ContextApp;
 import net.gshp.observatoriociudadano.dto.DtoReportCensus;
 
 import java.util.ArrayList;
@@ -150,10 +152,30 @@ public class DaoReportCensus extends DAO {
         try {
             ContentValues cv = new ContentValues();
             cv.put("send", 1);
-            db.update(TABLE_NAME, cv, IDREPORTLOCAL+"=" + idReporteLocal, null);
+            db.update(TABLE_NAME, cv, IDREPORTLOCAL + "=" + idReporteLocal, null);
         } catch (Exception e) {
             e.printStackTrace();
         }
         db.close();
+    }
+
+    public boolean isCompleteReportSupervisor() {
+        boolean isReportSupervisor = false;
+        db = helper.getReadableDatabase();
+        String qry = "SELECT\n" +
+                "COUNT(*) count\n" +
+                "FROM\n" +
+                "report_census\n" +
+                "INNER JOIN report ON report.id= report_census.id_report_local and report.type_poll=" + ContextApp.context.getResources().getInteger(R.integer.idPollSupervisor);
+        cursor = db.rawQuery(qry, null);
+        if (cursor.moveToFirst()) {
+            int count = cursor.getColumnIndexOrThrow("count");
+
+            isReportSupervisor = cursor.getInt(count) > 0;
+
+        }
+        cursor.close();
+        db.close();
+        return isReportSupervisor;
     }
 }
