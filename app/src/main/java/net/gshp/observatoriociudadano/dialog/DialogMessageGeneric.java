@@ -26,6 +26,7 @@ public class DialogMessageGeneric extends DialogFragment implements View.OnClick
     private OnDissmisDialogListener onDissmisDialogListener;
     private int requestCode;
     private String title, message;
+    private boolean showCancelButton = true, showContinueButton = true;
 
 
     public DialogMessageGeneric() {
@@ -54,6 +55,8 @@ public class DialogMessageGeneric extends DialogFragment implements View.OnClick
         super.onResume();
         toolbar_title.setText(title);
         txt_message.setText(message);
+        btn_cancel.setVisibility(showCancelButton ? View.VISIBLE : View.GONE);
+        btn_agree.setVisibility(showContinueButton ? View.VISIBLE : View.GONE);
     }
 
     public DialogMessageGeneric setOnDissmisDialogListener(OnDissmisDialogListener onDissmisDialogListener) {
@@ -68,12 +71,20 @@ public class DialogMessageGeneric extends DialogFragment implements View.OnClick
         return this;
     }
 
+    public DialogMessageGeneric setShowButton(boolean showCancelButton, boolean showContinueButton) {
+        this.showCancelButton = showCancelButton;
+        this.showContinueButton = showContinueButton;
+        return this;
+    }
+
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.btn_cancel) {
             dismiss();
-        } else {
+        } else if (onDissmisDialogListener != null) {
             onDissmisDialogListener.onDissmisDialogListener(Activity.RESULT_OK, requestCode, null);
+            dismiss();
+        } else {
             dismiss();
         }
 

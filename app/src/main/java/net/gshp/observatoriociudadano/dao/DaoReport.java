@@ -6,6 +6,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 
+import net.gshp.observatoriociudadano.R;
+import net.gshp.observatoriociudadano.contextApp.ContextApp;
 import net.gshp.observatoriociudadano.dto.DtoBundle;
 import net.gshp.observatoriociudadano.dto.DtoCatalog;
 import net.gshp.observatoriociudadano.dto.DtoReport;
@@ -56,7 +58,7 @@ public class DaoReport extends DAO {
         try {
             String qry = "INSERT INTO " + TABLE_NAME + " (" + ID_PDV + "," + ID_SCHEDULE +
                     "," + VERSION + "," + DATE + "," + TZ + "," + IMEI + "," + HASH + "," + SEND + "," + TYPE_REPORT +
-                    "," + ID_REPORT_SERVER + "," + DATE_INACTIVE + "," + ACTIVE +","+TYPE_POLL+ ")"
+                    "," + ID_REPORT_SERVER + "," + DATE_INACTIVE + "," + ACTIVE + "," + TYPE_POLL + ")"
                     + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?);";
             SQLiteStatement insStatement = db.compileStatement(qry);
             db.beginTransaction();
@@ -168,6 +170,7 @@ public class DaoReport extends DAO {
         db.close();
         return isReport;
     }
+
 
     public boolean isReportSupervisorIncomplete() {
         boolean isReport = false;
@@ -556,6 +559,61 @@ public class DaoReport extends DAO {
         db.close();
         return hasPhotosToSend;
     }
+
+    public boolean isCompleteReportSupervisor() {
+        boolean isReportSupervisor = false;
+        db = helper.getReadableDatabase();
+        String qry = "SELECT\n" +
+                "COUNT(*) count\n" +
+                "FROM\n" +
+                "report\n" +
+                "INNER JOIN report_check checkIn ON checkIn .id_report_local = report.id and checkIn.type=1\n" +
+                "INNER JOIN report_check checkOut ON checkOut.id_report_local = report.id and checkOut.type=2\n" +
+                "WHERE report.type_poll=" + ContextApp.context.getResources().getInteger(R.integer.idPollSupervisor);
+        cursor = db.rawQuery(qry, null);
+        if (cursor.moveToFirst()) {
+            int count = cursor.getColumnIndexOrThrow("count");
+
+            isReportSupervisor = cursor.getInt(count) > 0;
+
+        }
+        cursor.close();
+        db.close();
+        return isReportSupervisor;
+    }
+
+    public boolean isIncompleteReportSupervisor() {
+        boolean isReportSupervisor = false;
+        db = helper.getReadableDatabase();
+        String qry = "SELECT  COUNT(*) count FROM(  \n" +
+                "SELECT DISTINCT  \n" +
+                "report.id,  \n" +
+                "report.send,  \n" +
+                "report.type_poll,\n" +
+                "pdv.name,  \n" +
+                "report.id_pdv,                 \n" +
+                "CHECK_in.date  datecheckin,  \n" +
+                "CHECK_out.date datecheckout  \n" +
+                "FROM  \n" +
+                "report   \n" +
+                "LEFT JOIN pdv ON pdv.id=report.id_pdv  \n" +
+                "LEFT JOIN report_check  as CHECK_in ON CHECK_in.id_report_local = report.id   and CHECK_in.type=1  \n" +
+                "LEFT JOIN report_check as CHECK_out on  CHECK_out.id_report_local = report.id   and CHECK_out.type=2  \n" +
+                "WHERE report.type_poll=" + ContextApp.context.getResources().getInteger(R.integer.idPollSupervisor) + "\n" +
+                ") as q1  \n" +
+                "where    q1.datecheckin   is not NULL  and  q1.datecheckout   is NULL ";
+        cursor = db.rawQuery(qry, null);
+        if (cursor.moveToFirst()) {
+            int count = cursor.getColumnIndexOrThrow("count");
+
+            isReportSupervisor = cursor.getInt(count) > 0;
+
+        }
+        cursor.close();
+        db.close();
+        return isReportSupervisor;
+    }
+
 
     /**
      * UPDATE

@@ -73,9 +73,9 @@ public class DaoEaAnswerPdv extends DAO {
         cursor=db.rawQuery("SELECT\n" +
                 "count(*) as count\n" +
                 "FROM\n" +
-                "EAAnwerPdv\n" +
+                "EAAnswerPdv\n" +
                 "WHERE \n" +
-                "EAAnwerPdv.id_poll="+ ContextApp.context.getResources().getInteger(R.integer.idPollSupervisor),null);
+                "EAAnswerPdv.id_poll="+ ContextApp.context.getResources().getInteger(R.integer.idPollSupervisor),null);
         if(cursor.moveToFirst())
         {
             isDone=cursor.getInt(cursor.getColumnIndexOrThrow("count"))>0;

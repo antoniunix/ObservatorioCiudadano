@@ -58,6 +58,18 @@ public class NetworkConfig {
         APINetwork.taskManager.addTask(Ntask);
     }
 
+    public void POST_IMAGE(String params, String Path, ArrayList<NameValuePair> nameValuePairs, String tag,Map<String, String> headers) {
+
+        NetworkTask Ntask = new NetworkTask(handler).setMode(TaskMode.POST_MULTIPART)
+                .setTag(tag).setPayload(nameValuePairs).setParams(params).setFilepath(Path)
+                .setBasicauth(true).setGzip(true);
+        if (headers != null) {
+            headers.put(context.getString(R.string.network_header_token), mSharedPreferences.getString(context.getString(R.string.app_share_preference_toke_webservices), ""));
+            Ntask.setCustomHeaders(headers);
+        }
+        APINetwork.taskManager.addTask(Ntask);
+    }
+
     public void multipartFile(String params, String path, ArrayList<NameValuePair> nameValuePairs, String tag, boolean sendHeader) {
         NetworkTask Ntask = new NetworkTask(handler)
                 .setMode(NetworkTask.TaskMode.POST_MULTIPART_FILE)
@@ -84,20 +96,20 @@ public class NetworkConfig {
     }
 
 
-    public void GET_MEDIA(String params, String tag) {
-        NetworkTask Ntask = new NetworkTask(handler).setMode(TaskMode.GET_MEDIA)
-                .setTag(tag).setParams(params).setBasicauth(true).setGzip(true);
-        APINetwork.taskManager.addTask(Ntask);
-    }
-
-    public void POST(String params, ArrayList<NameValuePair> nameValuePairs,
-                     String tag) {
-        NetworkTask Ntask = new NetworkTask(handler).setMode(TaskMode.POST)
-                .setTag(tag).setPayload(nameValuePairs).setParams(params)
-                .setBasicauth(true).setGzip(true);
-        APINetwork.taskManager.addTask(Ntask);
-    }
-
+//    public void GET_MEDIA(String params, String tag) {
+//        NetworkTask Ntask = new NetworkTask(handler).setMode(TaskMode.GET_MEDIA)
+//                .setTag(tag).setParams(params).setBasicauth(true).setGzip(true);
+//        APINetwork.taskManager.addTask(Ntask);
+//    }
+//
+//    public void POST(String params, ArrayList<NameValuePair> nameValuePairs,
+//                     String tag) {
+//        NetworkTask Ntask = new NetworkTask(handler).setMode(TaskMode.POST)
+//                .setTag(tag).setPayload(nameValuePairs).setParams(params)
+//                .setBasicauth(true).setGzip(true);
+//        APINetwork.taskManager.addTask(Ntask);
+//    }
+//
     public void POSTChangePass(String params, ArrayList<NameValuePair> nameValuePairs,
                                String tag, String lastPass) {
         APINetwork.setPASSWORD(lastPass);
@@ -106,23 +118,23 @@ public class NetworkConfig {
                 .setBasicauth(true).setGzip(true);
         APINetwork.taskManager.addTask(Ntask);
     }
-
-    public void POST_GEO(String params, ArrayList<NameValuePair> nameValuePairs, String tag) {
-
-        NetworkTask Ntask = new NetworkTask(handler).setMode(TaskMode.POST)
-                .setTag(tag).setPayload(nameValuePairs).setParams(params)
-                .setBasicauth(true).setGzip(true);
-        APINetwork.taskManager.executePriorityTask(Ntask);
-    }
-
-    public void POST_IMAGE(String params, String Path, ArrayList<NameValuePair> nameValuePairs, String tag) {
-
-        NetworkTask Ntask = new NetworkTask(handler).setMode(TaskMode.POST_MULTIPART)
-                .setTag(tag).setPayload(nameValuePairs).setParams(params).setFilepath(Path)
-                .setBasicauth(true).setGzip(true);
-        APINetwork.taskManager.addTask(Ntask);
-    }
-
+//
+//    public void POST_GEO(String params, ArrayList<NameValuePair> nameValuePairs, String tag) {
+//
+//        NetworkTask Ntask = new NetworkTask(handler).setMode(TaskMode.POST)
+//                .setTag(tag).setPayload(nameValuePairs).setParams(params)
+//                .setBasicauth(true).setGzip(true);
+//        APINetwork.taskManager.executePriorityTask(Ntask);
+//    }
+//
+//    public void POST_IMAGE(String params, String Path, ArrayList<NameValuePair> nameValuePairs, String tag) {
+//
+//        NetworkTask Ntask = new NetworkTask(handler).setMode(TaskMode.POST_MULTIPART)
+//                .setTag(tag).setPayload(nameValuePairs).setParams(params).setFilepath(Path)
+//                .setBasicauth(true).setGzip(true);
+//        APINetwork.taskManager.addTask(Ntask);
+//    }
+//
     public void POST_MULTIPART_FILE(String params, String path, ArrayList<NameValuePair> nameValuePairs, String tag) {
         NetworkTask Ntask = new NetworkTask(handler).setMode(TaskMode.POST_MULTIPART_FILE)
                 .setTag(tag).setPayload(nameValuePairs).setFilepath(path).setParams(params)

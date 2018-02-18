@@ -21,7 +21,9 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by gnu on 16/02/18.
@@ -101,12 +103,12 @@ public class ModelSend {
                 public void run() {
                     /* Reportes de PDV's diferentes a uno nuevo*/
                     for (int j = 0; j < lstReports.size(); j++) {
-                        Log.e(ContextApp.context.getResources().getString(R.string.app_name),
-                                "Report " + new Gson().toJson(lstReports.get(j)));
-                        ArrayList<NameValuePair> nameValuePairs = new ArrayList<>(1);
-                        nameValuePairs.add(new BasicNameValuePair("json", new Gson().toJson(lstReports.get(j))));
-                        networkConfig.POST("report", nameValuePairs, "rprt" + lstReports.get(j).getId());
-                        System.out.println("cabecera  " + new Gson().toJson(lstReports.get(j)));
+
+                        String json = new Gson().toJson(lstReports.get(j));
+                        Log.e(ContextApp.context.getResources().getString(R.string.app_name), "Report " + json);
+                        Map<String, String> header = new HashMap<String, String>();
+                        header.put(ContextApp.context.getString(R.string.network_header_name_application_json), ContextApp.context.getString(R.string.network_header_application_json));
+                        networkConfig.POST("report/create", json, "rprt" + lstReports.get(j).getId(), header);
                     }
                 }
             }.start();
@@ -137,11 +139,12 @@ public class ModelSend {
                     // Encuesta
                     Log.e("Nestle", "Report Encuesta" + respuestas.size());
                     for (int i = 0; i < respuestas.size(); i++) {
-                        System.out.println(new Gson().toJson(respuestas.get(i)));
-                        ArrayList<NameValuePair> nameValuePairs = new ArrayList<>(1);
-                        nameValuePairs.add(new BasicNameValuePair("json", new Gson().toJson(respuestas.get(i))));
-                        networkConfig.POST("multireport/insertnt/poll/1", nameValuePairs, "rsaa" + respuestas.get(i).get(0)
-                                .getIdReporteLocal());
+                        String json = new Gson().toJson(respuestas.get(i));
+                        System.out.println(json);
+                        Map<String, String> header = new HashMap<>();
+                        header.put(ContextApp.context.getString(R.string.network_header_name_application_json), ContextApp.context.getString(R.string.network_header_application_json));
+                        networkConfig.POST("multireport/insertnt/poll/1", json, "rsaa" + respuestas.get(i).get(0)
+                                .getIdReporteLocal(), header);
                     }
                 }
 
@@ -209,8 +212,11 @@ public class ModelSend {
                         nameValuePairs.add(new BasicNameValuePair("hash", lstDtoReportRespuestasFotos.get(i).getHash() + ""));
                         nameValuePairs.add(new BasicNameValuePair("pdv", lstDtoReportRespuestasFotos.get(i).getPdv() + ""));
                         nameValuePairs.add(new BasicNameValuePair("description", lstDtoReportRespuestasFotos.get(i).getDescription() + ""));
+                        Map<String, String> header = new HashMap<>();
+                        header.put(ContextApp.context.getString(R.string.network_header_name_application_json), ContextApp.context.getString(R.string.network_header_application_json));
+
                         networkConfig.POST_IMAGE("multireport/image/poll/1",
-                                lstDtoReportRespuestasFotos.get(i).getRespuesta(), nameValuePairs, "rfaa" + lstDtoReportRespuestasFotos.get(i).getId());
+                                lstDtoReportRespuestasFotos.get(i).getRespuesta(), nameValuePairs, "rfaa" + lstDtoReportRespuestasFotos.get(i).getId(), header);
                     }
 
                 }

@@ -29,7 +29,9 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -133,11 +135,13 @@ public class ServiceCheck extends IntentService implements OnApiGeolocation {
         new Thread() {
             public void run() {
                 for (int i = 0; i < lstCheckSends.size(); i++) {
-                    Log.e("Lista", "Lista " + "[" + new Gson().toJson(lstCheckSends.get(i)) + "]");
-                    ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
-                    nameValuePairs.add(new BasicNameValuePair("json", "[" + new Gson().toJson(lstCheckSends.get(i)) + "]"));
-                    networkConfig.POST("multireport/insertnt/rcheckin/1", nameValuePairs,
-                            "rsch" + lstCheckSends.get(i).getIdReportLocal());
+                    String json = "[" + new Gson().toJson(lstCheckSends.get(i)) + "]";
+                    Log.e("Lista", "Lista " + json);
+                    Map<String, String> header = new HashMap<>();
+                    header.put(ContextApp.context.getString(R.string.network_header_name_application_json), ContextApp.context.getString(R.string.network_header_application_json));
+
+                    networkConfig.POST("multireport/insertnt/rcheckin/1", json,
+                            "rsch" + lstCheckSends.get(i).getIdReportLocal(), header);
                 }
             }
 

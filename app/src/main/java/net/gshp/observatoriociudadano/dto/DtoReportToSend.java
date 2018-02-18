@@ -1,5 +1,7 @@
 package net.gshp.observatoriociudadano.dto;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by leo on 22/01/18.
  */
@@ -8,24 +10,39 @@ public class DtoReportToSend {
 
 
     private Integer id;
+    @SerializedName("scheduleId")
     private Integer idSchedule;
     private String version;
     private int idTipo;
+    @SerializedName("pdvId")
     private int place;
     private String hash;
+    @SerializedName("dateStart")
     private long checkIn;
+    @SerializedName("tzStart")
     private String checkInTz;
+    @SerializedName("latStart")
     private Double checkInLat;
+    @SerializedName("lngStart")
     private Double checkInLon;
+    @SerializedName("imei")
     private String checkInImei;
+    @SerializedName("accuracyStart")
     private String checkInAccuracy;
+    @SerializedName("gpsUtcStart")
     private Long checkInSateliteUTC;
+    @SerializedName("dateEnd")
     private long checkOut;
+    @SerializedName("tzEnd")
     private String checkOutTz;
+    @SerializedName("latEnd")
     private Double checkOutLat;
+    @SerializedName("lngEnd")
     private Double checkOutLon;
     private String checkOutImei;
+    @SerializedName("accuracyEnd")
     private String checkOutAccuracy;
+    @SerializedName("gpsUtcEnd")
     private Long checkOutSateliteUTC;
     private Integer idUser;
 

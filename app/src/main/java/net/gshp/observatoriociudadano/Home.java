@@ -36,10 +36,13 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 
 import net.gshp.observatoriociudadano.dialog.DialogAccount;
+import net.gshp.observatoriociudadano.dialog.DialogMessageGeneric;
 import net.gshp.observatoriociudadano.dialog.DialogSync;
 import net.gshp.observatoriociudadano.dto.DtoBundle;
 import net.gshp.observatoriociudadano.dto.DtoImageLogin;
+import net.gshp.observatoriociudadano.model.ModelHome;
 import net.gshp.observatoriociudadano.model.ModelInfoPerson;
+import net.gshp.observatoriociudadano.model.ModelMenuReport;
 import net.gshp.observatoriociudadano.util.BottomNavigationViewHelper;
 import net.gshp.observatoriociudadano.util.Config;
 
@@ -64,6 +67,7 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
     private GoogleApiClient mGoogleApiClient;
 
     private SharedPreferences preferences;
+    private ModelHome model;
 
     private void init() {
         btnTBSettings = findViewById(R.id.btnTBSettings);
@@ -82,6 +86,7 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
         btnTBHelp.setOnClickListener(this);
         btnTBSync.setOnClickListener(this);
         btnTBAccount.setOnClickListener(this);
+        model = new ModelHome();
     }
 
     @Override
@@ -100,13 +105,43 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         DtoBundle dtoBundle = new DtoBundle();
+        int statusReportSupervisor;
+        DialogMessageGeneric dialog = new DialogMessageGeneric();
         switch (item.getItemId()) {
             case R.id.action_supervisor:
-                dtoBundle.setIdTypeMenuReport(getResources().getInteger(R.integer.idPollSupervisor));
-                startActivity(new Intent(this, MenuReport.class).putExtra(getString(R.string.app_bundle_name), dtoBundle));
+                statusReportSupervisor = model.isRolledSupervisorDone();
+
+                if (statusReportSupervisor == getResources().getInteger(R.integer.statusModuleReportDoneBeforeVisit) ||
+                        statusReportSupervisor == getResources().getInteger(R.integer.statusModuleReportDone)) {
+                    dialog.setData("REGISTRO COMPLETADO", "Ya te has registrado anteriormente", 0).
+                            setShowButton(false, true);
+                    dialog.show(getSupportFragmentManager(), "");
+
+                } else if (statusReportSupervisor == getResources().getInteger(R.integer.statusModuleReportWithOut)) {
+                    dialog.setData("SIN INFORMACIÓN", "No cuenta con la información necesaria, reportelo con su supervisor", 0).
+                            setShowButton(false, true);
+                    dialog.show(getSupportFragmentManager(), "");
+
+                } else {
+                    dtoBundle.setIdTypeMenuReport(getResources().getInteger(R.integer.idPollSupervisor));
+                    startActivity(new Intent(this, MenuReport.class).putExtra(getString(R.string.app_bundle_name), dtoBundle));
+                }
+
+
                 break;
             case R.id.action_representative:
-                startActivity(new Intent(this, ListStation.class));
+                statusReportSupervisor = model.isRolledSupervisorDone();
+                if (statusReportSupervisor == getResources().getInteger(R.integer.statusModuleReportDoneBeforeVisit) ||
+                        statusReportSupervisor == getResources().getInteger(R.integer.statusModuleReportDone)) {
+                    startActivity(new Intent(this, ListStation.class));
+
+                } else {
+                    dialog.setData("REGISTRE SUPERVISOR", "Primero registrese como supervisor", 0).
+                            setShowButton(false, true);
+                    dialog.show(getSupportFragmentManager(), "");
+                }
+
+
                 break;
             case R.id.action_visit:
                 startActivity(new Intent(this, Visit.class));
@@ -121,8 +156,8 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
     @Override
     protected void onPause() {
         super.onPause();
-        if(checkBasic()){
-            if (mGoogleApiClient != null) {
+        if (checkBasic()) {
+            if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
                 LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
             }
         }
