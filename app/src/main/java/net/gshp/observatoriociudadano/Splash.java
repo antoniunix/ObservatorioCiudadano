@@ -9,6 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 
+import net.gshp.observatoriociudadano.dao.DaoEARespuesta;
 import net.gshp.observatoriociudadano.listener.OnFinishThread;
 import net.gshp.observatoriociudadano.model.ModelSplash;
 

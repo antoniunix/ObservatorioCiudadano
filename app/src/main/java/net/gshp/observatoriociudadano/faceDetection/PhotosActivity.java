@@ -22,11 +22,14 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import net.gshp.observatoriociudadano.Home;
 import net.gshp.observatoriociudadano.R;
 import net.gshp.observatoriociudadano.dao.DaoEARespuesta;
 import net.gshp.observatoriociudadano.dao.DaoPhoto;
 import net.gshp.observatoriociudadano.dto.DtoBundle;
+import net.gshp.observatoriociudadano.dto.DtoEARespuesta;
 import net.gshp.observatoriociudadano.dto.DtoPhoto;
 import net.gshp.observatoriociudadano.faceDetection.adapters.PhotoItem;
 import net.gshp.observatoriociudadano.faceDetection.models.Photo;
@@ -69,14 +72,13 @@ public class PhotosActivity extends AppCompatActivity {
             rol = getResources().getInteger(R.integer.rollRepresentanteCasilla);
 
         dtoBundle = (DtoBundle) getIntent().getExtras().get(getString(R.string.app_bundle_name));
-        Log.w(TAG, "rol: " + rol);
 
         preferences = getSharedPreferences(getString(R.string.app_share_preference_name), Context.MODE_PRIVATE);
 
-        RecyclerView recyclerView = findViewById(R.id.recycler_view);
-
         prepareAlbums();
         adapter = new PhotosAdapter(pictureList);
+
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
 
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -93,10 +95,13 @@ public class PhotosActivity extends AppCompatActivity {
         });
     }
 
+    private void initGrid() {
+    }
+
     @Override
     protected void onResume() {
-        prepareAlbums();
-        adapter = new PhotosAdapter(pictureList);
+        //prepareAlbums();
+        //adapter = new PhotosAdapter(pictureList);
         super.onResume();
     }
 
@@ -105,10 +110,11 @@ public class PhotosActivity extends AppCompatActivity {
         int takenPhotos = 0;
 
         for (Photo p : pictureList) {
-            if (!p.getPicture().isEmpty()) {
+            if (p.getPicture() != null && !p.getPicture().isEmpty()) {
                 takenPhotos++;
             }
         }
+        Log.w(TAG, "faltan: "+new DaoPhoto().missingPhotos(dtoBundle.getIdReportLocal()));
 
         int missingPhotos = minPhotos - takenPhotos;
 
@@ -128,6 +134,7 @@ public class PhotosActivity extends AppCompatActivity {
      * Adding few albums for testing
      */
     private void prepareAlbums() {
+
         int[] covers = new int[]{
                 R.drawable.cara2,
                 R.drawable.cara3,
@@ -167,7 +174,7 @@ public class PhotosActivity extends AppCompatActivity {
                 pictureList.get(picture.getFace_id()).setPicture(picture.getPath());
             }
         } else {
-            userName = new DaoEARespuesta().selectUserName(1, 2, dtoBundle.getIdReportLocal());
+            userName = new DaoEARespuesta().selectUserName(1, 1, dtoBundle.getIdReportLocal());
             Log.w(TAG, "userName: " + userName);
             List<DtoPhoto> pictures = new DaoPhoto().selectAll(userName);
 
@@ -230,6 +237,7 @@ public class PhotosActivity extends AppCompatActivity {
         intent.putExtra(getString(R.string.is_reco), false);
         intent.putExtra(getString(R.string.user_roll), rol);
         intent.putExtra("userName", userName);
+        intent.putExtra(getString(R.string.app_bundle_name), dtoBundle);
         startActivityForResult(intent, PICTURE_REQUEST_CODE);
     }
 
