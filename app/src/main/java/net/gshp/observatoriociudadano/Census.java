@@ -19,7 +19,6 @@ import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -92,8 +91,6 @@ public class Census extends AppCompatActivity implements OnMapReadyCallback, OnF
             public void onPlaceSelected(Place place) {
                 Log.i("leo", "Place: " + place.getName());
                 setDirections(place.getLatLng().latitude, place.getLatLng().longitude);
-                CameraUpdate zoom = CameraUpdateFactory.newLatLngZoom(new LatLng(place.getLatLng().latitude,
-                        place.getLatLng().longitude), 18);
                 CameraPosition cameraPosition = new CameraPosition.Builder().target(place.getLatLng()).zoom(20).bearing(45).tilt(90).build();
                 map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
@@ -131,9 +128,8 @@ public class Census extends AppCompatActivity implements OnMapReadyCallback, OnF
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != -1
                 || ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != -1) {
         }
-        CameraUpdate zoom = CameraUpdateFactory.newLatLngZoom(new LatLng(22.7,
-                -102.6), 10);
-        map.moveCamera(zoom);
+        CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(22.7,-102.6)).zoom(20).bearing(45).tilt(90).build();
+        map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
     }
 
@@ -143,8 +139,9 @@ public class Census extends AppCompatActivity implements OnMapReadyCallback, OnF
             if (map != null) {
                 map.clear();
                 if (!setLocation) {
-                    map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(),
-                            location.getLongitude()), 16), 2000, null);
+                    CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(location.getLatitude(),
+                            location.getLongitude())).zoom(20).bearing(45).tilt(90).build();
+                    map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                     setLocation = true;
                 }
                 lat = location.getLatitude();

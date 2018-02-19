@@ -131,9 +131,9 @@ public class ModelSend {
     private void sendSubReportes() {
         Log.e("send", "sendsubreportes");
         respuestas = daoeaRespuesta.selectToSend();
-//        lstReportCensus = daoReportCensus.selectToSend();
+        lstReportCensus = daoReportCensus.selectToSend();
 
-        SubReportAEnviar = respuestas.size();// + lstReportCensus.size();
+        SubReportAEnviar = respuestas.size() + lstReportCensus.size();
 
         if (SubReportAEnviar != 0) {
              /*
@@ -154,17 +154,17 @@ public class ModelSend {
                                 .getIdReporteLocal(), header);
                     }
 
-//                    //Census
-//                    Log.e("Observador", "Report Census" + lstReportCensus.size());
-//                    for (int i = 0; i < lstReportCensus.size(); i++) {
-//                        String json = new Gson().toJson(lstReportCensus.get(i));
-//                        System.out.println(json);
-//                        Map<String, String> header = new HashMap<>();
-//                        header.put(ContextApp.context.getString(R.string.network_header_name_application_json),
-//                                ContextApp.context.getString(R.string.network_header_application_json));
-//                        networkConfig.POST("multireport/insertnt/census/1", json, "rsab" + lstReportCensus.get(i).get(0)
-//                                .getIdReporteLocal(), header);
-//                    }
+                    //Census
+                    Log.e("Observador", "Report Census" + lstReportCensus.size());
+                    for (int i = 0; i < lstReportCensus.size(); i++) {
+                        String json = new Gson().toJson(lstReportCensus.get(i));
+                        System.out.println(json);
+                        Map<String, String> header = new HashMap<>();
+                        header.put(ContextApp.context.getString(R.string.network_header_name_application_json),
+                                ContextApp.context.getString(R.string.network_header_application_json));
+                        networkConfig.POST("multireport/insertnt/rpdvcenso/1", json, "rsab" + lstReportCensus.get(i).get(0)
+                                .getIdReporteLocal(), header);
+                    }
 
                 }
 
