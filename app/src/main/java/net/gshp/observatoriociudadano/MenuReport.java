@@ -148,33 +148,99 @@ public class MenuReport extends AppCompatActivity implements AHBottomNavigation.
             }
 
         } else if (dtoBundle.getIdTypeMenuReport() == getResources().getInteger(R.integer.idPollRepresentanteCasilla)) {
+            int statusReportCasilla, statusReportRepCasilla;
             switch (position) {
                 case 0:// poll station
                     startActivity(new Intent(this, Encuesta.class)
                             .putExtra("numeroEncuesta", 0)
                             .putExtra("idReporte", dtoBundle.getIdReportLocal())
-                            .putExtra("idEncuesta", (long) ContextApp.context.getResources().getInteger(R.integer.idPollSupervisor)));
+                            .putExtra("idEncuesta", (long) ContextApp.context.getResources().getInteger(R.integer.idPollRepresentanteCasilla)));
                     break;
                 case 1:// poll representative
-                    startActivity(new Intent(this, Encuesta.class)
-                            .putExtra("numeroEncuesta", 0)
-                            .putExtra("idReporte", dtoBundle.getIdReportLocal())
-                            .putExtra("idEncuesta", (long) ContextApp.context.getResources().getInteger(R.integer.idPollCasilla)));
+                    statusReportRepCasilla = modelMenuReport.isReportPollStation(dtoBundle, ContextApp.context.getResources().getInteger(R.integer.idPollRepresentanteCasilla));
+                    if (statusReportRepCasilla != getResources().getInteger(R.integer.statusModuleReportDone)) {
+                        dialog.setData("ENCUESTA REPRESENTANTE", "Debe completar la encuesta de representante primero", 0).
+                                setShowButton(false, true);
+                        dialog.show(getSupportFragmentManager(), "");
+                    } else {
+                        startActivity(new Intent(this, Encuesta.class)
+                                .putExtra("numeroEncuesta", 0)
+                                .putExtra("idReporte", dtoBundle.getIdReportLocal())
+                                .putExtra("idEncuesta", (long) ContextApp.context.getResources().getInteger(R.integer.idPollCasilla)));
+
+                    }
+
                     break;
                 case 2://census
-                    startActivity(new Intent(this, Census.class).putExtra(getString(R.string.app_bundle_name), dtoBundle));
+
+                    statusReportRepCasilla = modelMenuReport.isReportPollStation(dtoBundle, ContextApp.context.getResources().getInteger(R.integer.idPollRepresentanteCasilla));
+                    statusReportCasilla = modelMenuReport.isReportPollStation(dtoBundle, ContextApp.context.getResources().getInteger(R.integer.idPollCasilla));
+
+                    if (statusReportRepCasilla != getResources().getInteger(R.integer.statusModuleReportDone)) {
+                        dialog.setData("ENCUESTA REPRESENTANTE", "Debe completar la encuesta de reporesentante primero", 0).
+                                setShowButton(false, true);
+                        dialog.show(getSupportFragmentManager(), "");
+                    } else if (statusReportCasilla != getResources().getInteger(R.integer.statusModuleReportDone)) {
+                        dialog.setData("ENCUESTA CASILLA", "Debe completar la encuesta de casilla primero", 0).
+                                setShowButton(false, true);
+                        dialog.show(getSupportFragmentManager(), "");
+                    } else {
+                        startActivity(new Intent(this, Census.class).putExtra(getString(R.string.app_bundle_name), dtoBundle));
+                    }
+
+
                     break;
                 case 3://photo
-                    Intent intent = new Intent(this, PhotoWizardActivity.class);
-                    intent.putExtra(getString(R.string.user_roll), getResources().getInteger(R.integer.rollRepresentanteCasilla));
-                    intent.putExtra(getString(R.string.app_bundle_name), dtoBundle);
-                    startActivity(intent);
+                    statusReportRepCasilla = modelMenuReport.isReportPollStation(dtoBundle, ContextApp.context.getResources().getInteger(R.integer.idPollRepresentanteCasilla));
+                    statusReportCasilla = modelMenuReport.isReportPollStation(dtoBundle, ContextApp.context.getResources().getInteger(R.integer.idPollCasilla));
+                    statusReportCensusSupervisor = modelMenuReport.isReportRepCompleteCensus();
+
+                    if (statusReportRepCasilla != getResources().getInteger(R.integer.statusModuleReportDone)) {
+                        dialog.setData("ENCUESTA REPRESENTANTE", "Debe completar la encuesta de reporesentante primero", 0).
+                                setShowButton(false, true);
+                        dialog.show(getSupportFragmentManager(), "");
+                    } else if (statusReportCasilla != getResources().getInteger(R.integer.statusModuleReportDone)) {
+                        dialog.setData("ENCUESTA CASILLA", "Debe completar la encuesta de casilla primero", 0).
+                                setShowButton(false, true);
+                        dialog.show(getSupportFragmentManager(), "");
+                    } else if (statusReportCensusSupervisor == getResources().getInteger(R.integer.statusModuleReportNotDone)) {
+                        dialog.setData("DIRECCIÓN REPRESENTANTE", "Debe completar la dirección de representante primero", 0).
+                                setShowButton(false, true);
+                        dialog.show(getSupportFragmentManager(), "");
+                    } else {
+                        Intent intent = new Intent(this, PhotoWizardActivity.class);
+                        intent.putExtra(getString(R.string.user_roll), getResources().getInteger(R.integer.rollRepresentanteCasilla));
+                        intent.putExtra(getString(R.string.app_bundle_name), dtoBundle);
+                        startActivity(intent);
+
+                    }
                     break;
                 case 4://CHECKOUT
-                    startService(new Intent(ContextApp.context, ServiceCheck.class).
-                            putExtra(getString(R.string.app_bundle_name), dtoBundle).
-                            putExtra("typeCheck", getResources().getInteger(R.integer.type_check_out)));
-                    finish();
+
+                    statusReportRepCasilla = modelMenuReport.isReportPollStation(dtoBundle, ContextApp.context.getResources().getInteger(R.integer.idPollRepresentanteCasilla));
+                    statusReportCasilla = modelMenuReport.isReportPollStation(dtoBundle, ContextApp.context.getResources().getInteger(R.integer.idPollCasilla));
+                    statusReportCensusSupervisor = modelMenuReport.isReportRepCompleteCensus();
+
+                    if (statusReportRepCasilla != getResources().getInteger(R.integer.statusModuleReportDone)) {
+                        dialog.setData("ENCUESTA REPRESENTANTE", "Debe completar la encuesta de reporesentante primero", 0).
+                                setShowButton(false, true);
+                        dialog.show(getSupportFragmentManager(), "");
+                    } else if (statusReportCasilla != getResources().getInteger(R.integer.statusModuleReportDone)) {
+                        dialog.setData("ENCUESTA CASILLA", "Debe completar la encuesta de casilla primero", 0).
+                                setShowButton(false, true);
+                        dialog.show(getSupportFragmentManager(), "");
+                    } else if (statusReportCensusSupervisor == getResources().getInteger(R.integer.statusModuleReportNotDone)) {
+                        dialog.setData("DIRECCIÓN REPRESENTANTE", "Debe completar la dirección de representante primero", 0).
+                                setShowButton(false, true);
+                        dialog.show(getSupportFragmentManager(), "");
+                    } else {
+                        startService(new Intent(ContextApp.context, ServiceCheck.class).
+                                putExtra(getString(R.string.app_bundle_name), dtoBundle).
+                                putExtra("typeCheck", getResources().getInteger(R.integer.type_check_out)));
+                        finish();
+
+                    }
+
                     break;
             }
         }

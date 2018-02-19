@@ -65,9 +65,30 @@ public class ModelMenuReport {
         }
     }
 
+    public int isReportPollStation(DtoBundle dtoBundle, int idPoll) {
+        DaoEAEncuesta dao = new DaoEAEncuesta();
+        if (!dao.existPoll(idPoll)) {
+            return context.getResources().getInteger(R.integer.statusModuleReportWithOut);
+        } else if (dao.isResponsePollById(dtoBundle.getIdReportLocal(),idPoll) ) {
+            return context.getResources().getInteger(R.integer.statusModuleReportDone);
+        } else {
+            return context.getResources().getInteger(R.integer.statusModuleReportNotDone);
+        }
+    }
+
     public int isReportSupCompleteCensus() {
 
         if (new DaoReportCensus().isCompleteReportSupervisor()) {
+            return context.getResources().getInteger(R.integer.statusModuleReportDone);
+        } else {
+            return context.getResources().getInteger(R.integer.statusModuleReportNotDone);
+        }
+
+    }
+
+    public int isReportRepCompleteCensus() {
+
+        if (new DaoReportCensus().isCompleteReportRep(dtoBundle.getIdReportLocal())) {
             return context.getResources().getInteger(R.integer.statusModuleReportDone);
         } else {
             return context.getResources().getInteger(R.integer.statusModuleReportNotDone);
