@@ -88,6 +88,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, On
         } else {
             if (prefs.getLong(getResources().getString(R.string.app_share_preference_time_synch), 0L) > 0) {
                 Intent intent = new Intent(this, FaceDetectionActivity.class);
+                intent.putExtra("userName",prefs.getString(getString(R.string.app_share_preference_user_account),""));
                 startActivity(intent);
             } else {
                 startActivity(new Intent(this, Home.class));
@@ -149,6 +150,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, On
                         if ((System.currentTimeMillis() - prefs.getLong(getResources().getString(R.string.app_share_preference_time_synch), 0L))
                                 > 60000) {
                             Intent intent = new Intent(this, FaceDetectionActivity.class);
+                            intent.putExtra("userName",prefs.getString(getString(R.string.app_share_preference_user_account),""));
                             startActivity(intent);
                         } else {
                             startActivity(new Intent(this, Home.class));

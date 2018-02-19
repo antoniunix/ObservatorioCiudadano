@@ -102,7 +102,7 @@ public class FaceDetectionActivity extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         getSupportActionBar().hide();
 
-        if(getIntent().hasExtra(getString(R.string.app_bundle_name)))
+        if (getIntent().hasExtra(getString(R.string.app_bundle_name)))
             dtoBundle = (DtoBundle) getIntent().getExtras().get(getString(R.string.app_bundle_name));
 
         if (getIntent().hasExtra(getString(R.string.user_roll)) || getIntent().getIntExtra(getString(R.string.user_roll),
@@ -129,7 +129,7 @@ public class FaceDetectionActivity extends AppCompatActivity {
             timestamp.setText(df.format(System.currentTimeMillis()).toUpperCase());
 
         preferences = getSharedPreferences(getString(R.string.app_share_preference_name), Context.MODE_PRIVATE);
-        networkConfig = new NetworkConfig(new HandlerSendImage(), ContextApp.context, "gosharp/recognition/init-load");
+        networkConfig = new NetworkConfig(new HandlerSendImage(), ContextApp.context, "app/observador/recognition/");
 
         progressView = findViewById(R.id.progress_view);
         myPhoto = findViewById(R.id.my_photo);
@@ -147,7 +147,7 @@ public class FaceDetectionActivity extends AppCompatActivity {
         }
 
         switchCamera = findViewById(R.id.switch_camera);
-        if(preferences.getBoolean("front_camera", true))
+        if (preferences.getBoolean("front_camera", true))
             switchCamera.setImageResource(R.drawable.ic_action_camera_rear);
         else
             switchCamera.setImageResource(R.drawable.ic_action_camera_front);
@@ -307,13 +307,19 @@ public class FaceDetectionActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+        createCameraSource();
         startCameraSource();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mPreview.stop();
+        //mPreview.stop();
+        if (mCameraSource != null) {
+            mPreview.stop();
+            mCameraSource.release();
+            mCameraSource = null;
+        }
     }
 
     @Override
@@ -420,7 +426,7 @@ public class FaceDetectionActivity extends AppCompatActivity {
 
                 saveImage();
                 //sendImage();
-                finish();
+                finishReturn();
             } catch (Exception e) {
                 Log.v(TAG, e.toString());
             }
@@ -597,12 +603,13 @@ public class FaceDetectionActivity extends AppCompatActivity {
     }
 
     private void sendImage() {
+        Log.w(TAG, "sending");
         if (reco) {
             new Thread() {
                 public void run() {
                     ArrayList<NameValuePair> nameValuePairs = new ArrayList<>();
                     nameValuePairs.add(new BasicNameValuePair("json", ""));
-                    networkConfig.POST_MULTIPART_FILE("url", photoPath, nameValuePairs,
+                    networkConfig.POST_MULTIPART_FILE(userName + "/", photoPath, nameValuePairs,
                             imageName);
                 }
             }.start();
@@ -611,7 +618,7 @@ public class FaceDetectionActivity extends AppCompatActivity {
                 public void run() {
                     ArrayList<NameValuePair> nameValuePairs = new ArrayList<>();
                     nameValuePairs.add(new BasicNameValuePair("json", ""));
-                    networkConfig.POST_MULTIPART_FILE("url", photoPath, nameValuePairs,
+                    networkConfig.POST_MULTIPART_FILE("init-load/" + userName + "/", photoPath, nameValuePairs,
                             imageName);
                 }
             }.start();
@@ -642,8 +649,16 @@ public class FaceDetectionActivity extends AppCompatActivity {
         @Override
         public void handleMessage(Message msg) {
             NetworkTask nt = (NetworkTask) msg.obj;
+            Log.w(TAG, "status: "+nt.getResponseStatus());
             if (nt.getResponseStatus() == HttpStatus.SC_OK || nt.getResponseStatus() == HttpStatus.SC_CREATED) {
+                Log.w(TAG, nt.getResponse());
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(!reco)
+            finish();
     }
 }
