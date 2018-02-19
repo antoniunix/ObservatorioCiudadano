@@ -33,7 +33,7 @@ public class ModelMenuReport {
 
     }
 
-    public void createNewReportSupervisor(Activity activity) {
+    public void createNewReport(Activity activity) {
         String version = "";
         try {
             version = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;

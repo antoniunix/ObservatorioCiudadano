@@ -73,8 +73,8 @@ public class MenuReport extends AppCompatActivity implements AHBottomNavigation.
     @Override
     protected void onResume() {
         super.onResume();
-        if (dtoBundle.getIdReportLocal() == 0 && dtoBundle.getIdTypeMenuReport() == getResources().getInteger(R.integer.idPollSupervisor)) {
-            modelMenuReport.createNewReportSupervisor(this);
+        if (dtoBundle.getIdReportLocal() == 0) {
+            modelMenuReport.createNewReport(this);
         }
     }
 
