@@ -94,7 +94,9 @@ public class Census extends AppCompatActivity implements OnMapReadyCallback, OnF
                 setDirections(place.getLatLng().latitude, place.getLatLng().longitude);
                 CameraUpdate zoom = CameraUpdateFactory.newLatLngZoom(new LatLng(place.getLatLng().latitude,
                         place.getLatLng().longitude), 18);
-                map.moveCamera(zoom);
+                CameraPosition cameraPosition = new CameraPosition.Builder().target(place.getLatLng()).zoom(20).bearing(45).tilt(90).build();
+                map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
             }
 
             @Override
@@ -115,6 +117,7 @@ public class Census extends AppCompatActivity implements OnMapReadyCallback, OnF
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
+        map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         if (map != null) {
             setUpMap();
             configureCameraIdle();
