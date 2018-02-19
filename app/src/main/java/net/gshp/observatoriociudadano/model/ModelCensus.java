@@ -11,6 +11,7 @@ import net.gshp.observatoriociudadano.adapter.AdapterSpinnerCp;
 import net.gshp.observatoriociudadano.contextApp.ContextApp;
 import net.gshp.observatoriociudadano.dao.DaoReportCensus;
 import net.gshp.observatoriociudadano.dao.DaoSepomex;
+import net.gshp.observatoriociudadano.dto.DtoBundle;
 import net.gshp.observatoriociudadano.dto.DtoReportCensus;
 import net.gshp.observatoriociudadano.dto.DtoSepomex;
 import net.gshp.observatoriociudadano.listener.OnFinishLocation;
@@ -33,17 +34,20 @@ public class ModelCensus implements OnApiGeolocation {
     private Geolocation geolocation;
     private Context context;
     private float bestAccuracy = 0;
+    private DtoBundle dtoBundle;
 
-    public ModelCensus(Context context, OnFinishLocation onFinishLocation) {
+    public ModelCensus(Context context, OnFinishLocation onFinishLocation, DtoBundle dtoBundle) {
         daoSepomex = new DaoSepomex();
         daoReportCensus = new DaoReportCensus();
         this.context = context;
         this.onFinishLocation = onFinishLocation;
+        this.dtoBundle = dtoBundle;
     }
 
-    public ModelCensus() {
+    public ModelCensus(DtoBundle dtoBundle) {
         daoSepomex = new DaoSepomex();
         daoReportCensus = new DaoReportCensus();
+        this.dtoBundle = dtoBundle;
     }
 
     public void onStart() {
@@ -69,8 +73,8 @@ public class ModelCensus implements OnApiGeolocation {
     }
 
     public void saveCensus(DtoReportCensus dtoReportCensus) {
-
-        daoReportCensus.insert(dtoReportCensus);
+        daoReportCensus.deleteByIdReport(dtoBundle.getIdReportLocal());
+        daoReportCensus.insert(dtoReportCensus,dtoBundle.getIdReportLocal());
     }
 
 

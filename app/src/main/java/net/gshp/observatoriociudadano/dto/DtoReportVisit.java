@@ -14,6 +14,16 @@ public class DtoReportVisit {
     private long dateCheckIn;
     private long dateCheckOut;
     private String hash;
+    private int typePoll;
+
+    public int getTypePoll() {
+        return typePoll;
+    }
+
+    public DtoReportVisit setTypePoll(int typePoll) {
+        this.typePoll = typePoll;
+        return this;
+    }
 
     public String getHash() {
         return hash;

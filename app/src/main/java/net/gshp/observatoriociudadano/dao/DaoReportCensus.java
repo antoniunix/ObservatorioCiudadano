@@ -47,7 +47,7 @@ public class DaoReportCensus extends DAO {
      * INSERT
      */
 
-    public int insert(DtoReportCensus obj) {
+    public int insert(DtoReportCensus obj, long idReportLocal) {
         db = helper.getWritableDatabase();
         ContentValues cv;
         int resp = 0;
@@ -55,7 +55,7 @@ public class DaoReportCensus extends DAO {
             db.beginTransaction();
 
             cv = new ContentValues();
-            cv.put(IDREPORTLOCAL, obj.getIdReporteLocal());
+            cv.put(IDREPORTLOCAL, idReportLocal);
             cv.put(STATE, obj.getState());
             cv.put(TOWN, obj.getTown());
             cv.put(SUBURB, obj.getSuburb());
@@ -150,10 +150,22 @@ public class DaoReportCensus extends DAO {
         try {
             ContentValues cv = new ContentValues();
             cv.put("send", 1);
-            db.update(TABLE_NAME, cv, IDREPORTLOCAL+"=" + idReporteLocal, null);
+            db.update(TABLE_NAME, cv, IDREPORTLOCAL + "=" + idReporteLocal, null);
         } catch (Exception e) {
             e.printStackTrace();
         }
         db.close();
+    }
+
+    public void deleteByIdReport(long idReporteLocal) {
+        int resp = 0;
+        try {
+            db = helper.getWritableDatabase();
+            resp = db.delete(TABLE_NAME, IDREPORTLOCAL + "=?", new String[]{String.valueOf(idReporteLocal)});
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            db.close();
+        }
     }
 }

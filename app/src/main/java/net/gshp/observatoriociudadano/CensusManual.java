@@ -49,7 +49,7 @@ public class CensusManual extends AppCompatActivity implements TextWatcher, View
         latLng = (LatLng) getIntent().getExtras().get(getString(R.string.latlon));
         Log.e("dtoBunlde", "dtoBundle census manua. " + dtoBundle.getIdReportLocal());
         dtoReportCensus = new DtoReportCensus();
-        modelCensus = new ModelCensus();
+        modelCensus = new ModelCensus(dtoBundle);
         if (latLng != null) {
             dtoReportCensus.setLat(latLng.latitude);
             dtoReportCensus.setLon(latLng.longitude);
@@ -110,7 +110,6 @@ public class CensusManual extends AppCompatActivity implements TextWatcher, View
                 dtoReportCensus.setTown(modelCensus.getItemSuburb(spinnerSuburb.getSelectedItemPosition()).getTown());
             }
 
-            dtoReportCensus.setIdReporteLocal(dtoBundle.getIdReportLocal());
             dtoReportCensus.setCp(edtcp.getText().toString());
             dtoReportCensus.setAddress(edtStreet.getText().toString());
             dtoReportCensus.setAddress_left(edtStreetLeft.getText().toString());

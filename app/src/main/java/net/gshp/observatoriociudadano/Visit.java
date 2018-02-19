@@ -93,6 +93,7 @@ public class Visit extends AppCompatActivity implements OnItemClickListenerRV,
                 DtoBundle dtoBundle = new DtoBundle();
                 dtoBundle.setIdReportLocal(model.getItem(position).getId());
                 dtoBundle.setIdPdv(model.getItem(position).getIdPdv());
+                dtoBundle.setIdTypeMenuReport(model.getItem(position).getTypePoll());
                 startActivity(new Intent(this, MenuReport.class).putExtra(getString(R.string.app_bundle_name), dtoBundle));
                 finish();
                 break;
