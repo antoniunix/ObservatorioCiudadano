@@ -5,8 +5,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.gshp.api.utils.Crypto;
+
 import net.gshp.apiencuesta.model.DAO.DAOEncuestas;
 import net.gshp.observatoriociudadano.dto.DtoEARespuesta;
+import net.gshp.observatoriociudadano.dto.DtoSendPhoto;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -269,6 +272,61 @@ public class DaoEARespuesta extends DAO {
         return obj;
     }
 
+    public List<DtoSendPhoto> SelectToSendPhotoV1() {
+        db = helper.getReadableDatabase();
+        cursor = db.rawQuery("SELECT\n" +
+                "				EARespuesta.ida,\n" +
+                "				EARespuesta.idPregunta,\n" +
+                "				EARespuesta.idReporteLocal,\n" +
+                "				EARespuesta.idEncuesta,\n" +
+                "				EARespuesta.respuesta,\n" +
+                "				EARespuesta.hash,\n" +
+                "				EARespuesta.enviado,\n" +
+                "				report.id_report_server,\n" +
+                "				report.id_pdv as place,\n" +
+                "				EAPregunta.pregunta\n" +
+                "				FROM\n" +
+                "				EARespuesta\n" +
+                "				INNER JOIN report ON report.id = EARespuesta.idReporteLocal AND report.id_report_server > 0 \n" +
+                "				INNER JOIN EAPregunta ON EAPregunta.id = EARespuesta.idPregunta\n" +
+                "				WHERE  EARespuesta.enviado =1  and  EARespuesta.respuesta LIKE '%.jpg'", null);
+        List<DtoSendPhoto> obj = new ArrayList<>();
+        DtoSendPhoto catalogo;
+        if (cursor.moveToFirst()) {
+            int id = cursor.getColumnIndexOrThrow("ida");
+            int idPregunta = cursor.getColumnIndexOrThrow("idPregunta");
+            int idReporteLocal = cursor.getColumnIndexOrThrow("idReporteLocal");
+            int idEncuesta = cursor.getColumnIndexOrThrow("idEncuesta");
+            int respuesta = cursor.getColumnIndexOrThrow("respuesta");
+            int hash = cursor.getColumnIndexOrThrow("hash");
+            int enviado = cursor.getColumnIndexOrThrow("enviado");
+            int id_report_server = cursor.getColumnIndexOrThrow("id_report_server");
+            int pregunta = cursor.getColumnIndexOrThrow("pregunta");
+            int place = cursor.getColumnIndexOrThrow("place");
+            do {
+                catalogo = new DtoSendPhoto();
+                catalogo.setId(cursor.getLong(id));
+                catalogo.setPlaceId(cursor.getLong(place));
+                catalogo.setPersonId("@person");
+                catalogo.setUserId("@user");
+                catalogo.setTableName("ea_answer");
+                catalogo.setDescription(cursor.getString(pregunta));
+                catalogo.setVersion("1");
+                catalogo.setHash(cursor.getString(hash));
+                catalogo.setPath(cursor.getString(respuesta));
+                catalogo.setMd5(Crypto.MD5CheckSum(cursor.getString(respuesta)));
+
+                if (new File(catalogo.getPath()).exists()) {
+                    obj.add(catalogo);
+                }
+
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return obj;
+    }
+
     /**
      * Select
      */
@@ -343,7 +401,7 @@ public class DaoEARespuesta extends DAO {
                 "AND EARespuesta.idReporteLocal=" + idReportLocal + "\n" +
                 "AND EARespuesta.idEncuesta=" + idEncuesta, null);
         String userName = "";
-        Log.w(TAG, "result: "+cursor.getCount());
+        Log.w(TAG, "result: " + cursor.getCount());
         if (cursor.moveToFirst()) {
             userName = cursor.getString(cursor.getColumnIndexOrThrow("respuesta"));
         }
