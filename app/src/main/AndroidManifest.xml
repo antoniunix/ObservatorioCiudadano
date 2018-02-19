@@ -18,6 +18,7 @@
     <uses-permission android:name="android.permission.VIBRATE" />
 
 
+
     <application
         android:name=".contextApp.ContextApp"
         android:allowBackup="true"
