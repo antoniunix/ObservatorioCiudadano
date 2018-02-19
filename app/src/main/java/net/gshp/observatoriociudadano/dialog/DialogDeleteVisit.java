@@ -1,5 +1,7 @@
 package net.gshp.observatoriociudadano.dialog;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -11,6 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import net.gshp.observatoriociudadano.Census;
 import net.gshp.observatoriociudadano.R;
 import net.gshp.observatoriociudadano.Visit;
 import net.gshp.observatoriociudadano.dto.DtoReportVisit;
@@ -28,6 +31,7 @@ public class DialogDeleteVisit extends DialogFragment implements View.OnClickLis
     private DtoReportVisit dtoReportVisit;
     private Button btn_accept;
     private TextView txt_pdv, txt_date;
+
 
 
     @Nullable

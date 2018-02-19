@@ -49,7 +49,7 @@ public class DaoReportCensus extends DAO {
      * INSERT
      */
 
-    public int insert(DtoReportCensus obj) {
+    public int insert(DtoReportCensus obj, long idReportLocal) {
         db = helper.getWritableDatabase();
         ContentValues cv;
         int resp = 0;
@@ -57,7 +57,7 @@ public class DaoReportCensus extends DAO {
             db.beginTransaction();
 
             cv = new ContentValues();
-            cv.put(IDREPORTLOCAL, obj.getIdReporteLocal());
+            cv.put(IDREPORTLOCAL, idReportLocal);
             cv.put(STATE, obj.getState());
             cv.put(TOWN, obj.getTown());
             cv.put(SUBURB, obj.getSuburb());
@@ -159,6 +159,19 @@ public class DaoReportCensus extends DAO {
         db.close();
     }
 
+
+    public void deleteByIdReport(long idReporteLocal) {
+        int resp = 0;
+        try {
+            db = helper.getWritableDatabase();
+            resp = db.delete(TABLE_NAME, IDREPORTLOCAL + "=?", new String[]{String.valueOf(idReporteLocal)});
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            db.close();
+        }
+    }
+
     public boolean isCompleteReportSupervisor() {
         boolean isReportSupervisor = false;
         db = helper.getReadableDatabase();
@@ -177,5 +190,45 @@ public class DaoReportCensus extends DAO {
         cursor.close();
         db.close();
         return isReportSupervisor;
+
+    }
+
+    public boolean isCompleteReportRep(long idReport) {
+        boolean isReportSupervisor = false;
+        db = helper.getReadableDatabase();
+        String qry = "SELECT\n" +
+                "COUNT(*) count\n" +
+                "FROM\n" +
+                "report_census\n" +
+                "INNER JOIN report ON report.id= report_census.id_report_local and report.type_poll=" + ContextApp.context.getResources().getInteger(R.integer.idPollRepresentanteCasilla) + "\n" +
+                "WHERE report_census.id_report_local=" + idReport;
+        cursor = db.rawQuery(qry, null);
+        if (cursor.moveToFirst()) {
+            int count = cursor.getColumnIndexOrThrow("count");
+
+            isReportSupervisor = cursor.getInt(count) > 0;
+
+        }
+        cursor.close();
+        db.close();
+        return isReportSupervisor;
+
+    }
+
+    public String getAddress(long idReportLocal) {
+        db = helper.getWritableDatabase();
+        String qry = "Select \n" +
+                "report_census.address\n" +
+                "FROM\n" +
+                TABLE_NAME + "\n"
+                + "WHERE " + IDREPORTLOCAL + "=" + idReportLocal;
+        cursor = db.rawQuery(qry, null);
+        String address = "";
+        if (cursor.moveToFirst()) {
+            address = cursor.getString(cursor.getColumnIndexOrThrow(ADDRESS));
+        }
+        cursor.close();
+        db.close();
+        return address;
     }
 }

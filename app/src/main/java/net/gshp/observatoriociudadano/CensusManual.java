@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import net.gshp.observatoriociudadano.dialog.DialogDeleteCensus;
 import net.gshp.observatoriociudadano.dto.DtoBundle;
 import net.gshp.observatoriociudadano.dto.DtoReportCensus;
 import net.gshp.observatoriociudadano.model.ModelCensus;
@@ -49,7 +50,7 @@ public class CensusManual extends AppCompatActivity implements TextWatcher, View
         latLng = (LatLng) getIntent().getExtras().get(getString(R.string.latlon));
         Log.e("dtoBunlde", "dtoBundle census manua. " + dtoBundle.getIdReportLocal());
         dtoReportCensus = new DtoReportCensus();
-        modelCensus = new ModelCensus();
+        modelCensus = new ModelCensus(dtoBundle);
         if (latLng != null) {
             dtoReportCensus.setLat(latLng.latitude);
             dtoReportCensus.setLon(latLng.longitude);
@@ -110,7 +111,6 @@ public class CensusManual extends AppCompatActivity implements TextWatcher, View
                 dtoReportCensus.setTown(modelCensus.getItemSuburb(spinnerSuburb.getSelectedItemPosition()).getTown());
             }
 
-            dtoReportCensus.setIdReporteLocal(dtoBundle.getIdReportLocal());
             dtoReportCensus.setCp(edtcp.getText().toString());
             dtoReportCensus.setAddress(edtStreet.getText().toString());
             dtoReportCensus.setAddress_left(edtStreetLeft.getText().toString());
@@ -128,7 +128,12 @@ public class CensusManual extends AppCompatActivity implements TextWatcher, View
 
     @Override
     public void onClick(View view) {
-        save();
-
+        if(modelCensus.isCompleteCensus()){
+            DialogDeleteCensus dialogDeleteVisit = new DialogDeleteCensus();
+            dialogDeleteVisit.setDto(dtoBundle,dtoReportCensus);
+            dialogDeleteVisit.show(getSupportFragmentManager(), "dialogDelete");
+        }else {
+            save();
+        }
     }
 }

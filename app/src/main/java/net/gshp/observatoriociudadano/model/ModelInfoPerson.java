@@ -1,6 +1,8 @@
 package net.gshp.observatoriociudadano.model;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v4.content.FileProvider;
@@ -8,6 +10,7 @@ import android.widget.TextView;
 
 import net.gshp.observatoriociudadano.BuildConfig;
 import net.gshp.observatoriociudadano.R;
+import net.gshp.observatoriociudadano.contextApp.ContextApp;
 import net.gshp.observatoriociudadano.dao.DaoImageLogin;
 import net.gshp.observatoriociudadano.dto.DtoImageLogin;
 import net.gshp.observatoriociudadano.util.Config;
@@ -24,6 +27,7 @@ public class ModelInfoPerson {
     private CircleImageView imgTBPerson;
     private TextView txtTBDate, txtTBTitle, txtTBSubTitle;
     private DtoImageLogin dtoImageLogin;
+    private SharedPreferences preferences;
 
     public ModelInfoPerson(Activity activity) {
         imgTBPerson = activity.findViewById(R.id.imgTBPerson);
@@ -31,6 +35,7 @@ public class ModelInfoPerson {
         txtTBTitle = activity.findViewById(R.id.txtTBTitle);
         txtTBSubTitle = activity.findViewById(R.id.txtTBSubTitle);
         dtoImageLogin = new DaoImageLogin().selectLast();
+        preferences = ContextApp.context.getSharedPreferences(ContextApp.context.getString(R.string.app_share_preference_name), Context.MODE_PRIVATE);
     }
 
     public ModelInfoPerson loadImage(Activity activity) {
@@ -53,7 +58,7 @@ public class ModelInfoPerson {
 
     public ModelInfoPerson loadInfo() {
         txtTBDate.setText(Config.formatDate());
-        txtTBTitle.setText(dtoImageLogin.getName());
+        txtTBTitle.setText(preferences.getString(ContextApp.context.getString(R.string.app_share_preference_user_account), ""));
         return this;
     }
 }
