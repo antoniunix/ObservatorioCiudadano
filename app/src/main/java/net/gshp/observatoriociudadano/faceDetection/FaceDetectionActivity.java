@@ -15,13 +15,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -34,7 +34,6 @@ import com.google.android.gms.vision.MultiProcessor;
 import com.google.android.gms.vision.Tracker;
 import com.google.android.gms.vision.face.Face;
 import com.google.android.gms.vision.face.FaceDetector;
-import com.google.gson.Gson;
 
 import net.gshp.APINetwork.NetworkTask;
 import net.gshp.observatoriociudadano.Home;
@@ -43,12 +42,10 @@ import net.gshp.observatoriociudadano.R;
 import net.gshp.observatoriociudadano.contextApp.ContextApp;
 import net.gshp.observatoriociudadano.dao.DaoImageLogin;
 import net.gshp.observatoriociudadano.dao.DaoPhoto;
-import net.gshp.observatoriociudadano.dao.DaoReportCheck;
 import net.gshp.observatoriociudadano.dto.DtoImageLogin;
 import net.gshp.observatoriociudadano.dto.DtoPhoto;
 import net.gshp.observatoriociudadano.faceDetection.camera.CameraSourcePreview;
 import net.gshp.observatoriociudadano.faceDetection.camera.GraphicOverlay;
-import net.gshp.observatoriociudadano.geolocation.ServiceCheck;
 import net.gshp.observatoriociudadano.util.Exif;
 import net.gshp.observatoriociudadano.util.ImageConverter;
 
@@ -93,7 +90,7 @@ public class FaceDetectionActivity extends AppCompatActivity {
     private boolean frontCamera;
     private String userName;
 
-    private FloatingActionButton switchCamera;
+    private ImageButton switchCamera;
 
     @Override
     public void onCreate(Bundle icicle) {

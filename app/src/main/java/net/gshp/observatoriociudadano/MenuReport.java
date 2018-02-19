@@ -29,6 +29,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import net.gshp.apiencuesta.Encuesta;
 import net.gshp.observatoriociudadano.contextApp.ContextApp;
+import net.gshp.observatoriociudadano.dialog.DialogMessageGeneric;
 import net.gshp.observatoriociudadano.dto.DtoBundle;
 import net.gshp.observatoriociudadano.geolocation.ServiceCheck;
 import net.gshp.observatoriociudadano.faceDetection.PhotoWizardActivity;
@@ -79,7 +80,8 @@ public class MenuReport extends AppCompatActivity implements AHBottomNavigation.
 
     @Override
     public boolean onTabSelected(int position, boolean wasSelected) {
-
+        DialogMessageGeneric dialog = new DialogMessageGeneric();
+        int statusReportSupervisor, statusReportCensusSupervisor;
         if (dtoBundle.getIdTypeMenuReport() == getResources().getInteger(R.integer.idPollSupervisor)) {
             switch (position) {
                 case 0://poll supervisor
@@ -89,19 +91,59 @@ public class MenuReport extends AppCompatActivity implements AHBottomNavigation.
                             .putExtra("idEncuesta", (long) ContextApp.context.getResources().getInteger(R.integer.idPollSupervisor)));
                     break;
                 case 1:// census
-                    startActivity(new Intent(this, Census.class).putExtra(getString(R.string.app_bundle_name), dtoBundle));
+                    statusReportSupervisor = modelMenuReport.isReportPollSup();
+
+                    if (statusReportSupervisor != getResources().getInteger(R.integer.statusModuleReportDone)) {
+                        dialog.setData("ENCUESTA SUPERVISOR", "Debe completar la encuesta primero", 0).
+                                setShowButton(false, true);
+                        dialog.show(getSupportFragmentManager(), "");
+                    } else {
+                        startActivity(new Intent(this, Census.class).putExtra(getString(R.string.app_bundle_name), dtoBundle));
+                    }
+
+
                     break;
                 case 2://Photos
-                    Intent intent = new Intent(this, PhotoWizardActivity.class);
-                    intent.putExtra(getString(R.string.user_roll), getResources().getInteger(R.integer.rollSupervisor));
-                    intent.putExtra(getString(R.string.app_bundle_name), dtoBundle);
-                    startActivity(intent);
+                    statusReportSupervisor = modelMenuReport.isReportPollSup();
+                    statusReportCensusSupervisor = modelMenuReport.isReportSupCompleteCensus();
+
+                    if (statusReportSupervisor != getResources().getInteger(R.integer.statusModuleReportDone)) {
+                        dialog.setData("ENCUESTA SUPERVISOR", "Debe completar la encuesta primero", 0).
+                                setShowButton(false, true);
+                        dialog.show(getSupportFragmentManager(), "");
+                    } else if (statusReportCensusSupervisor == getResources().getInteger(R.integer.statusModuleReportNotDone)) {
+                        dialog.setData("DIRECCIÓN SUPERVISOR", "Debe completar la dirección de supervisor primero", 0).
+                                setShowButton(false, true);
+                        dialog.show(getSupportFragmentManager(), "");
+                    } else {
+                        Intent intent = new Intent(this, PhotoWizardActivity.class);
+                        intent.putExtra(getString(R.string.user_roll), getResources().getInteger(R.integer.rollSupervisor));
+                        intent.putExtra(getString(R.string.app_bundle_name), dtoBundle);
+                        startActivity(intent);
+                    }
+
+
                     break;
                 case 3://check out
-                    startService(new Intent(ContextApp.context, ServiceCheck.class).
-                            putExtra(getString(R.string.app_bundle_name), dtoBundle).
-                            putExtra("typeCheck", getResources().getInteger(R.integer.type_check_out)));
-                    finish();
+                    statusReportSupervisor = modelMenuReport.isReportPollSup();
+                    statusReportCensusSupervisor = modelMenuReport.isReportSupCompleteCensus();
+
+                    if (statusReportSupervisor != getResources().getInteger(R.integer.statusModuleReportDone)) {
+                        dialog.setData("ENCUESTA SUPERVISOR", "Debe completar la encuesta primero", 0).
+                                setShowButton(false, true);
+                        dialog.show(getSupportFragmentManager(), "");
+                    } else if (statusReportCensusSupervisor == getResources().getInteger(R.integer.statusModuleReportNotDone)) {
+                        dialog.setData("DIRECCIÓN SUPERVISOR", "Debe completar la dirección de supervisor primero", 0).
+                                setShowButton(false, true);
+                        dialog.show(getSupportFragmentManager(), "");
+                    } else {
+                        startService(new Intent(ContextApp.context, ServiceCheck.class).
+                                putExtra(getString(R.string.app_bundle_name), dtoBundle).
+                                putExtra("typeCheck", getResources().getInteger(R.integer.type_check_out)));
+                        finish();
+                    }
+
+
                     break;
             }
 

@@ -49,12 +49,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/header"
+        android:layout_centerHorizontal="true"
         android:layout_gravity="center">
 
         <net.gshp.observatoriociudadano.faceDetection.camera.GraphicOverlay
             android:id="@+id/faceOverlay"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:foregroundGravity="center"
             android:fitsSystemWindows="true" />
 
     </net.gshp.observatoriociudadano.faceDetection.camera.CameraSourcePreview>
@@ -63,10 +65,10 @@
         android:id="@+id/progress_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:visibility="gone"
-        android:paddingBottom="16dp">
+        android:layout_centerHorizontal="true"
+        android:paddingBottom="16dp"
+        android:visibility="gone">
 
         <ProgressBar
             android:id="@+id/progress"
@@ -94,21 +96,21 @@
             android:layout_below="@id/my_photo"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="5dp"
+            android:text="@string/process"
             android:textColor="#fff"
-            android:textSize="11sp"
-            android:text="@string/process" />
+            android:textSize="11sp" />
     </RelativeLayout>
 
-    <android.support.design.widget.FloatingActionButton
+    <ImageButton
         android:id="@+id/switch_camera"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:clickable="true"
-        android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:backgroundTint="@color/black_text"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:layout_margin="16dp"
-        app:srcCompat="@drawable/ic_action_camera_rear"
-        android:layout_alignParentRight="true" />
+        android:background="@null"
+        android:clickable="true"
+        app:srcCompat="@drawable/ic_action_camera_rear" />
 
 </RelativeLayout>
