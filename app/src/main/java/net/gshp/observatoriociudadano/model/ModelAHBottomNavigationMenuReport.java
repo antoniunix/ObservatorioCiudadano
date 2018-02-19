@@ -1,12 +1,15 @@
 package net.gshp.observatoriociudadano.model;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 
 import net.gshp.observatoriociudadano.R;
+import net.gshp.observatoriociudadano.contextApp.ContextApp;
 import net.gshp.observatoriociudadano.dto.DtoBundle;
 
 /**
@@ -58,12 +61,32 @@ public class ModelAHBottomNavigationMenuReport {
     }
 
     public void onResume() {
-//        if (model.isCheck(1)) {
-//            ahBottomNavigation.setNotification("H", 0);
-//        }
-//        if (model.isCheck(2)) {
-//            ahBottomNavigation.setNotification("H", 1);
-//        }
+        ahBottomNavigation.setNotificationBackgroundColor(Color.parseColor("#b72a2b"));
+        if (dtoBundle.getIdTypeMenuReport() == activity.getResources().getInteger(R.integer.idPollSupervisor)) {
+            if (model.isReportPollSup() != activity.getResources().getInteger(R.integer.statusModuleReportNotDone)) {
+                ahBottomNavigation.setNotification("✓", 0);
+            }
+            if (model.isReportSupCompleteCensus() != activity.getResources().getInteger(R.integer.statusModuleReportNotDone)) {
+                ahBottomNavigation.setNotification("✓", 1);
+            }
+            if (model.isReportPhotoComplete(dtoBundle.getIdReportLocal())) {
+                ahBottomNavigation.setNotification("✓", 2);
+            }
+
+        } else if (dtoBundle.getIdTypeMenuReport()
+                == activity.getResources().getInteger(R.integer.idPollRepresentanteCasilla)) {
+            if (model.isReportPollStation(dtoBundle, activity.getResources().getInteger(R.integer.idPollRepresentanteCasilla))
+                    != activity.getResources().getInteger(R.integer.statusModuleReportNotDone)) {
+                ahBottomNavigation.setNotification("✓", 0);
+            } if (model.isReportPollStation(dtoBundle, activity.getResources().getInteger(R.integer.idPollCasilla)) !=
+                    activity.getResources().getInteger(R.integer.statusModuleReportNotDone)) {
+                ahBottomNavigation.setNotification("✓", 1);
+            }if (model.isReportRepCompleteCensus() != activity.getResources().getInteger(R.integer.statusModuleReportNotDone)) {
+                ahBottomNavigation.setNotification("✓", 2);
+            } if (model.isReportPhotoComplete(dtoBundle.getIdReportLocal())) {
+                ahBottomNavigation.setNotification("✓", 3);
+            }
+        }
 
     }
 

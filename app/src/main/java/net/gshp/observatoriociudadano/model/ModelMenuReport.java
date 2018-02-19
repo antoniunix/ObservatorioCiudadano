@@ -11,6 +11,7 @@ import net.gshp.observatoriociudadano.R;
 import net.gshp.observatoriociudadano.contextApp.ContextApp;
 import net.gshp.observatoriociudadano.dao.DaoEAEncuesta;
 import net.gshp.observatoriociudadano.dao.DaoEaAnswerPdv;
+import net.gshp.observatoriociudadano.dao.DaoPhoto;
 import net.gshp.observatoriociudadano.dao.DaoReport;
 import net.gshp.observatoriociudadano.dao.DaoReportCensus;
 import net.gshp.observatoriociudadano.dto.DtoBundle;
@@ -69,7 +70,7 @@ public class ModelMenuReport {
         DaoEAEncuesta dao = new DaoEAEncuesta();
         if (!dao.existPoll(idPoll)) {
             return context.getResources().getInteger(R.integer.statusModuleReportWithOut);
-        } else if (dao.isResponsePollById(dtoBundle.getIdReportLocal(),idPoll) ) {
+        } else if (dao.isResponsePollById(dtoBundle.getIdReportLocal(), idPoll)) {
             return context.getResources().getInteger(R.integer.statusModuleReportDone);
         } else {
             return context.getResources().getInteger(R.integer.statusModuleReportNotDone);
@@ -105,6 +106,11 @@ public class ModelMenuReport {
         } else {
             return context.getResources().getInteger(R.integer.statusModuleReportNotDone);
         }
+    }
+
+    public boolean isReportPhotoComplete(long idReport) {
+        DaoPhoto dao = new DaoPhoto();
+        return (dao.missingPhotos(idReport) == 0);
     }
 
 

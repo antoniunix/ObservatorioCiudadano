@@ -26,6 +26,7 @@ public class ContextApp extends MultiDexApplication {
         AlarmGeolocation.getInstance();
 
         APIEncuesta.setPATH_FOTO(getString(R.string.app_path_photo));
+        APIEncuesta.setApplication(this);
 
         /*Dbapi*/
         DBAPI dbapi = DBAPI.getInstance();

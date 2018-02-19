@@ -3,6 +3,8 @@ package net.gshp.observatoriociudadano.dto;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by leo on 17/02/18.
  */
@@ -14,17 +16,23 @@ public class DtoReportCensus implements Parcelable {
     private double lat;
     private double lon;
     private String suburb;
+    @SerializedName("location")
     private String state;
     private String town;
+    @SerializedName("postal_code")
     private String cp;
+    @SerializedName("external_number")
     private String externalNumber;
     private String hash;
     private int send;
     private long date;
     private String address;
     private String provider;
+    @SerializedName("address_street_left")
     private String address_left;
+    @SerializedName("address_street_right")
     private String address_right;
+    @SerializedName("internal_number")
     private String internalNumber;
 
     @Override

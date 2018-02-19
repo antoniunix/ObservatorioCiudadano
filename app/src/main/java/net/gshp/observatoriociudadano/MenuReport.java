@@ -10,8 +10,6 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
@@ -31,12 +29,11 @@ import net.gshp.apiencuesta.Encuesta;
 import net.gshp.observatoriociudadano.contextApp.ContextApp;
 import net.gshp.observatoriociudadano.dialog.DialogMessageGeneric;
 import net.gshp.observatoriociudadano.dto.DtoBundle;
-import net.gshp.observatoriociudadano.geolocation.ServiceCheck;
 import net.gshp.observatoriociudadano.faceDetection.PhotoWizardActivity;
+import net.gshp.observatoriociudadano.geolocation.ServiceCheck;
 import net.gshp.observatoriociudadano.model.ModelAHBottomNavigationMenuReport;
 import net.gshp.observatoriociudadano.model.ModelInfoPerson;
 import net.gshp.observatoriociudadano.model.ModelMenuReport;
-import net.gshp.observatoriociudadano.util.Config;
 
 public class MenuReport extends AppCompatActivity implements AHBottomNavigation.OnTabSelectedListener,
         OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
@@ -79,6 +76,7 @@ public class MenuReport extends AppCompatActivity implements AHBottomNavigation.
         if (dtoBundle.getIdReportLocal() == 0) {
             modelMenuReport.createNewReport(this);
         }
+        modelAHBottomNavigationMenuReport.onResume();
     }
 
     @Override

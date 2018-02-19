@@ -17,6 +17,7 @@
         android:layout_below="@+id/toolbar" />
 
     <ImageView
+        android:minHeight="50dp"
         android:id="@+id/img_point"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -33,9 +34,22 @@
         android:background="@color/color_withe"
         android:ellipsize="end"
         android:maxLines="1"
+        android:visibility="invisible"
         android:minLines="1"
         android:singleLine="true"
         android:textSize="@dimen/sizeTextBig" />
+
+    <android.support.v7.widget.CardView
+        android:layout_below="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <fragment
+            android:id="@+id/place_autocomplete_fragment"
+            android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </android.support.v7.widget.CardView>
 
     <Button
         android:id="@+id/btn_save"

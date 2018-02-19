@@ -1,6 +1,5 @@
 package net.gshp.observatoriociudadano;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
@@ -15,6 +14,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.AutocompleteFilter;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -26,13 +30,11 @@ import com.google.android.gms.maps.model.LatLng;
 import net.gshp.observatoriociudadano.contextApp.ContextApp;
 import net.gshp.observatoriociudadano.dialog.DialogCensusManual;
 import net.gshp.observatoriociudadano.dialog.DialogDeleteCensus;
-import net.gshp.observatoriociudadano.dialog.DialogDeleteVisit;
 import net.gshp.observatoriociudadano.dto.DtoBundle;
 import net.gshp.observatoriociudadano.dto.DtoReportCensus;
 import net.gshp.observatoriociudadano.listener.OnFinishLocation;
 import net.gshp.observatoriociudadano.model.ModelCensus;
 import net.gshp.observatoriociudadano.model.ModelInfoPerson;
-import net.gshp.observatoriociudadano.model.ModelMenuReport;
 
 import java.io.IOException;
 import java.util.List;
@@ -52,6 +54,8 @@ public class Census extends AppCompatActivity implements OnMapReadyCallback, OnF
     private MapView mapView;
     public boolean setLocation = false;
     private double lat, lon;
+    int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
+    private PlaceAutocompleteFragment autocompleteFragment;
 
     private DtoReportCensus dtoReportCensus;
     private GoogleMap.OnCameraChangeListener onCameraChangeListener;
@@ -75,8 +79,29 @@ public class Census extends AppCompatActivity implements OnMapReadyCallback, OnF
         mapView = findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
         setUpMapIfNeeded();
-        edt_address.setOnClickListener(this);
         new ModelInfoPerson(this).loadImage(this).loadInfo("REGISTRO DE DOMICILIO");
+        autocompleteFragment = (PlaceAutocompleteFragment) getFragmentManager()
+                .findFragmentById(R.id.place_autocomplete_fragment);
+        AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
+                .setTypeFilter(AutocompleteFilter.TYPE_FILTER_GEOCODE)
+                .build();
+
+        autocompleteFragment.setFilter(typeFilter);
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                Log.i("leo", "Place: " + place.getName());
+                setDirections(place.getLatLng().latitude, place.getLatLng().longitude);
+                CameraUpdate zoom = CameraUpdateFactory.newLatLngZoom(new LatLng(place.getLatLng().latitude,
+                        place.getLatLng().longitude), 18);
+                map.moveCamera(zoom);
+            }
+
+            @Override
+            public void onError(Status status) {
+                Log.i("leo", "An error occurred: " + status);
+            }
+        });
 
     }
 
@@ -151,6 +176,7 @@ public class Census extends AppCompatActivity implements OnMapReadyCallback, OnF
                             + "Locale: " + addresses.get(0).getLocale() + ", "
                             + " size: " + addresses.size());
                     edt_address.setText(addresses.get(0).getAddressLine(0));
+                    autocompleteFragment.setText(addresses.get(0).getAddressLine(0));
                     dtoReportCensus = new DtoReportCensus();
                     dtoReportCensus.setLat(lat);
                     dtoReportCensus.setLon(lon);
@@ -213,16 +239,12 @@ public class Census extends AppCompatActivity implements OnMapReadyCallback, OnF
             case R.id.edt_address:
                 if (edt_address.getText().toString().isEmpty()) {
                     setUpDialogCensusManual();
-                } else {
-                    dtoReportCensus.setAddress(edt_address.getText().toString());
-                    Intent intent = new Intent(this, PlaceAutocompleteActivity.class).putExtra(getString(R.string.address), dtoReportCensus);
-                    startActivityForResult(intent, 1);
                 }
                 break;
             case R.id.btn_save:
                 if (modelCensus.isCompleteCensus()) {
                     DialogDeleteCensus dialogDeleteVisit = new DialogDeleteCensus();
-                    dialogDeleteVisit.setDto(dtoBundle,dtoReportCensus);
+                    dialogDeleteVisit.setDto(dtoBundle, dtoReportCensus);
                     dialogDeleteVisit.show(getSupportFragmentManager(), "dialogDelete");
                 } else if (edt_address.getText().toString().isEmpty()) {
                     setUpDialogCensusManual();
@@ -235,13 +257,13 @@ public class Census extends AppCompatActivity implements OnMapReadyCallback, OnF
 
     public void saveCensus() {
         modelCensus.saveCensus(dtoReportCensus);
-        Toast.makeText(this, "Se guardo ", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Se guardo correctamente ", Toast.LENGTH_SHORT).show();
         finish();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 1) {
+        /*if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
                 DtoReportCensus dtoReportCensus = (DtoReportCensus) data.getExtras().get(getString(R.string.address));
                 setDirections(dtoReportCensus.getLat(), dtoReportCensus.getLon());
@@ -251,7 +273,8 @@ public class Census extends AppCompatActivity implements OnMapReadyCallback, OnF
 
             }
 
-        }
+        }*/
+
     }
 }
 

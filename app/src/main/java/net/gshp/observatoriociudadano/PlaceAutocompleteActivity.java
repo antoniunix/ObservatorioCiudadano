@@ -6,18 +6,15 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.EditText;
 
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 
 import net.gshp.observatoriociudadano.dto.DtoReportCensus;
-import net.gshp.observatoriociudadano.dto.DtoSepomex;
 import net.gshp.observatoriociudadano.model.ModelInfoPerson;
 
 /**
@@ -69,6 +66,8 @@ public class PlaceAutocompleteActivity extends AppCompatActivity {
         intent.putExtra(getString(R.string.address), dtoReportCensusBundle);
         setResult(Activity.RESULT_OK, intent);
         finish();
+
+
 
     }
 }
