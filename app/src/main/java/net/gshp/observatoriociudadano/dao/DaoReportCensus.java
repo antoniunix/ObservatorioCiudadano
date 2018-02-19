@@ -200,8 +200,8 @@ public class DaoReportCensus extends DAO {
                 "COUNT(*) count\n" +
                 "FROM\n" +
                 "report_census\n" +
-                "INNER JOIN report ON report.id= report_census.id_report_local and report.type_poll=" + ContextApp.context.getResources().getInteger(R.integer.idPollRepresentanteCasilla)+"\n" +
-                "WHERE report_census.id_report_local="+idReport;
+                "INNER JOIN report ON report.id= report_census.id_report_local and report.type_poll=" + ContextApp.context.getResources().getInteger(R.integer.idPollRepresentanteCasilla) + "\n" +
+                "WHERE report_census.id_report_local=" + idReport;
         cursor = db.rawQuery(qry, null);
         if (cursor.moveToFirst()) {
             int count = cursor.getColumnIndexOrThrow("count");
@@ -213,5 +213,22 @@ public class DaoReportCensus extends DAO {
         db.close();
         return isReportSupervisor;
 
+    }
+
+    public String getAddress(long idReportLocal) {
+        db = helper.getWritableDatabase();
+        String qry = "Select \n" +
+                "report_census.address\n" +
+                "FROM\n" +
+                TABLE_NAME + "\n"
+                + "WHERE " + IDREPORTLOCAL + "=" + idReportLocal;
+        cursor = db.rawQuery(qry, null);
+        String address = "";
+        if (cursor.moveToFirst()) {
+            address = cursor.getString(cursor.getColumnIndexOrThrow(ADDRESS));
+        }
+        cursor.close();
+        db.close();
+        return address;
     }
 }

@@ -74,7 +74,7 @@ public class ModelCensus implements OnApiGeolocation {
 
     public void saveCensus(DtoReportCensus dtoReportCensus) {
         daoReportCensus.deleteByIdReport(dtoBundle.getIdReportLocal());
-        daoReportCensus.insert(dtoReportCensus,dtoBundle.getIdReportLocal());
+        daoReportCensus.insert(dtoReportCensus, dtoBundle.getIdReportLocal());
     }
 
 
@@ -95,5 +95,16 @@ public class ModelCensus implements OnApiGeolocation {
     public DtoSepomex getItemSuburb(int position) {
         return lstDtoSepomex.get(position);
     }
+
+
+    public boolean isCompleteCensus() {
+        return daoReportCensus.isCompleteReportSupervisor();
+    }
+
+    public String getAddressInfo() {
+        return daoReportCensus.getAddress(dtoBundle.getIdReportLocal());
+
+    }
+
 
 }

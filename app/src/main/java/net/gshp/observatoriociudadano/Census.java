@@ -25,6 +25,8 @@ import com.google.android.gms.maps.model.LatLng;
 
 import net.gshp.observatoriociudadano.contextApp.ContextApp;
 import net.gshp.observatoriociudadano.dialog.DialogCensusManual;
+import net.gshp.observatoriociudadano.dialog.DialogDeleteCensus;
+import net.gshp.observatoriociudadano.dialog.DialogDeleteVisit;
 import net.gshp.observatoriociudadano.dto.DtoBundle;
 import net.gshp.observatoriociudadano.dto.DtoReportCensus;
 import net.gshp.observatoriociudadano.listener.OnFinishLocation;
@@ -65,7 +67,7 @@ public class Census extends AppCompatActivity implements OnMapReadyCallback, OnF
 
     private void init(Bundle savedInstanceState) {
         dtoBundle = (DtoBundle) getIntent().getExtras().get(getString(R.string.app_bundle_name));
-        modelCensus = new ModelCensus(this, this,dtoBundle);
+        modelCensus = new ModelCensus(this, this, dtoBundle);
         btn_save = findViewById(R.id.btn_save);
         edt_address = findViewById(R.id.edt_address);
         edt_address.setOnClickListener(this);
@@ -103,7 +105,7 @@ public class Census extends AppCompatActivity implements OnMapReadyCallback, OnF
                 || ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != -1) {
         }
         CameraUpdate zoom = CameraUpdateFactory.newLatLngZoom(new LatLng(22.7,
-                -102.6), 18);
+                -102.6), 10);
         map.moveCamera(zoom);
 
     }
@@ -172,7 +174,7 @@ public class Census extends AppCompatActivity implements OnMapReadyCallback, OnF
 
     private void setUpDialogCensusManual() {
         DialogCensusManual dialogCensusManual = new DialogCensusManual();
-        dialogCensusManual.setDtoBundle(dtoBundle,lat,lon);
+        dialogCensusManual.setDtoBundle(dtoBundle, lat, lon);
         Log.e("dtoBundle", "dto census " + dtoBundle.getIdReportLocal());
         dialogCensusManual.show(getSupportFragmentManager(), "dialog");
     }
@@ -219,15 +221,25 @@ public class Census extends AppCompatActivity implements OnMapReadyCallback, OnF
                 }
                 break;
             case R.id.btn_save:
-                if (edt_address.getText().toString().isEmpty()) {
+                if (modelCensus.isCompleteCensus()) {
+                    DialogDeleteCensus dialogDeleteVisit = new DialogDeleteCensus();
+                    dialogDeleteVisit.setDto(dtoBundle,dtoReportCensus);
+                    dialogDeleteVisit.show(getSupportFragmentManager(), "dialogDelete");
+                } else if (edt_address.getText().toString().isEmpty()) {
                     setUpDialogCensusManual();
                 } else {
-                    modelCensus.saveCensus(dtoReportCensus);
-                    Toast.makeText(this, "Se guardo ", Toast.LENGTH_SHORT).show();
-                    finish();
+                    saveCensus();
+
+
                 }
         }
 
+    }
+
+    public void saveCensus() {
+        modelCensus.saveCensus(dtoReportCensus);
+        Toast.makeText(this, "Se guardo ", Toast.LENGTH_SHORT).show();
+        finish();
     }
 
     @Override
