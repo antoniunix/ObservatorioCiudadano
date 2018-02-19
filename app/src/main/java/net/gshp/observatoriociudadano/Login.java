@@ -87,7 +87,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, On
             edt_pass.setText(prefs.getString(getString(R.string.app_share_preference_user_pass), ""));
         } else {
             if (prefs.getLong(getResources().getString(R.string.app_share_preference_time_synch), 0L) > 0) {
-                Intent intent = new Intent(this, Home.class);
+                Intent intent = new Intent(this, FaceDetectionActivity.class);
                 startActivity(intent);
             } else {
                 startActivity(new Intent(this, Home.class));
