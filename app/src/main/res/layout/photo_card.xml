@@ -10,7 +10,7 @@
         android:layout_alignParentTop="true"
         android:clickable="true"
         android:background="@drawable/border_image"
-        android:scaleType="center" />
+        android:scaleType="fitCenter" />
 
     <TextView
         android:id="@+id/title"

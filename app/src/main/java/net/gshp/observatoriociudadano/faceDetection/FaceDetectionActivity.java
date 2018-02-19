@@ -42,6 +42,7 @@ import net.gshp.observatoriociudadano.R;
 import net.gshp.observatoriociudadano.contextApp.ContextApp;
 import net.gshp.observatoriociudadano.dao.DaoImageLogin;
 import net.gshp.observatoriociudadano.dao.DaoPhoto;
+import net.gshp.observatoriociudadano.dto.DtoBundle;
 import net.gshp.observatoriociudadano.dto.DtoImageLogin;
 import net.gshp.observatoriociudadano.dto.DtoPhoto;
 import net.gshp.observatoriociudadano.faceDetection.camera.CameraSourcePreview;
@@ -91,6 +92,7 @@ public class FaceDetectionActivity extends AppCompatActivity {
     private String userName;
 
     private ImageButton switchCamera;
+    private DtoBundle dtoBundle;
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -99,6 +101,9 @@ public class FaceDetectionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_face_detection);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         getSupportActionBar().hide();
+
+        if(getIntent().hasExtra(getString(R.string.app_bundle_name)))
+            dtoBundle = (DtoBundle) getIntent().getExtras().get(getString(R.string.app_bundle_name));
 
         if (getIntent().hasExtra(getString(R.string.user_roll)) || getIntent().getIntExtra(getString(R.string.user_roll),
                 getResources().getInteger(R.integer.rollSupervisor)) == getResources().getInteger(R.integer.rollSupervisor))
@@ -581,11 +586,11 @@ public class FaceDetectionActivity extends AppCompatActivity {
         } else {
             if (rol == getResources().getInteger(R.integer.rollSupervisor)) {
                 DtoPhoto photo = new DtoPhoto(photoPath, imageName,
-                        getIntent().getIntExtra(getString(R.string.PICTURE_POSITION), 0), 0, rol, userName);
+                        getIntent().getIntExtra(getString(R.string.PICTURE_POSITION), 0), 0, rol, userName, dtoBundle.getIdReportLocal());
                 new DaoPhoto().insert(photo);
             } else {
                 DtoPhoto photo = new DtoPhoto(photoPath, imageName,
-                        getIntent().getIntExtra(getString(R.string.PICTURE_POSITION), 0), 0, rol, userName);
+                        getIntent().getIntExtra(getString(R.string.PICTURE_POSITION), 0), 0, rol, userName, dtoBundle.getIdReportLocal());
                 new DaoPhoto().insert(photo);
             }
         }

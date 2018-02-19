@@ -139,7 +139,8 @@ public class Tables {
             "face_id INTEGER," +
             "sent INTEGER," +
             "rol INTEGER," +
-            "user TEXT)";
+            "user TEXT," +
+            "report_id INTEGER)";
 
     public final String TableImageLogin = "CREATE TABLE image_login(" +
             "id INTEGER PRIMARY KEY," +
