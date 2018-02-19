@@ -9,6 +9,7 @@
     <string name="app_path_apk">sdcard/ObservatorioCiudadano/ObservatorioCiudadano.apk</string>
     <string name="network_header_name_application_json">Content-Type</string>
     <string name="network_header_application_json">application/json</string>
+    <string name="network_header_multipart_data">multipart/form-data</string>
 
     <string name="home_button_navigation_supervisor">SUPERVISOR</string>
     <string name="home_button_navigation_representative">REPRESENTANTE</string>
