@@ -158,7 +158,7 @@ public class DaoReport extends DAO {
                 "                LEFT JOIN pdv ON pdv.id=report.id_pdv AND report.active=1\n" +
                 "                LEFT JOIN report_check  as CHECK_in ON CHECK_in.id_report_local = report.id   and CHECK_in.type=1 \n" +
                 "                LEFT JOIN report_check as CHECK_out on  CHECK_out.id_report_local = report.id   and CHECK_out.type=2 \n" +
-                "                WHERE report.active=1\n"+
+                "                WHERE report.active=1\n" +
                 "                ) as q1 \n" +
                 "                where    q1.datecheckin   is not NULL  and  q1.datecheckout   is NULL";
         cursor = db.rawQuery(queryIncomplete, null);
@@ -401,6 +401,7 @@ public class DaoReport extends DAO {
                 "                report.id, \n" +
                 "                report.send, \n" +
                 "                report.hash, \n" +
+                "                report.type_poll,\n" +
                 "                pdv.name, \n" +
                 "                report.id_pdv,                \n" +
                 "                CHECK_in.date  datecheckin, \n" +
@@ -410,7 +411,7 @@ public class DaoReport extends DAO {
                 "                LEFT JOIN pdv ON pdv.id=report.id_pdv AND report.active=1\n" +
                 "                LEFT JOIN report_check  as CHECK_in ON CHECK_in.id_report_local = report.id   and CHECK_in.type=1 \n" +
                 "                LEFT JOIN report_check as CHECK_out on  CHECK_out.id_report_local = report.id   and CHECK_out.type=2 \n" +
-                "                WHERE report.active=1\n"+
+                "                WHERE report.active=1\n" +
                 "                ) as q1 \n" +
                 "                where    q1.datecheckin   is not NULL  and  q1.datecheckout   is NULL";
 
@@ -419,6 +420,7 @@ public class DaoReport extends DAO {
                 "                report.id, \n" +
                 "                report.send, \n" +
                 "                report.hash, \n" +
+                "                report.type_poll,\n" +
                 "                pdv.name, \n" +
                 "                report.id_pdv,                \n" +
                 "                CHECK_in.date  datecheckin, \n" +
@@ -428,7 +430,7 @@ public class DaoReport extends DAO {
                 "                LEFT JOIN pdv ON pdv.id=report.id_pdv AND report.active=1\n" +
                 "                LEFT JOIN report_check  as CHECK_in ON CHECK_in.id_report_local = report.id   and CHECK_in.type=1 \n" +
                 "                LEFT JOIN report_check as CHECK_out on  CHECK_out.id_report_local = report.id   and CHECK_out.type=2 \n" +
-                "                WHERE report.active=1\n"+
+                "                WHERE report.active=1\n" +
                 "                ) as q1 \n" +
                 "                where    q1.datecheckin   is not NULL  and  q1.datecheckout   is not NULL  and q1.send=0";
 
@@ -438,6 +440,7 @@ public class DaoReport extends DAO {
                 "                report.id, \n" +
                 "                report.send, \n" +
                 "                report.hash, \n" +
+                "                report.type_poll,\n" +
                 "                pdv.name, \n" +
                 "                report.id_pdv,                \n" +
                 "                CHECK_in.date  datecheckin, \n" +
@@ -447,11 +450,11 @@ public class DaoReport extends DAO {
                 "                LEFT JOIN pdv ON pdv.id=report.id_pdv AND report.active=1\n" +
                 "                LEFT JOIN report_check  as CHECK_in ON CHECK_in.id_report_local = report.id   and CHECK_in.type=1 \n" +
                 "                LEFT JOIN report_check as CHECK_out on  CHECK_out.id_report_local = report.id   and CHECK_out.type=2 \n" +
-                "                WHERE report.active=1\n"+
+                "                WHERE report.active=1\n" +
                 "                ) as q1 \n" +
                 "                where    q1.datecheckin   is not NULL  and  q1.datecheckout   is not NULL  and q1.send>0";
 
-Log.e("send","qry incomplete \n "+queryIncomplete+"\n not send "+queryCompleteNotSend+"\n completed "+queryCompleteSend);
+        Log.e("send", "qry incomplete \n " + queryIncomplete + "\n not send " + queryCompleteNotSend + "\n completed " + queryCompleteSend);
         cursor = db.rawQuery(queryIncomplete, null);
         List<DtoReportVisit> obj = new ArrayList<>();
         DtoReportVisit dtoReportVisit;
@@ -462,6 +465,7 @@ Log.e("send","qry incomplete \n "+queryIncomplete+"\n not send "+queryCompleteNo
         int dateCheckIn = cursor.getColumnIndexOrThrow("datecheckin");
         int dateCheckOut = cursor.getColumnIndexOrThrow("datecheckout");
         int hash = cursor.getColumnIndexOrThrow("hash");
+        int typePoll = cursor.getColumnIndexOrThrow("type_poll");
         if (cursor.moveToFirst()) {
             do {
                 dtoReportVisit = new DtoReportVisit();
@@ -472,6 +476,7 @@ Log.e("send","qry incomplete \n "+queryIncomplete+"\n not send "+queryCompleteNo
                 dtoReportVisit.setDateCheckIn(cursor.getLong(dateCheckIn));
                 dtoReportVisit.setDateCheckOut(cursor.getLong(dateCheckOut));
                 dtoReportVisit.setHash(cursor.getString(hash));
+                dtoReportVisit.setTypePoll(cursor.getInt(typePoll));
 
                 obj.add(dtoReportVisit);
             } while (cursor.moveToNext());
@@ -487,6 +492,7 @@ Log.e("send","qry incomplete \n "+queryIncomplete+"\n not send "+queryCompleteNo
                 dtoReportVisit.setDateCheckIn(cursor.getLong(dateCheckIn));
                 dtoReportVisit.setDateCheckOut(cursor.getLong(dateCheckOut));
                 dtoReportVisit.setHash(cursor.getString(hash));
+                dtoReportVisit.setTypePoll(cursor.getInt(typePoll));
 
                 obj.add(dtoReportVisit);
             } while (cursor.moveToNext());
@@ -502,6 +508,7 @@ Log.e("send","qry incomplete \n "+queryIncomplete+"\n not send "+queryCompleteNo
                 dtoReportVisit.setDateCheckIn(cursor.getLong(dateCheckIn));
                 dtoReportVisit.setDateCheckOut(cursor.getLong(dateCheckOut));
                 dtoReportVisit.setHash(cursor.getString(hash));
+                dtoReportVisit.setTypePoll(cursor.getInt(typePoll));
 
                 obj.add(dtoReportVisit);
             } while (cursor.moveToNext());

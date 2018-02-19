@@ -65,11 +65,11 @@ public class Census extends AppCompatActivity implements OnMapReadyCallback, OnF
 
     private void init(Bundle savedInstanceState) {
         dtoBundle = (DtoBundle) getIntent().getExtras().get(getString(R.string.app_bundle_name));
+        modelCensus = new ModelCensus(this, this,dtoBundle);
         btn_save = findViewById(R.id.btn_save);
         edt_address = findViewById(R.id.edt_address);
         edt_address.setOnClickListener(this);
         btn_save.setOnClickListener(this);
-        modelCensus = new ModelCensus(this, this);
         mapView = findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
         setUpMapIfNeeded();
@@ -157,7 +157,6 @@ public class Census extends AppCompatActivity implements OnMapReadyCallback, OnF
                     dtoReportCensus.setCp(addresses.get(0).getPostalCode());
                     dtoReportCensus.setExternalNumber(addresses.get(0).getFeatureName());
                     dtoReportCensus.setSend(0);
-                    dtoReportCensus.setIdReporteLocal(dtoBundle.getIdReportLocal());
                     dtoReportCensus.setProvider(getString(R.string.providerAutomatic));
                     dtoReportCensus.setSuburb(addresses.get(0).getSubLocality());
                     dtoReportCensus.setTown(addresses.get(0).getLocality());
