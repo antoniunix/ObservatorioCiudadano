@@ -229,8 +229,6 @@ public class Census extends AppCompatActivity implements OnMapReadyCallback, OnF
                     setUpDialogCensusManual();
                 } else {
                     saveCensus();
-
-
                 }
         }
 

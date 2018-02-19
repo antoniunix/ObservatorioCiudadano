@@ -20,6 +20,7 @@ import net.gshp.observatoriociudadano.listener.OnItemClickListenerRV;
 import net.gshp.observatoriociudadano.model.ModelInfoPerson;
 import net.gshp.observatoriociudadano.model.ModelVisit;
 import net.gshp.observatoriociudadano.util.BottomNavigationViewHelper;
+import net.gshp.observatoriociudadano.util.ChangeFontStyle;
 import net.gshp.observatoriociudadano.util.Config;
 
 public class Visit extends AppCompatActivity implements OnItemClickListenerRV,
@@ -46,6 +47,7 @@ public class Visit extends AppCompatActivity implements OnItemClickListenerRV,
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
         bottomNavigationView.setSelectedItemId(R.id.action_visit);
         new ModelInfoPerson(this).loadImage(this).loadInfo();
+        ChangeFontStyle.changeFont(txtTBDate, txtTBTitle);
     }
 
     @Override

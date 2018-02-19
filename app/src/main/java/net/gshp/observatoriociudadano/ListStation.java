@@ -19,6 +19,7 @@ import net.gshp.observatoriociudadano.listener.OnItemClickListenerRV;
 import net.gshp.observatoriociudadano.model.ModelInfoPerson;
 import net.gshp.observatoriociudadano.model.ModelListStation;
 import net.gshp.observatoriociudadano.util.BottomNavigationViewHelper;
+import net.gshp.observatoriociudadano.util.ChangeFontStyle;
 import net.gshp.observatoriociudadano.util.Config;
 
 public class ListStation extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener,
@@ -42,6 +43,7 @@ public class ListStation extends AppCompatActivity implements BottomNavigationVi
         lmy = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         new ModelInfoPerson(this).loadImage(this).loadInfo();
         adapter = model.getAdapter(this);
+        ChangeFontStyle.changeFont(txtTBDate,txtTBTitle);
 
     }
 
