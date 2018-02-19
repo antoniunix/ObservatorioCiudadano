@@ -81,7 +81,7 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
         ChangeFontStyle.changeFont();
 
         preferences = getSharedPreferences(getString(R.string.app_share_preference_name), Context.MODE_PRIVATE);
-        new ModelInfoPerson(this).loadImage(this).loadInfo();
+        new ModelInfoPerson(this).loadImage(this).loadInfo("INICIO");
         mapFrag.getMapAsync(this);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
         btnTBSettings.setOnClickListener(this);

@@ -70,7 +70,7 @@ public class CensusManual extends AppCompatActivity implements TextWatcher, View
         edtcp.setThreshold(1);
         btn_save.setOnClickListener(this);
         new ModelInfoPerson(this).loadImage(this);
-        new ModelInfoPerson(this).loadImage(this).loadInfo();
+        new ModelInfoPerson(this).loadImage(this).loadInfo("REGISTRO DE DOMICILIO");
         ChangeFontStyle.changeFont(edtcp, edtNumberin, edtNumberOut, edtStreet, edtStreetLeft,
                 edtStreetRight, edtStreet, spinnerSuburb, btn_save);
 

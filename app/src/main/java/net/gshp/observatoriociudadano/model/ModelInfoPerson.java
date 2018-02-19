@@ -58,9 +58,10 @@ public class ModelInfoPerson {
         return this;
     }
 
-    public ModelInfoPerson loadInfo() {
+    public ModelInfoPerson loadInfo(String subtitle) {
         txtTBDate.setText(Config.formatDate());
         txtTBTitle.setText(preferences.getString(ContextApp.context.getString(R.string.app_share_preference_user_account), ""));
+        txtTBSubTitle.setText(subtitle);
         return this;
     }
 }

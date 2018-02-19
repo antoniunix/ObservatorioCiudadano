@@ -56,9 +56,12 @@ public class MenuReport extends AppCompatActivity implements AHBottomNavigation.
         dtoBundle = (DtoBundle) getIntent().getExtras().get(getString(R.string.app_bundle_name));
         mapFrag = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFrag.getMapAsync(this);
-        new ModelInfoPerson(this).loadImage(this);
         modelMenuReport = new ModelMenuReport(dtoBundle);
-        new ModelInfoPerson(this).loadImage(this).loadInfo();
+        if(dtoBundle.getIdTypeMenuReport()==getResources().getInteger(R.integer.idPollSupervisor)){
+            new ModelInfoPerson(this).loadImage(this).loadInfo("SUPERVISOR");
+        }else if(dtoBundle.getIdTypeMenuReport()==getResources().getInteger(R.integer.idPollRepresentanteCasilla)){
+            new ModelInfoPerson(this).loadImage(this).loadInfo("REPRESENTANTE");
+        }
         modelAHBottomNavigationMenuReport = new ModelAHBottomNavigationMenuReport(this, modelMenuReport, this, dtoBundle);
     }
 

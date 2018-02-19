@@ -76,8 +76,7 @@ public class Census extends AppCompatActivity implements OnMapReadyCallback, OnF
         mapView.onCreate(savedInstanceState);
         setUpMapIfNeeded();
         edt_address.setOnClickListener(this);
-        new ModelInfoPerson(this).loadImage(this);
-        new ModelInfoPerson(this).loadImage(this).loadInfo();
+        new ModelInfoPerson(this).loadImage(this).loadInfo("REGISTRO DE DOMICILIO");
 
     }
 
