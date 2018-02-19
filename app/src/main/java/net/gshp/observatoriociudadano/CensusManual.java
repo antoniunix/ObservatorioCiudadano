@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import net.gshp.observatoriociudadano.dialog.DialogDeleteCensus;
 import net.gshp.observatoriociudadano.dto.DtoBundle;
 import net.gshp.observatoriociudadano.dto.DtoReportCensus;
 import net.gshp.observatoriociudadano.model.ModelCensus;
@@ -127,7 +128,12 @@ public class CensusManual extends AppCompatActivity implements TextWatcher, View
 
     @Override
     public void onClick(View view) {
-        save();
-
+        if(modelCensus.isCompleteCensus()){
+            DialogDeleteCensus dialogDeleteVisit = new DialogDeleteCensus();
+            dialogDeleteVisit.setDto(dtoBundle,dtoReportCensus);
+            dialogDeleteVisit.show(getSupportFragmentManager(), "dialogDelete");
+        }else {
+            save();
+        }
     }
 }

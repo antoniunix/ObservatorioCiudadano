@@ -192,4 +192,21 @@ public class DaoReportCensus extends DAO {
         return isReportSupervisor;
 
     }
+
+    public String getAddress(long idReportLocal) {
+        db = helper.getWritableDatabase();
+        String qry = "Select \n" +
+                "report_census.address\n" +
+                "FROM\n" +
+                TABLE_NAME + "\n"
+                + "WHERE " + IDREPORTLOCAL + "=" + idReportLocal;
+        cursor = db.rawQuery(qry, null);
+        String address = "";
+        if (cursor.moveToFirst()) {
+            address = cursor.getString(cursor.getColumnIndexOrThrow(ADDRESS));
+        }
+        cursor.close();
+        db.close();
+        return address;
+    }
 }

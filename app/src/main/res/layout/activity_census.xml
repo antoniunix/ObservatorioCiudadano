@@ -21,7 +21,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_centerInParent="true"
-        android:src="@drawable/pin_casilla" />
+        android:src="@drawable/pin_casa" />
 
     <EditText
         android:id="@+id/edt_address"
