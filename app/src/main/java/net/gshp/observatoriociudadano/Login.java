@@ -3,8 +3,8 @@ package net.gshp.observatoriociudadano;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -13,9 +13,9 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.android.gms.common.GooglePlayServicesUtil;
-
-import net.gshp.observatoriociudadano.contextApp.ContextApp;
+import net.gshp.observatoriociudadano.dao.DaoEARespuesta;
+import net.gshp.observatoriociudadano.dao.DaoEaRespuestaPdv;
+import net.gshp.observatoriociudadano.dao.DaoPhoto;
 import net.gshp.observatoriociudadano.dao.DaoPolitic;
 import net.gshp.observatoriociudadano.dialog.DialogChangePassword;
 import net.gshp.observatoriociudadano.dialog.DialogPrivacyPolitics;
@@ -89,7 +89,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, On
             ChangeFontStyle.changeFont(btn_sync,btn_sync_agree,btn_sync_cancel,btn_next
             ,edt_user_name,edt_pass,txtPorcent);
         } else {
-            if (prefs.getLong(getResources().getString(R.string.app_share_preference_time_synch), 0L) > 0) {
+            if (new DaoEaRespuestaPdv().supervisorRegistered() || new DaoPhoto().previousPhotos(prefs.getString(getString(R.string.app_share_preference_user_account),""))) {
                 Intent intent = new Intent(this, FaceDetectionActivity.class);
                 intent.putExtra("userName",prefs.getString(getString(R.string.app_share_preference_user_account),""));
                 startActivity(intent);
@@ -150,8 +150,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, On
                 switch (statusSync) {
                     case HttpStatus.SC_OK:
                         Log.w("Login","time "+prefs.getLong(getResources().getString(R.string.app_share_preference_time_synch), 0L));
-                        if ((System.currentTimeMillis() - prefs.getLong(getResources().getString(R.string.app_share_preference_time_synch), 0L))
-                                > 60000) {
+                        if (new DaoEaRespuestaPdv().supervisorRegistered() || new DaoPhoto().previousPhotos(prefs.getString(getString(R.string.app_share_preference_user_account),""))) {
                             Intent intent = new Intent(this, FaceDetectionActivity.class);
                             intent.putExtra("userName",prefs.getString(getString(R.string.app_share_preference_user_account),""));
                             startActivity(intent);

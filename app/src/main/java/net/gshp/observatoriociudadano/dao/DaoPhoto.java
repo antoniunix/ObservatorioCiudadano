@@ -183,4 +183,20 @@ public class DaoPhoto extends DAO {
         else
             return 7 - photos;
     }
+
+    public boolean previousPhotos(String userName) {
+        db = helper.getReadableDatabase();
+        cursor = db.rawQuery("SELECT\n" +
+                "id\n" +
+                "FROM\n" +
+                "photo\n" +
+                "WHERE user = \"" + userName + "\"", null);
+
+        int photos = cursor.getCount();
+
+        cursor.close();
+        db.close();
+
+        return photos >= 7;
+    }
 }

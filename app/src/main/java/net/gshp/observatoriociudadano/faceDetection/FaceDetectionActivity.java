@@ -399,7 +399,7 @@ public class FaceDetectionActivity extends AppCompatActivity {
         @Override
         public void onPictureTaken(byte[] rawData) {
             orientation = Exif.getOrientation(rawData);
-            Bitmap bitmap = decodeSampledBitmapFromResource(80,120, rawData);
+            Bitmap bitmap = decodeSampledBitmapFromResource(80, 120, rawData);
 
             switch (orientation) {
                 case 90:
@@ -591,15 +591,9 @@ public class FaceDetectionActivity extends AppCompatActivity {
             DtoImageLogin image = new DtoImageLogin(photoPath, imageName, 0, rol);
             new DaoImageLogin().insertOrReplace(image);
         } else {
-            if (rol == getResources().getInteger(R.integer.rollSupervisor)) {
-                DtoPhoto photo = new DtoPhoto(photoPath, imageName,
-                        getIntent().getIntExtra(getString(R.string.PICTURE_POSITION), 0), 0, rol, userName, dtoBundle.getIdReportLocal());
-                new DaoPhoto().insert(photo);
-            } else {
-                DtoPhoto photo = new DtoPhoto(photoPath, imageName,
-                        getIntent().getIntExtra(getString(R.string.PICTURE_POSITION), 0), 0, rol, userName, dtoBundle.getIdReportLocal());
-                new DaoPhoto().insert(photo);
-            }
+            DtoPhoto photo = new DtoPhoto(photoPath, imageName,
+                    getIntent().getIntExtra(getString(R.string.PICTURE_POSITION), 0), 0, rol, userName, dtoBundle.getIdReportLocal());
+            new DaoPhoto().insert(photo);
         }
     }
 
@@ -650,7 +644,7 @@ public class FaceDetectionActivity extends AppCompatActivity {
         @Override
         public void handleMessage(Message msg) {
             NetworkTask nt = (NetworkTask) msg.obj;
-            Log.w(TAG, "status: "+nt.getResponseStatus());
+            Log.w(TAG, "status: " + nt.getResponseStatus());
             if (nt.getResponseStatus() == HttpStatus.SC_OK || nt.getResponseStatus() == HttpStatus.SC_CREATED) {
                 Log.w(TAG, nt.getResponse());
             }
@@ -659,7 +653,7 @@ public class FaceDetectionActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if(!reco)
+        if (!reco)
             finish();
     }
 
