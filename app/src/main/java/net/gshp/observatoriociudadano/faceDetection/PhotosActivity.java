@@ -167,15 +167,16 @@ public class PhotosActivity extends AppCompatActivity {
         pictureList.add(a);
 
         if (rol == getResources().getInteger(R.integer.rollSupervisor)) {
-            userName = preferences.getString(getString(R.string.app_share_preference_user_account), "");
-            List<DtoPhoto> pictures = new DaoPhoto().selectAll(userName);
+            userName = new DaoEARespuesta().selectUserName(1, 1, dtoBundle.getIdReportLocal());
+            List<DtoPhoto> pictures = new DaoPhoto().selectAll(userName.replaceAll("\\s+",""));
 
             for (DtoPhoto picture : pictures) {
                 pictureList.get(picture.getFace_id()).setPicture(picture.getPath());
             }
         } else {
-            userName = new DaoEARespuesta().selectUserName(1, 1, dtoBundle.getIdReportLocal());
-            List<DtoPhoto> pictures = new DaoPhoto().selectAll(userName);
+            userName = new DaoEARespuesta().selectUserName(8, 2, dtoBundle.getIdReportLocal());
+            List<DtoPhoto> pictures = new DaoPhoto().selectAll(userName.replaceAll("\\s+",""));
+            Log.w(TAG, userName);
 
             for (DtoPhoto picture : pictures) {
                 pictureList.get(picture.getFace_id()).setPicture(picture.getPath());
