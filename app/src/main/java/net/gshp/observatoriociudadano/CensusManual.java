@@ -122,7 +122,7 @@ public class CensusManual extends AppCompatActivity implements TextWatcher, View
             dtoReportCensus.setProvider(getString(R.string.providerManual));
             modelCensus.saveCensus(dtoReportCensus);
             Toast.makeText(this, "Se guardo ", Toast.LENGTH_SHORT).show();
-
+            finish();
 
         }
 
@@ -130,13 +130,8 @@ public class CensusManual extends AppCompatActivity implements TextWatcher, View
 
     @Override
     public void onClick(View view) {
-        if (modelCensus.isCompleteCensus()) {
-            DialogDeleteCensus dialogDeleteVisit = new DialogDeleteCensus();
-            dialogDeleteVisit.setDto(dtoBundle, dtoReportCensus);
-            dialogDeleteVisit.show(getSupportFragmentManager(), "dialogDelete");
-        } else {
+
             save();
-            finish();
-        }
+        
     }
 }
