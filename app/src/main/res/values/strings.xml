@@ -345,5 +345,6 @@ Página 6 de 6</string>
     <string name="dialog_delete_visit_text">¿Desea eliminar esta visita?</string>
     <string name="dialog_delete_census">¿Desea eliminar Ubicación?</string>
     <string name="supervisor">SUPERVISOR</string>
+    <string name="report_complete">Este reporte ya fue concluido.</string>
 
 </resources>

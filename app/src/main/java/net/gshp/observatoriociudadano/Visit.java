@@ -3,10 +3,12 @@ package net.gshp.observatoriociudadano;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -86,12 +88,17 @@ public class Visit extends AppCompatActivity implements OnItemClickListenerRV,
     public void onItemClickListener(View v, int position) {
         switch (v.getId()) {
             case R.id.rltMain:
-                DtoBundle dtoBundle = new DtoBundle();
-                dtoBundle.setIdReportLocal(model.getItem(position).getId());
-                dtoBundle.setIdPdv(model.getItem(position).getIdPdv());
-                dtoBundle.setIdTypeMenuReport(model.getItem(position).getTypePoll());
-                startActivity(new Intent(this, MenuReport.class).putExtra(getString(R.string.app_bundle_name), dtoBundle));
-                finish();
+                if (model.getItem(position).getDateCheckOut() == 0) {
+                    DtoBundle dtoBundle = new DtoBundle();
+                    dtoBundle.setIdReportLocal(model.getItem(position).getId());
+                    dtoBundle.setIdPdv(model.getItem(position).getIdPdv());
+                    dtoBundle.setIdTypeMenuReport(model.getItem(position).getTypePoll());
+                    startActivity(new Intent(this, MenuReport.class).putExtra(getString(R.string.app_bundle_name), dtoBundle));
+                    finish();
+                } else {
+                    Snackbar.make(findViewById(R.id.lyt_visit), getString(R.string.report_complete), Snackbar.LENGTH_LONG).show();
+                }
+
                 break;
             case R.id.imgTrash:
                 DtoReportVisit dtoReportVisit = new DtoReportVisit();

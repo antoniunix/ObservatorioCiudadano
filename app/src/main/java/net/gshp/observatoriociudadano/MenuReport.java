@@ -141,7 +141,12 @@ public class MenuReport extends AppCompatActivity implements AHBottomNavigation.
                         dialog.setData("DIRECCIÓN SUPERVISOR", "Debe completar la dirección de supervisor primero", 0).
                                 setShowButton(false, true);
                         dialog.show(getSupportFragmentManager(), "");
-                    } else {
+                    }else if(!modelMenuReport.isReportPhotoComplete(dtoBundle.getIdReportLocal())){
+                        dialog.setData("DIRECCIÓN SUPERVISOR", "Debe completar las fotografías", 0).
+                                setShowButton(false, true);
+                        dialog.show(getSupportFragmentManager(), "");
+                    }
+                    else {
                         startService(new Intent(ContextApp.context, ServiceCheck.class).
                                 putExtra(getString(R.string.app_bundle_name), dtoBundle).
                                 putExtra("typeCheck", getResources().getInteger(R.integer.type_check_out)));
@@ -238,7 +243,12 @@ public class MenuReport extends AppCompatActivity implements AHBottomNavigation.
                         dialog.setData("DIRECCIÓN REPRESENTANTE", "Debe completar la dirección de representante primero", 0).
                                 setShowButton(false, true);
                         dialog.show(getSupportFragmentManager(), "");
-                    } else {
+                    }else if(!modelMenuReport.isReportPhotoComplete(dtoBundle.getIdReportLocal())){
+                        dialog.setData("DIRECCIÓN REPRESENTANTE", "Debe completar las fotografías", 0).
+                                setShowButton(false, true);
+                        dialog.show(getSupportFragmentManager(), "");
+                    }
+                    else {
                         startService(new Intent(ContextApp.context, ServiceCheck.class).
                                 putExtra(getString(R.string.app_bundle_name), dtoBundle).
                                 putExtra("typeCheck", getResources().getInteger(R.integer.type_check_out)));

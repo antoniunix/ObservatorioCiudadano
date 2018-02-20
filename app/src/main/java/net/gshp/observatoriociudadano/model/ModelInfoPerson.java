@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v4.content.FileProvider;
+import android.util.Log;
 import android.widget.TextView;
 
 import net.gshp.observatoriociudadano.BuildConfig;
@@ -37,21 +38,33 @@ public class ModelInfoPerson {
         txtTBSubTitle = activity.findViewById(R.id.txtTBSubTitle);
         dtoImageLogin = new DaoImageLogin().selectLast();
         preferences = ContextApp.context.getSharedPreferences(ContextApp.context.getString(R.string.app_share_preference_name), Context.MODE_PRIVATE);
-        ChangeFontStyle.changeFont(txtTBDate,txtTBTitle,txtTBSubTitle);
+        ChangeFontStyle.changeFont(txtTBDate, txtTBTitle, txtTBSubTitle);
     }
 
     public ModelInfoPerson loadImage(Activity activity) {
+        Log.e("leo", "load ");
         try {
             File fileImageProfile = new File(dtoImageLogin.getPath());
             Uri imageUri;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                imageUri = FileProvider.getUriForFile(activity, BuildConfig.APPLICATION_ID + ".provider", fileImageProfile);
+            Log.e("leo", "dto path " + dtoImageLogin.getPath());
+            if (fileImageProfile.exists()) {
+                Log.e("leo", "exist ");
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    imageUri = FileProvider.getUriForFile(activity, BuildConfig.APPLICATION_ID + ".provider", fileImageProfile);
+                } else {
+                    imageUri = Uri.fromFile(fileImageProfile);
+                }
+                imgTBPerson.setImageURI(imageUri);
+
             } else {
-                imageUri = Uri.fromFile(fileImageProfile);
+                Log.e("leo", "not exist ");
+                imgTBPerson.setImageResource(R.drawable.supervisor2);
             }
-            imgTBPerson.setImageURI(imageUri);
+
 
         } catch (NullPointerException e) {
+            Log.e("leo", "error ");
+            imgTBPerson.setImageResource(R.drawable.supervisor2);
             e.printStackTrace();
         }
 

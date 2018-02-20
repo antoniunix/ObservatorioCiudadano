@@ -527,6 +527,7 @@ public class DaoReport extends DAO {
                 obj.add(dtoReportVisit);
             } while (cursor.moveToNext());
         }
+
         cursor.close();
         db.close();
         return obj;
