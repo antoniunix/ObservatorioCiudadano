@@ -17,8 +17,6 @@
         android:layout_below="@+id/toolbar" />
 
     <ImageView
-        android:minHeight="80dp"
-        android:minWidth="80dp"
         android:id="@+id/img_point"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

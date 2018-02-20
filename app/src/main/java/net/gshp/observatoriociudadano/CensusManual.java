@@ -132,6 +132,6 @@ public class CensusManual extends AppCompatActivity implements TextWatcher, View
     public void onClick(View view) {
 
             save();
-        
+
     }
 }
