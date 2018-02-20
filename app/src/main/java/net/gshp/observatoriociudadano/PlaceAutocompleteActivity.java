@@ -18,6 +18,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 
 import net.gshp.observatoriociudadano.dto.DtoReportCensus;
 import net.gshp.observatoriociudadano.dto.DtoSepomex;
+import net.gshp.observatoriociudadano.model.ModelInfoPerson;
 
 /**
  * Created by leo on 16/02/18.
@@ -32,7 +33,10 @@ public class PlaceAutocompleteActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place);
+        getSupportActionBar().hide();
+
         dtoReportCensusBundle = (DtoReportCensus) getIntent().getExtras().get(getString(R.string.address));
+        new ModelInfoPerson(this).loadImage(this).loadInfo("DIRECCIONES");
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment) getFragmentManager()
                 .findFragmentById(R.id.place_autocomplete_fragment);
         if (dtoReportCensusBundle != null) {
@@ -58,7 +62,7 @@ public class PlaceAutocompleteActivity extends AppCompatActivity {
     }
 
     private void startIntent(double lat, double lon) {
-        Log.e("leo","start");
+        Log.e("leo", "start");
         dtoReportCensusBundle.setLat(lat);
         dtoReportCensusBundle.setLon(lon);
         Intent intent = new Intent();

@@ -17,11 +17,11 @@
         android:layout_below="@+id/toolbar" />
 
     <ImageView
-        android:scaleType="center"
         android:id="@+id/img_point"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:scaleType="center"
         android:src="@drawable/pin_casa" />
 
     <EditText
@@ -29,13 +29,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar"
-        android:layout_margin="8dp"
+        android:layout_margin="@dimen/activity_horizontal_margin"
         android:background="@color/color_withe"
-        android:editable="false"
-        android:maxLines="2" />
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:minLines="1"
+        android:singleLine="true"
+        android:textSize="@dimen/sizeTextBig" />
 
     <Button
         android:id="@+id/btn_save"
+        style="@style/style_Button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

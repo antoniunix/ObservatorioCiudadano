@@ -18,6 +18,7 @@ import net.gshp.observatoriociudadano.R;
 import net.gshp.observatoriociudadano.Visit;
 import net.gshp.observatoriociudadano.dto.DtoReportVisit;
 import net.gshp.observatoriociudadano.model.ModelVisit;
+import net.gshp.observatoriociudadano.util.ChangeFontStyle;
 import net.gshp.observatoriociudadano.util.Config;
 
 /**
@@ -49,9 +50,9 @@ public class DialogDeleteVisit extends DialogFragment implements View.OnClickLis
         btn_accept.setOnClickListener(this);
         txt_date = view.findViewById(R.id.txt_date);
         txt_pdv = view.findViewById(R.id.txt_pdv);
-
         txt_pdv.setText(dtoReportVisit.getName());
         txt_date.setText(Config.formatDateFromCurrentMillis(dtoReportVisit.getDateCheckIn(), "dd MMMM yyyy"));
+        ChangeFontStyle.changeFont(btn_accept,txt_date,txt_pdv,view.findViewById(R.id.txt_delete_visit));
     }
 
     @Override

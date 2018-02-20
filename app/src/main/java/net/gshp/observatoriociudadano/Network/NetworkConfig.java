@@ -58,11 +58,11 @@ public class NetworkConfig {
         APINetwork.taskManager.addTask(Ntask);
     }
 
-    public void POST_IMAGE(String params, String Path, ArrayList<NameValuePair> nameValuePairs, String tag,Map<String, String> headers) {
+    public void POST_IMAGE(String params,String bodyText, String Path, String tag,Map<String, String> headers) {
 
         NetworkTask Ntask = new NetworkTask(handler).setMode(TaskMode.POST_MULTIPART)
-                .setTag(tag).setPayload(nameValuePairs).setParams(params).setFilepath(Path)
-                .setBasicauth(true).setGzip(true);
+                .setTag(tag).setParams(params).setFilepath(Path)
+                .setBasicauth(true).setGzip(true).setBodyText(bodyText);
         if (headers != null) {
             headers.put(context.getString(R.string.network_header_token), mSharedPreferences.getString(context.getString(R.string.app_share_preference_toke_webservices), ""));
             Ntask.setCustomHeaders(headers);
@@ -70,7 +70,7 @@ public class NetworkConfig {
         APINetwork.taskManager.addTask(Ntask);
     }
 
-    public void multipartFile(String params, String path, ArrayList<NameValuePair> nameValuePairs, String tag, boolean sendHeader) {
+    public void  multipartFile(String params, String path,ArrayList<NameValuePair> nameValuePairs, String tag,boolean sendHeader) {
         NetworkTask Ntask = new NetworkTask(handler)
                 .setMode(NetworkTask.TaskMode.POST_MULTIPART_FILE)
                 .setTag(tag)
@@ -78,14 +78,15 @@ public class NetworkConfig {
                 .setPayload(nameValuePairs)
                 .setFilepath(path)
                 .setParams(params);
-        if (sendHeader) {
-            Map<String, String> header = new HashMap<>();
-            header.put(context.getString(R.string.network_header_token), mSharedPreferences.getString(context.getString(R.string.app_share_preference_toke_webservices), ""));
+        if(sendHeader){
+            Map<String,String> header=new HashMap<>();
+            header.put(context.getString(R.string.network_header_token),mSharedPreferences.getString(context.getString(R.string.app_share_preference_toke_webservices),""));
             Ntask.setCustomHeaders(header);
         }
 
         APINetwork.taskManager.addTask(Ntask);
     }
+
 
     public void GET(String params, String tag) {
         Map<String, String> header = new HashMap<>();

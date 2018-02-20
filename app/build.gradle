@@ -36,7 +36,7 @@ dependencies {
     compile 'com.google.android.gms:play-services:9.2.1'
     compile 'com.aurelhubert:ahbottomnavigation:2.1.0'
     compile 'com.facebook.stetho:stetho:1.4.2'
-    compile 'net.gshp:APINetwork:1.0'
+    compile 'net.gshp:APINetwork:1.1'
     compile 'net.gshp:ApiUtils:1.0'
     compile 'net.gshp:ApiTimeModule:1.0'
     compile 'net.gshp:ApiPoll:1.2'

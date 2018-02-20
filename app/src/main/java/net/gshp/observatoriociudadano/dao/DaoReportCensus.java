@@ -231,4 +231,26 @@ public class DaoReportCensus extends DAO {
         db.close();
         return address;
     }
+
+    public boolean isCompleteReportCensus(long idReport) {
+        boolean isReportSupervisor = false;
+        db = helper.getReadableDatabase();
+        String qry = "SELECT\n" +
+                "COUNT(*) count\n" +
+                "FROM\n" +
+                "report_census\n" +
+                "INNER JOIN report ON report.id= report_census.id_report_local \n" +
+                "WHERE report_census.id_report_local=" + idReport;
+        cursor = db.rawQuery(qry, null);
+        if (cursor.moveToFirst()) {
+            int count = cursor.getColumnIndexOrThrow("count");
+
+            isReportSupervisor = cursor.getInt(count) > 0;
+
+        }
+        cursor.close();
+        db.close();
+        return isReportSupervisor;
+
+    }
 }

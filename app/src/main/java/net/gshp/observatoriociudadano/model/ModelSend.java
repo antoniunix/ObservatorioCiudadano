@@ -17,6 +17,7 @@ import net.gshp.observatoriociudadano.dao.DaoReportCensus;
 import net.gshp.observatoriociudadano.dto.DtoEARespuesta;
 import net.gshp.observatoriociudadano.dto.DtoReportCensus;
 import net.gshp.observatoriociudadano.dto.DtoReportToSend;
+import net.gshp.observatoriociudadano.dto.DtoSendPhoto;
 
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
@@ -83,7 +84,7 @@ public class ModelSend {
     private List<List<DtoEARespuesta>> respuestas;
     private List<List<DtoReportCensus>> lstReportCensus;
 
-    private List<DtoEARespuesta> lstDtoReportRespuestasFotos;
+    private List<DtoSendPhoto> lstDtoReportRespuestasFotos;
 
 
     public ModelSend() {
@@ -130,9 +131,9 @@ public class ModelSend {
     private void sendSubReportes() {
         Log.e("send", "sendsubreportes");
         respuestas = daoeaRespuesta.selectToSend();
-        lstReportCensus = daoReportCensus.selectToSend();
+//        lstReportCensus = daoReportCensus.selectToSend();
 
-        SubReportAEnviar = respuestas.size() + lstReportCensus.size();
+        SubReportAEnviar = respuestas.size();// + lstReportCensus.size();
 
         if (SubReportAEnviar != 0) {
              /*
@@ -153,17 +154,17 @@ public class ModelSend {
                                 .getIdReporteLocal(), header);
                     }
 
-                    //Census
-                    Log.e("Observador", "Report Census" + lstReportCensus.size());
-                    for (int i = 0; i < lstReportCensus.size(); i++) {
-                        String json = new Gson().toJson(lstReportCensus.get(i));
-                        System.out.println(json);
-                        Map<String, String> header = new HashMap<>();
-                        header.put(ContextApp.context.getString(R.string.network_header_name_application_json),
-                                ContextApp.context.getString(R.string.network_header_application_json));
-                        networkConfig.POST("multireport/insertnt/census/1", json, "rsab" + lstReportCensus.get(i).get(0)
-                                .getIdReporteLocal(), header);
-                    }
+//                    //Census
+//                    Log.e("Observador", "Report Census" + lstReportCensus.size());
+//                    for (int i = 0; i < lstReportCensus.size(); i++) {
+//                        String json = new Gson().toJson(lstReportCensus.get(i));
+//                        System.out.println(json);
+//                        Map<String, String> header = new HashMap<>();
+//                        header.put(ContextApp.context.getString(R.string.network_header_name_application_json),
+//                                ContextApp.context.getString(R.string.network_header_application_json));
+//                        networkConfig.POST("multireport/insertnt/census/1", json, "rsab" + lstReportCensus.get(i).get(0)
+//                                .getIdReporteLocal(), header);
+//                    }
 
                 }
 
@@ -218,7 +219,7 @@ public class ModelSend {
 
     private void sendFoto() {
         Log.e("send", "foto METHOD");
-        lstDtoReportRespuestasFotos = daoeaRespuesta.SelectToSendPhoto();
+        lstDtoReportRespuestasFotos = daoeaRespuesta.SelectToSendPhotoV1();
         SubReportFOTOAEnviar = lstDtoReportRespuestasFotos.size();
         Log.e("photo", "size " + SubReportAEnviar);
         if (SubReportFOTOAEnviar != 0) {
@@ -227,15 +228,14 @@ public class ModelSend {
 
                     //FOTO Foto Respuesta
                     for (int i = 0; i < lstDtoReportRespuestasFotos.size(); i++) {
-                        ArrayList<NameValuePair> nameValuePairs = new ArrayList<>(1);
-                        nameValuePairs.add(new BasicNameValuePair("hash", lstDtoReportRespuestasFotos.get(i).getHash() + ""));
-                        nameValuePairs.add(new BasicNameValuePair("pdv", lstDtoReportRespuestasFotos.get(i).getPdv() + ""));
-                        nameValuePairs.add(new BasicNameValuePair("description", lstDtoReportRespuestasFotos.get(i).getDescription() + ""));
+                        String json=new Gson().toJson(lstDtoReportRespuestasFotos.get(i));
+                        Log.e("send","send "+json);
                         Map<String, String> header = new HashMap<>();
-                        header.put(ContextApp.context.getString(R.string.network_header_name_application_json), ContextApp.context.getString(R.string.network_header_application_json));
-
-                        networkConfig.POST_IMAGE("multireport/image/poll/1",
-                                lstDtoReportRespuestasFotos.get(i).getRespuesta(), nameValuePairs, "rfaa" + lstDtoReportRespuestasFotos.get(i).getId(), header);
+                        header.put(ContextApp.context.getString(R.string.network_header_name_application_json), ContextApp.context.getString(R.string.network_header_multipart_data));
+                        ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+                        nameValuePairs.add(new BasicNameValuePair("json", json));
+                        networkConfig.multipartFile("image/save",
+                                lstDtoReportRespuestasFotos.get(i).getPath(),nameValuePairs, "rfaa" + lstDtoReportRespuestasFotos.get(i).getId(),true);
                     }
 
                 }

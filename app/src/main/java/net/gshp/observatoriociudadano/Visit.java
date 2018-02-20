@@ -20,12 +20,12 @@ import net.gshp.observatoriociudadano.listener.OnItemClickListenerRV;
 import net.gshp.observatoriociudadano.model.ModelInfoPerson;
 import net.gshp.observatoriociudadano.model.ModelVisit;
 import net.gshp.observatoriociudadano.util.BottomNavigationViewHelper;
+import net.gshp.observatoriociudadano.util.ChangeFontStyle;
 import net.gshp.observatoriociudadano.util.Config;
 
 public class Visit extends AppCompatActivity implements OnItemClickListenerRV,
         BottomNavigationView.OnNavigationItemSelectedListener, OnFinishSendReports {
 
-    private TextView txtTBDate, txtTBTitle;
     private BottomNavigationView bottomNavigationView;
     private LinearLayoutManager lmy;
     private RecyclerView rcvVisit;
@@ -34,8 +34,6 @@ public class Visit extends AppCompatActivity implements OnItemClickListenerRV,
 
 
     private void init() {
-        txtTBDate = findViewById(R.id.txtTBDate);
-        txtTBTitle = findViewById(R.id.txtTBTitle);
         rcvVisit = findViewById(R.id.rcvVisit);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
@@ -45,7 +43,7 @@ public class Visit extends AppCompatActivity implements OnItemClickListenerRV,
         adapter = model.getAdapter(this);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
         bottomNavigationView.setSelectedItemId(R.id.action_visit);
-        new ModelInfoPerson(this).loadImage(this).loadInfo();
+        new ModelInfoPerson(this).loadImage(this).loadInfo("CONTROL DE REGISTROS");
     }
 
     @Override
@@ -59,8 +57,6 @@ public class Visit extends AppCompatActivity implements OnItemClickListenerRV,
     @Override
     protected void onResume() {
         super.onResume();
-        txtTBDate.setText(Config.formatDate());
-        txtTBTitle.setText(R.string.label_visit);
         rcvVisit.setAdapter(adapter);
     }
 

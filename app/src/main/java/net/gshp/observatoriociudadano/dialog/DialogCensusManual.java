@@ -10,12 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.model.LatLng;
 
 import net.gshp.observatoriociudadano.CensusManual;
 import net.gshp.observatoriociudadano.R;
 import net.gshp.observatoriociudadano.dto.DtoBundle;
+import net.gshp.observatoriociudadano.util.ChangeFontStyle;
 
 /**
  * Created by leo on 17/02/18.
@@ -46,6 +48,7 @@ public class DialogCensusManual extends DialogFragment implements View.OnClickLi
     private void init() {
         btn_agree = view.findViewById(R.id.btn_agree);
         btn_agree.setOnClickListener(this);
+        ChangeFontStyle.changeFont(btn_agree,view.findViewById(R.id.txt_info));
     }
 
     @Override

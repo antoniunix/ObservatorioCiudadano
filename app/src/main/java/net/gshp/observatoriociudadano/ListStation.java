@@ -19,12 +19,12 @@ import net.gshp.observatoriociudadano.listener.OnItemClickListenerRV;
 import net.gshp.observatoriociudadano.model.ModelInfoPerson;
 import net.gshp.observatoriociudadano.model.ModelListStation;
 import net.gshp.observatoriociudadano.util.BottomNavigationViewHelper;
+import net.gshp.observatoriociudadano.util.ChangeFontStyle;
 import net.gshp.observatoriociudadano.util.Config;
 
 public class ListStation extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener,
         OnItemClickListenerRV {
 
-    private TextView txtTBDate, txtTBTitle;
     private RecyclerView rcvVisit;
     private BottomNavigationView bottomNavigationView;
     private LinearLayoutManager lmy;
@@ -32,15 +32,13 @@ public class ListStation extends AppCompatActivity implements BottomNavigationVi
     private RVListStation adapter;
 
     private void init() {
-        txtTBDate = findViewById(R.id.txtTBDate);
-        txtTBTitle = findViewById(R.id.txtTBTitle);
         rcvVisit = findViewById(R.id.rcvVisit);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         model = new ModelListStation();
         BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
         lmy = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        new ModelInfoPerson(this).loadImage(this).loadInfo();
+        new ModelInfoPerson(this).loadImage(this).loadInfo("CASILLAS");
         adapter = model.getAdapter(this);
 
     }
@@ -56,8 +54,6 @@ public class ListStation extends AppCompatActivity implements BottomNavigationVi
     @Override
     protected void onResume() {
         super.onResume();
-        txtTBDate.setText(Config.formatDate());
-        txtTBTitle.setText(R.string.label_station);
         rcvVisit.setLayoutManager(lmy);
         rcvVisit.setAdapter(adapter);
     }

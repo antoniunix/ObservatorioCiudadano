@@ -98,7 +98,7 @@ public class ModelCensus implements OnApiGeolocation {
 
 
     public boolean isCompleteCensus() {
-        return daoReportCensus.isCompleteReportSupervisor();
+        return daoReportCensus.isCompleteReportCensus(dtoBundle.getIdReportLocal());
     }
 
     public String getAddressInfo() {

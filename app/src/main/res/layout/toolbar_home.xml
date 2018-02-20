@@ -35,14 +35,14 @@
             android:layout_below="@id/imgTBPerson"
             android:ellipsize="end"
             android:maxLength="15"
-            android:textSize="@dimen/sizeTextVeryBig" />
+            android:textSize="@dimen/sizeTextBig" />
 
         <TextView
             android:id="@+id/txtTBSubTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/txtTBTitle"
-            android:textSize="@dimen/sizeTextBig" />
+            android:textSize="@dimen/sizeTextNormal" />
 
         <ImageButton
             android:id="@+id/btnTBSettings"

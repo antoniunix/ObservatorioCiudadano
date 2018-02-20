@@ -18,6 +18,7 @@ import net.gshp.observatoriociudadano.R;
 import net.gshp.observatoriociudadano.dto.DtoBundle;
 import net.gshp.observatoriociudadano.dto.DtoReportCensus;
 import net.gshp.observatoriociudadano.model.ModelCensus;
+import net.gshp.observatoriociudadano.util.ChangeFontStyle;
 
 /**
  * Created by leo on 18/02/18.
@@ -55,6 +56,7 @@ public class DialogDeleteCensus extends DialogFragment {
                 dismiss();
             }
         });
+        ChangeFontStyle.changeFont(txtAddress,btn_acept,view.findViewById(R.id.txt_delete_visit));
 
     }
 

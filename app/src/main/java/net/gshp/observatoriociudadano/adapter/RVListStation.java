@@ -47,6 +47,7 @@ public class RVListStation extends RecyclerView.Adapter<RVListStation.ViewHolder
                 onItemClickListenerRV.onItemClickListener(view, position);
             }
         });
+
     }
 
     @Override

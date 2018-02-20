@@ -21,6 +21,7 @@ import net.gshp.observatoriociudadano.dto.DtoBundle;
 import net.gshp.observatoriociudadano.dto.DtoReportCensus;
 import net.gshp.observatoriociudadano.model.ModelCensus;
 import net.gshp.observatoriociudadano.model.ModelInfoPerson;
+import net.gshp.observatoriociudadano.util.ChangeFontStyle;
 
 /**
  * Created by leo on 17/02/18.
@@ -61,7 +62,6 @@ public class CensusManual extends AppCompatActivity implements TextWatcher, View
         edtStreetLeft = findViewById(R.id.edt_street_left);
         edtStreetRight = findViewById(R.id.edt_street_right);
         edtStreet = findViewById(R.id.edt_street);
-        edtNumberin = findViewById(R.id.edt_numberin);
         spinnerSuburb = findViewById(R.id.spn_suburb);
         btn_save = findViewById(R.id.btn_save);
         btn_save.setOnClickListener(this);
@@ -70,7 +70,9 @@ public class CensusManual extends AppCompatActivity implements TextWatcher, View
         edtcp.setThreshold(1);
         btn_save.setOnClickListener(this);
         new ModelInfoPerson(this).loadImage(this);
-        new ModelInfoPerson(this).loadImage(this).loadInfo();
+        new ModelInfoPerson(this).loadImage(this).loadInfo("REGISTRO DE DOMICILIO");
+        ChangeFontStyle.changeFont(edtcp, edtNumberin, edtNumberOut, edtStreet, edtStreetLeft,
+                edtStreetRight, edtStreet, spinnerSuburb, btn_save);
 
     }
 
@@ -128,11 +130,11 @@ public class CensusManual extends AppCompatActivity implements TextWatcher, View
 
     @Override
     public void onClick(View view) {
-        if(modelCensus.isCompleteCensus()){
+        if (modelCensus.isCompleteCensus()) {
             DialogDeleteCensus dialogDeleteVisit = new DialogDeleteCensus();
-            dialogDeleteVisit.setDto(dtoBundle,dtoReportCensus);
+            dialogDeleteVisit.setDto(dtoBundle, dtoReportCensus);
             dialogDeleteVisit.show(getSupportFragmentManager(), "dialogDelete");
-        }else {
+        } else {
             save();
         }
     }
