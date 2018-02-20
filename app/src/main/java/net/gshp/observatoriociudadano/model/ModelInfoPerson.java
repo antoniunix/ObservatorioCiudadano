@@ -60,7 +60,7 @@ public class ModelInfoPerson {
 
     public ModelInfoPerson loadInfo(String subtitle) {
         txtTBDate.setText(Config.formatDate());
-        txtTBTitle.setText(preferences.getString(ContextApp.context.getString(R.string.app_share_preference_user_account), ""));
+        txtTBTitle.setText(preferences.getString(ContextApp.context.getString(R.string.app_share_preference_user_account), "").toUpperCase());
         txtTBSubTitle.setText(subtitle);
         return this;
     }

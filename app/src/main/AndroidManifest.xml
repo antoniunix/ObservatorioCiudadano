@@ -16,6 +16,7 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
 
 
@@ -92,9 +93,6 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".faceDetection.PhotosActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".faceDetection.PhotoActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".faceDetection.PhotoWizardActivity"
