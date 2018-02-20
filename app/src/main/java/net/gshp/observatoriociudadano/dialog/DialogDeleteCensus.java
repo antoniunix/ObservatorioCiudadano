@@ -33,6 +33,10 @@ public class DialogDeleteCensus extends DialogFragment {
     private DtoReportCensus dtoReportCensus;
     private ModelCensus modelCensus;
 
+    public void setDto(DtoBundle dtoBundle, DtoReportCensus dtoReportCensus) {
+        this.dtoBundle = dtoBundle;
+        this.dtoReportCensus = dtoReportCensus;
+    }
 
     @Nullable
     @Override
@@ -54,14 +58,11 @@ public class DialogDeleteCensus extends DialogFragment {
                 modelCensus.saveCensus(dtoReportCensus);
                 Toast.makeText(getActivity(), "Se guardo correctamente", Toast.LENGTH_SHORT).show();
                 dismiss();
+                getActivity().finish();
             }
         });
         ChangeFontStyle.changeFont(txtAddress,btn_acept,view.findViewById(R.id.txt_delete_visit));
 
     }
 
-    public void setDto(DtoBundle dtoBundle, DtoReportCensus dtoReportCensus) {
-        this.dtoBundle = dtoBundle;
-        this.dtoReportCensus = dtoReportCensus;
-    }
 }
