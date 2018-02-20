@@ -11,11 +11,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <Button
+        android:id="@+id/btn_save"
+        style="@style/style_Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="@string/add_address" />
+
     <ScrollView
         android:id="@+id/scrAddress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar">
+        android:layout_above="@+id/btn_save"
+        android:layout_below="@+id/toolbar"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin">
 
         <RelativeLayout
             android:id="@+id/rlt_main"
@@ -52,45 +63,49 @@
 
                     <TextView android:text="@string/street" />
 
-                    <EditText android:id="@+id/edt_street" style="@style/style_edittext_census"/>
+                    <EditText
+                        android:id="@+id/edt_street"
+                        style="@style/style_edittext_census" />
                 </TableRow>
 
                 <TableRow>
 
                     <TextView android:text="@string/street_left" />
 
-                    <EditText android:id="@+id/edt_street_left" style="@style/style_edittext_census"/>
+                    <EditText
+                        android:id="@+id/edt_street_left"
+                        style="@style/style_edittext_census" />
                 </TableRow>
 
                 <TableRow>
 
                     <TextView android:text="@string/street_right" />
 
-                    <EditText android:id="@+id/edt_street_right" style="@style/style_edittext_census" />
+                    <EditText
+                        android:id="@+id/edt_street_right"
+                        style="@style/style_edittext_census" />
                 </TableRow>
 
                 <TableRow>
 
                     <TextView android:text="@string/number_out" />
 
-                    <EditText android:id="@+id/edt_numberout" style="@style/style_edittext_census"/>
+                    <EditText
+                        android:id="@+id/edt_numberout"
+                        style="@style/style_edittext_census" />
                 </TableRow>
 
                 <TableRow>
 
                     <TextView android:text="@string/number_in" />
 
-                    <EditText android:id="@+id/edt_numberin" style="@style/style_edittext_census"/>
+                    <EditText
+                        android:id="@+id/edt_numberin"
+                        style="@style/style_edittext_census" />
                 </TableRow>
 
             </TableLayout>
 
-            <Button
-                android:id="@+id/btn_save"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/table"
-                android:text="@string/add_address" />
 
         </RelativeLayout>
 
