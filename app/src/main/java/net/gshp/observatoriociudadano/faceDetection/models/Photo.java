@@ -8,6 +8,7 @@ public class Photo {
     private String name;
     private int thumbnail;
     private String picture;
+    private int rotation;
 
     public Photo() {
     }
@@ -40,5 +41,13 @@ public class Photo {
 
     public void setPicture(String picture) {
         this.picture = picture;
+    }
+
+    public int getRotation() {
+        return rotation;
+    }
+
+    public void setRotation(int rotation) {
+        this.rotation = rotation;
     }
 }

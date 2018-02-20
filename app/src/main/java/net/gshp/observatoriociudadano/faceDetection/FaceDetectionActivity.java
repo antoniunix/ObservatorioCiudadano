@@ -93,6 +93,7 @@ public class FaceDetectionActivity extends AppCompatActivity {
 
     private ImageButton switchCamera;
     private DtoBundle dtoBundle;
+    int orientation;
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -397,19 +398,18 @@ public class FaceDetectionActivity extends AppCompatActivity {
     private final class JpegPictureCallback implements CameraSource.PictureCallback {
         @Override
         public void onPictureTaken(byte[] rawData) {
-            int orientation = Exif.getOrientation(rawData);
-            Bitmap bitmap = BitmapFactory.decodeByteArray(rawData, 0, rawData.length);
+            orientation = Exif.getOrientation(rawData);
+            Bitmap bitmap = decodeSampledBitmapFromResource(80,120, rawData);
 
-            Bitmap bitmapPicture = bitmap;
             switch (orientation) {
                 case 90:
-                    bitmapPicture = ImageConverter.rotateImage(bitmap, 90);
+                    bitmap = ImageConverter.rotateImage(bitmap, 90);
                     break;
                 case 180:
-                    bitmapPicture = ImageConverter.rotateImage(bitmap, 180);
+                    bitmap = ImageConverter.rotateImage(bitmap, 180);
                     break;
                 case 270:
-                    bitmapPicture = ImageConverter.rotateImage(bitmap, 270);
+                    bitmap = ImageConverter.rotateImage(bitmap, 270);
                     break;
             }
 
@@ -419,7 +419,7 @@ public class FaceDetectionActivity extends AppCompatActivity {
                 File rawOutput = new File(getString(R.string.app_path_photo), imageName);
 
                 FileOutputStream out = new FileOutputStream(rawOutput);
-                bitmapPicture.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
                 out.close();
 
                 photoPath = rawOutput.getPath();
@@ -486,6 +486,7 @@ public class FaceDetectionActivity extends AppCompatActivity {
 
         Intent intent = new Intent();
         intent.putExtra(getString(R.string.PHOTO_PATH), photoPath);
+        intent.putExtra("rotation", orientation);
         setResult(RESULT_OK, intent);
 
         if (reco)
@@ -660,5 +661,44 @@ public class FaceDetectionActivity extends AppCompatActivity {
     public void onBackPressed() {
         if(!reco)
             finish();
+    }
+
+    public static Bitmap decodeSampledBitmapFromResource(int reqWidth, int reqHeight, byte[] rawData) {
+
+        // First decode with inJustDecodeBounds=true to check dimensions
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        //BitmapFactory.decodeResource(res, resId, options);
+        BitmapFactory.decodeByteArray(rawData, 0, rawData.length, options);
+
+        // Calculate inSampleSize
+        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+
+        // Decode bitmap with inSampleSize set
+        options.inJustDecodeBounds = false;
+        //return BitmapFactory.decodeResource(res, resId, options);
+        return BitmapFactory.decodeByteArray(rawData, 0, rawData.length, options);
+    }
+
+    public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        // Raw height and width of image
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
+
+            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+            // height and width larger than the requested height and width.
+            while ((halfHeight / inSampleSize) >= reqHeight
+                    && (halfWidth / inSampleSize) >= reqWidth) {
+                inSampleSize *= 2;
+            }
+        }
+
+        return inSampleSize;
     }
 }
