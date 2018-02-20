@@ -118,11 +118,11 @@ public class CensusManual extends AppCompatActivity implements TextWatcher, View
             dtoReportCensus.setAddress_left(edtStreetLeft.getText().toString());
             dtoReportCensus.setAddress_right(edtStreetRight.getText().toString());
             dtoReportCensus.setExternalNumber(edtNumberOut.getText().toString());
-            dtoReportCensus.setInternalNumber(edtNumberOut.getText().toString());
+            dtoReportCensus.setInternalNumber(edtNumberin.getText().toString());
             dtoReportCensus.setProvider(getString(R.string.providerManual));
             modelCensus.saveCensus(dtoReportCensus);
             Toast.makeText(this, "Se guardo ", Toast.LENGTH_SHORT).show();
-            finish();
+
 
         }
 
@@ -136,6 +136,7 @@ public class CensusManual extends AppCompatActivity implements TextWatcher, View
             dialogDeleteVisit.show(getSupportFragmentManager(), "dialogDelete");
         } else {
             save();
+            finish();
         }
     }
 }

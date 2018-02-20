@@ -62,7 +62,6 @@ public class DaoReportCensus extends DAO {
             cv.put(TOWN, obj.getTown());
             cv.put(SUBURB, obj.getSuburb());
             cv.put(ADDRESS, obj.getAddress());
-            cv.put(EXTERNAL_NUMBER, obj.getExternalNumber());
             cv.put(CP, obj.getCp());
             cv.put(LAT, obj.getLat());
             cv.put(LON, obj.getLon());
@@ -121,12 +120,16 @@ public class DaoReportCensus extends DAO {
                 catalogo.setState(cursor.getString(cursor.getColumnIndexOrThrow(STATE)));
                 catalogo.setSuburb(cursor.getString(cursor.getColumnIndexOrThrow(SUBURB)));
                 catalogo.setTown(cursor.getString(cursor.getColumnIndexOrThrow(TOWN)));
+                catalogo.setLat(cursor.getDouble(cursor.getColumnIndexOrThrow(LAT)));
+                catalogo.setLon(cursor.getDouble(cursor.getColumnIndexOrThrow(LON)));
                 catalogo.setAddress(cursor.getString(cursor.getColumnIndexOrThrow(ADDRESS)));
                 catalogo.setAddress_right(cursor.getString(cursor.getColumnIndexOrThrow(ADDRESSRIGHT)));
                 catalogo.setAddress_left(cursor.getString(cursor.getColumnIndexOrThrow(ADDRESSLEFT)));
                 catalogo.setCp(cursor.getString(cursor.getColumnIndexOrThrow(CP)));
                 catalogo.setProvider(cursor.getString(cursor.getColumnIndexOrThrow(PROVIDER)));
                 catalogo.setHash(cursor.getString(cursor.getColumnIndexOrThrow(HASH)));
+                catalogo.setInternalNumber(cursor.getString(cursor.getColumnIndexOrThrow(INTERNAL_NUMBER)));
+                catalogo.setExternalNumber(cursor.getString(cursor.getColumnIndexOrThrow(EXTERNAL_NUMBER)));
                 catalogo.setIdReporteLocal(cursor.getLong(cursor.getColumnIndexOrThrow(IDREPORTLOCAL)));
                 if (tmpidReport == cursor.getInt(cursor.getColumnIndexOrThrow(IDREPORTLOCAL))) {
                     subLst.add(catalogo);

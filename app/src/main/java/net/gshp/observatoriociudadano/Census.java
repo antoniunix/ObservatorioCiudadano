@@ -96,10 +96,13 @@ public class Census extends AppCompatActivity implements OnMapReadyCallback, OnF
 
             }
 
+
             @Override
             public void onError(Status status) {
                 Log.i("leo", "An error occurred: " + status);
             }
+
+
         });
 
     }
@@ -128,7 +131,7 @@ public class Census extends AppCompatActivity implements OnMapReadyCallback, OnF
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != -1
                 || ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != -1) {
         }
-        CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(22.7,-102.6)).zoom(20).bearing(45).tilt(90).build();
+        CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(22.7, -102.6)).zoom(20).bearing(45).tilt(90).build();
         map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
     }
@@ -242,12 +245,12 @@ public class Census extends AppCompatActivity implements OnMapReadyCallback, OnF
                 }
                 break;
             case R.id.btn_save:
-                if (modelCensus.isCompleteCensus()) {
+                if (edt_address.getText().toString().isEmpty()) {
+                    setUpDialogCensusManual();
+                } else if (modelCensus.isCompleteCensus()) {
                     DialogDeleteCensus dialogDeleteVisit = new DialogDeleteCensus();
                     dialogDeleteVisit.setDto(dtoBundle, dtoReportCensus);
                     dialogDeleteVisit.show(getSupportFragmentManager(), "dialogDelete");
-                } else if (edt_address.getText().toString().isEmpty()) {
-                    setUpDialogCensusManual();
                 } else {
                     saveCensus();
                 }
