@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
 import net.gshp.observatoriociudadano.Home;
 import net.gshp.observatoriociudadano.R;
@@ -166,17 +167,16 @@ public class PhotosActivity extends AppCompatActivity {
         pictureList.add(a);
 
         if (rol == getResources().getInteger(R.integer.rollSupervisor)) {
-            userName = preferences.getString(getString(R.string.app_share_preference_user_account), "");
-            Log.w(TAG, "userName: " + userName);
-            List<DtoPhoto> pictures = new DaoPhoto().selectAll(userName);
+            userName = new DaoEARespuesta().selectUserName(1, 1, dtoBundle.getIdReportLocal());
+            List<DtoPhoto> pictures = new DaoPhoto().selectAll(userName.replaceAll("\\s+",""));
 
             for (DtoPhoto picture : pictures) {
                 pictureList.get(picture.getFace_id()).setPicture(picture.getPath());
             }
         } else {
-            userName = new DaoEARespuesta().selectUserName(1, 1, dtoBundle.getIdReportLocal());
-            Log.w(TAG, "userName: " + userName);
-            List<DtoPhoto> pictures = new DaoPhoto().selectAll(userName);
+            userName = new DaoEARespuesta().selectUserName(8, 2, dtoBundle.getIdReportLocal());
+            List<DtoPhoto> pictures = new DaoPhoto().selectAll(userName.replaceAll("\\s+",""));
+            Log.w(TAG, userName);
 
             for (DtoPhoto picture : pictures) {
                 pictureList.get(picture.getFace_id()).setPicture(picture.getPath());
@@ -273,8 +273,9 @@ public class PhotosActivity extends AppCompatActivity {
                 File imgFile = new File(photo.getPicture());
 
                 if (imgFile.exists()) {
-                    Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-                    holder.thumbnail.setImageBitmap(myBitmap);
+                    //Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                    //holder.thumbnail.setImageBitmap(decodeSampledBitmapFromResource(getResources(), R.id.myimage, 80, 120));
+                    Picasso.with(getApplicationContext()).load(new File(imgFile.getAbsolutePath())).into(holder.thumbnail);
                 }
             } else {
                 holder.thumbnail.setImageResource(photo.getThumbnail());
@@ -293,9 +294,9 @@ public class PhotosActivity extends AppCompatActivity {
             if (requestCode == PICTURE_REQUEST_CODE) {
                 if (data.hasExtra(getString(R.string.PHOTO_PATH))) {
                     //new PhotoSender(data.getLongExtra(Constants.PHOTO_ID, 0)).execute();
-                    Log.w(TAG, "photo id: " + data.getStringExtra(getString(R.string.PHOTO_PATH)));
                     Photo photo = pictureList.get(photoPosition);
                     photo.setPicture(data.getStringExtra(getString(R.string.PHOTO_PATH)));
+                    photo.setRotation(data.getIntExtra("rotation",0));
 
                     adapter.notifyItemChanged(photoPosition);
                     adapter.notifyDataSetChanged();

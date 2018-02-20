@@ -89,4 +89,5 @@ public class DialogMessageGeneric extends DialogFragment implements View.OnClick
         }
 
     }
+
 }

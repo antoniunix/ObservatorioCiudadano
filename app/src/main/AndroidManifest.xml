@@ -16,6 +16,7 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
 
     <application
@@ -67,7 +68,9 @@
         </service>
         <service android:name=".geolocation.ServiceCheck" />
 
-        <activity android:name=".Permisson">
+        <activity
+            android:name=".Permisson"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -77,14 +80,28 @@
         <activity
             android:name=".Splash"
             android:screenOrientation="nosensor" />
-        <activity android:name=".Login" />
-        <activity android:name=".Home" />
-        <activity android:name=".MenuReport" />
-        <activity android:name=".ListStation" />
-        <activity android:name=".Visit"></activity>
+        <activity
+            android:name=".Login"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Home"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MenuReport"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ListStation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Visit"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".Census" />
-        <activity android:name=".PlaceAutocompleteActivity" />
+        <activity
+            android:name=".Census"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".PlaceAutocompleteActivity"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".faceDetection.FaceDetectionActivity"
@@ -93,12 +110,11 @@
             android:name=".faceDetection.PhotosActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".faceDetection.PhotoActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".faceDetection.PhotoWizardActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".CensusManual" />
+        <activity
+            android:name=".CensusManual"
+            android:screenOrientation="portrait" />
 
     </application>
 

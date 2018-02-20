@@ -23,9 +23,8 @@ public class Permisson extends AppCompatActivity implements OnDissmisDialogListe
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_permisso);
+        getSupportActionBar().hide();
         context = this;
     }
 

@@ -142,7 +142,7 @@ public class DaoEARespuesta extends DAO {
         return lst;
     }
 
-    public DtoEARespuesta selectAnswer(int idQuestion, int idReportLocal) {
+    public DtoEARespuesta selectAnswer(int idQuestion, long idReportLocal) {
         db = helper.getReadableDatabase();
         cursor = db.rawQuery("SELECT\n" +
                 "EARespuesta.ida,\n" +
@@ -409,6 +409,8 @@ public class DaoEARespuesta extends DAO {
         db.close();
         return userName;
     }
+
+
 
 
 }

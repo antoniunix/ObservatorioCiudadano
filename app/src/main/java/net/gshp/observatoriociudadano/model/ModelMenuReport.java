@@ -10,14 +10,20 @@ import com.gshp.api.utils.Crypto;
 import net.gshp.observatoriociudadano.R;
 import net.gshp.observatoriociudadano.contextApp.ContextApp;
 import net.gshp.observatoriociudadano.dao.DaoEAEncuesta;
+import net.gshp.observatoriociudadano.dao.DaoEARespuesta;
 import net.gshp.observatoriociudadano.dao.DaoEaAnswerPdv;
 import net.gshp.observatoriociudadano.dao.DaoPhoto;
 import net.gshp.observatoriociudadano.dao.DaoReport;
 import net.gshp.observatoriociudadano.dao.DaoReportCensus;
 import net.gshp.observatoriociudadano.dto.DtoBundle;
+import net.gshp.observatoriociudadano.dto.DtoEARespuesta;
 import net.gshp.observatoriociudadano.dto.DtoReport;
 import net.gshp.observatoriociudadano.geolocation.ServiceCheck;
 import net.gshp.observatoriociudadano.util.Config;
+import net.gshp.observatoriociudadano.util.MD5;
+
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * Created by gnu on 15/02/18.
@@ -111,6 +117,18 @@ public class ModelMenuReport {
     public boolean isReportPhotoComplete(long idReport) {
         DaoPhoto dao = new DaoPhoto();
         return (dao.missingPhotos(idReport) == 0);
+    }
+
+    public String getUserPassword(long idReportLocal) {
+        DtoEARespuesta dto = new DaoEARespuesta().selectAnswer(19, idReportLocal);
+        String msg;
+        if (dto.getRespuesta() != null) {
+            msg = "Usuario: " + dto.getRespuesta() + " \nContraseña: " + MD5.md5(dto.getRespuesta()).substring(0, 5);
+
+        } else {
+            msg = "";
+        }
+        return msg;
     }
 
 

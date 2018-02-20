@@ -93,6 +93,7 @@ public class FaceDetectionActivity extends AppCompatActivity {
 
     private ImageButton switchCamera;
     private DtoBundle dtoBundle;
+    int orientation;
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -102,7 +103,7 @@ public class FaceDetectionActivity extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         getSupportActionBar().hide();
 
-        if(getIntent().hasExtra(getString(R.string.app_bundle_name)))
+        if (getIntent().hasExtra(getString(R.string.app_bundle_name)))
             dtoBundle = (DtoBundle) getIntent().getExtras().get(getString(R.string.app_bundle_name));
 
         if (getIntent().hasExtra(getString(R.string.user_roll)) || getIntent().getIntExtra(getString(R.string.user_roll),
@@ -129,7 +130,7 @@ public class FaceDetectionActivity extends AppCompatActivity {
             timestamp.setText(df.format(System.currentTimeMillis()).toUpperCase());
 
         preferences = getSharedPreferences(getString(R.string.app_share_preference_name), Context.MODE_PRIVATE);
-        networkConfig = new NetworkConfig(new HandlerSendImage(), ContextApp.context, "gosharp/recognition/init-load");
+        networkConfig = new NetworkConfig(new HandlerSendImage(), ContextApp.context, "app/observador/recognition/");
 
         progressView = findViewById(R.id.progress_view);
         myPhoto = findViewById(R.id.my_photo);
@@ -147,7 +148,7 @@ public class FaceDetectionActivity extends AppCompatActivity {
         }
 
         switchCamera = findViewById(R.id.switch_camera);
-        if(preferences.getBoolean("front_camera", true))
+        if (preferences.getBoolean("front_camera", true))
             switchCamera.setImageResource(R.drawable.ic_action_camera_rear);
         else
             switchCamera.setImageResource(R.drawable.ic_action_camera_front);
@@ -307,13 +308,19 @@ public class FaceDetectionActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+        createCameraSource();
         startCameraSource();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mPreview.stop();
+        //mPreview.stop();
+        if (mCameraSource != null) {
+            mPreview.stop();
+            mCameraSource.release();
+            mCameraSource = null;
+        }
     }
 
     @Override
@@ -391,19 +398,18 @@ public class FaceDetectionActivity extends AppCompatActivity {
     private final class JpegPictureCallback implements CameraSource.PictureCallback {
         @Override
         public void onPictureTaken(byte[] rawData) {
-            int orientation = Exif.getOrientation(rawData);
-            Bitmap bitmap = BitmapFactory.decodeByteArray(rawData, 0, rawData.length);
+            orientation = Exif.getOrientation(rawData);
+            Bitmap bitmap = decodeSampledBitmapFromResource(80,120, rawData);
 
-            Bitmap bitmapPicture = bitmap;
             switch (orientation) {
                 case 90:
-                    bitmapPicture = ImageConverter.rotateImage(bitmap, 90);
+                    bitmap = ImageConverter.rotateImage(bitmap, 90);
                     break;
                 case 180:
-                    bitmapPicture = ImageConverter.rotateImage(bitmap, 180);
+                    bitmap = ImageConverter.rotateImage(bitmap, 180);
                     break;
                 case 270:
-                    bitmapPicture = ImageConverter.rotateImage(bitmap, 270);
+                    bitmap = ImageConverter.rotateImage(bitmap, 270);
                     break;
             }
 
@@ -413,14 +419,14 @@ public class FaceDetectionActivity extends AppCompatActivity {
                 File rawOutput = new File(getString(R.string.app_path_photo), imageName);
 
                 FileOutputStream out = new FileOutputStream(rawOutput);
-                bitmapPicture.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
                 out.close();
 
                 photoPath = rawOutput.getPath();
 
                 saveImage();
                 //sendImage();
-                finish();
+                finishReturn();
             } catch (Exception e) {
                 Log.v(TAG, e.toString());
             }
@@ -480,6 +486,7 @@ public class FaceDetectionActivity extends AppCompatActivity {
 
         Intent intent = new Intent();
         intent.putExtra(getString(R.string.PHOTO_PATH), photoPath);
+        intent.putExtra("rotation", orientation);
         setResult(RESULT_OK, intent);
 
         if (reco)
@@ -597,12 +604,13 @@ public class FaceDetectionActivity extends AppCompatActivity {
     }
 
     private void sendImage() {
+        Log.w(TAG, "sending");
         if (reco) {
             new Thread() {
                 public void run() {
                     ArrayList<NameValuePair> nameValuePairs = new ArrayList<>();
                     nameValuePairs.add(new BasicNameValuePair("json", ""));
-                    networkConfig.POST_MULTIPART_FILE("url", photoPath, nameValuePairs,
+                    networkConfig.POST_MULTIPART_FILE(userName + "/", photoPath, nameValuePairs,
                             imageName);
                 }
             }.start();
@@ -611,7 +619,7 @@ public class FaceDetectionActivity extends AppCompatActivity {
                 public void run() {
                     ArrayList<NameValuePair> nameValuePairs = new ArrayList<>();
                     nameValuePairs.add(new BasicNameValuePair("json", ""));
-                    networkConfig.POST_MULTIPART_FILE("url", photoPath, nameValuePairs,
+                    networkConfig.POST_MULTIPART_FILE("init-load/" + userName + "/", photoPath, nameValuePairs,
                             imageName);
                 }
             }.start();
@@ -642,8 +650,55 @@ public class FaceDetectionActivity extends AppCompatActivity {
         @Override
         public void handleMessage(Message msg) {
             NetworkTask nt = (NetworkTask) msg.obj;
+            Log.w(TAG, "status: "+nt.getResponseStatus());
             if (nt.getResponseStatus() == HttpStatus.SC_OK || nt.getResponseStatus() == HttpStatus.SC_CREATED) {
+                Log.w(TAG, nt.getResponse());
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(!reco)
+            finish();
+    }
+
+    public static Bitmap decodeSampledBitmapFromResource(int reqWidth, int reqHeight, byte[] rawData) {
+
+        // First decode with inJustDecodeBounds=true to check dimensions
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        //BitmapFactory.decodeResource(res, resId, options);
+        BitmapFactory.decodeByteArray(rawData, 0, rawData.length, options);
+
+        // Calculate inSampleSize
+        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+
+        // Decode bitmap with inSampleSize set
+        options.inJustDecodeBounds = false;
+        //return BitmapFactory.decodeResource(res, resId, options);
+        return BitmapFactory.decodeByteArray(rawData, 0, rawData.length, options);
+    }
+
+    public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        // Raw height and width of image
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
+
+            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+            // height and width larger than the requested height and width.
+            while ((halfHeight / inSampleSize) >= reqHeight
+                    && (halfWidth / inSampleSize) >= reqWidth) {
+                inSampleSize *= 2;
+            }
+        }
+
+        return inSampleSize;
     }
 }

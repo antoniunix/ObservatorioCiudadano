@@ -50,12 +50,21 @@
         android:textSize="@dimen/sizeTextNormal" />
 
     <TextView
+        android:id="@+id/txtUserPass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtStatusText"
+        android:layout_toRightOf="@id/viewStatus"
+        android:textSize="@dimen/sizeTextNormal" />
+
+    <TextView
         android:id="@+id/txtCreated"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/txtPassword"
+        android:layout_below="@+id/txtUserPass"
         android:layout_toRightOf="@id/viewStatus"
         android:textSize="@dimen/sizeTextNormal" />
+
 
     <TextView
         android:id="@+id/txtLabelInit"

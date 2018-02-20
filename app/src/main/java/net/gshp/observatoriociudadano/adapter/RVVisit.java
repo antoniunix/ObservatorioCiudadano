@@ -9,12 +9,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import net.gshp.observatoriociudadano.R;
+import net.gshp.observatoriociudadano.contextApp.ContextApp;
+import net.gshp.observatoriociudadano.dto.DtoBundle;
 import net.gshp.observatoriociudadano.dto.DtoPdvPdv;
 import net.gshp.observatoriociudadano.dto.DtoReportVisit;
 import net.gshp.observatoriociudadano.listener.OnItemClickListenerRV;
+import net.gshp.observatoriociudadano.model.ModelMenuReport;
 import net.gshp.observatoriociudadano.util.ChangeFontStyle;
 import net.gshp.observatoriociudadano.util.Config;
 
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 /**
@@ -45,8 +50,18 @@ public class RVVisit extends RecyclerView.Adapter<RVVisit.ViewHolder> {
         holder.txtCreated.setText(Config.formatDateFromCurrentMillis(dto.getDateCheckIn(), "dd MMMM yyyy"));
         holder.txtInit.setText(Config.formatDateFromCurrentMillis(dto.getDateCheckIn(), "hh:mm aa"));
         holder.txtFinish.setText(Config.formatDateFromCurrentMillis(dto.getDateCheckOut(), "hh:mm aa"));
-        holder.txtPassword.setText(dto.getPassword());
 
+        if (dto.getTypePoll() == ContextApp.context.getResources().getInteger(R.integer.idPollSupervisor)) {
+            holder.txtUserPass.setVisibility(View.GONE);
+        } else if (dto.getTypePoll() == ContextApp.context.getResources().getInteger(R.integer.idPollRepresentanteCasilla)) {
+            holder.txtUserPass.setVisibility(View.VISIBLE);
+            String msg = "Error al obtener datos";
+
+            msg = new ModelMenuReport(new DtoBundle()).getUserPassword(dto.getId());
+
+
+            holder.txtUserPass.setText(msg);
+        }
 
         if (dto.getDateCheckOut() == 0) {
             holder.viewStatus.setBackgroundResource(R.color.colorScheduleNotDone);
@@ -90,7 +105,8 @@ public class RVVisit extends RecyclerView.Adapter<RVVisit.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         View viewStatus;
-        TextView txtName, txtAddress, txtPassword, txtCreated, txtLabelInit, txtInit, txtLabelFinish, txtFinish, txtStatusText;
+        TextView txtName, txtAddress, txtPassword, txtCreated, txtLabelInit, txtInit, txtLabelFinish,
+                txtFinish, txtStatusText, txtUserPass;
         ImageView imgTrash;
         RelativeLayout rltMain;
 
@@ -108,7 +124,8 @@ public class RVVisit extends RecyclerView.Adapter<RVVisit.ViewHolder> {
             txtStatusText = itemView.findViewById(R.id.txtStatusText);
             rltMain = itemView.findViewById(R.id.rltMain);
             imgTrash = itemView.findViewById(R.id.imgTrash);
-            ChangeFontStyle.changeFont(txtName, txtAddress);
+            txtUserPass = itemView.findViewById(R.id.txtUserPass);
+            ChangeFontStyle.changeFont(txtName, txtAddress, txtUserPass);
         }
 
     }
