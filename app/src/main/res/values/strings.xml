@@ -343,5 +343,6 @@ Página 6 de 6</string>
     <string name="latlon">latlon</string>
     <string name="dialog_delete_visit_text">¿Desea eliminar esta visita?</string>
     <string name="dialog_delete_census">¿Desea eliminar Ubicación?</string>
+    <string name="supervisor">SUPERVISOR</string>
 
 </resources>

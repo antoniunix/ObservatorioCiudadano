@@ -472,11 +472,15 @@ public class DaoReport extends DAO {
                 dtoReportVisit.setId(cursor.getLong(id));
                 dtoReportVisit.setSend(cursor.getInt(send));
                 dtoReportVisit.setIdPdv(cursor.getLong(idPdv));
-                dtoReportVisit.setName(cursor.getString(nombrePdv));
                 dtoReportVisit.setDateCheckIn(cursor.getLong(dateCheckIn));
                 dtoReportVisit.setDateCheckOut(cursor.getLong(dateCheckOut));
                 dtoReportVisit.setHash(cursor.getString(hash));
                 dtoReportVisit.setTypePoll(cursor.getInt(typePoll));
+                if (dtoReportVisit.getTypePoll() != ContextApp.context.getResources().getInteger(R.integer.idPollSupervisor)) {
+                    dtoReportVisit.setName(cursor.getString(nombrePdv));
+                } else {
+                    dtoReportVisit.setName(ContextApp.context.getResources().getString(R.string.supervisor));
+                }
 
                 obj.add(dtoReportVisit);
             } while (cursor.moveToNext());
@@ -493,6 +497,11 @@ public class DaoReport extends DAO {
                 dtoReportVisit.setDateCheckOut(cursor.getLong(dateCheckOut));
                 dtoReportVisit.setHash(cursor.getString(hash));
                 dtoReportVisit.setTypePoll(cursor.getInt(typePoll));
+                if (dtoReportVisit.getTypePoll() != ContextApp.context.getResources().getInteger(R.integer.idPollSupervisor)) {
+                    dtoReportVisit.setName(cursor.getString(nombrePdv));
+                } else {
+                    dtoReportVisit.setName(ContextApp.context.getResources().getString(R.string.supervisor));
+                }
 
                 obj.add(dtoReportVisit);
             } while (cursor.moveToNext());
@@ -509,6 +518,11 @@ public class DaoReport extends DAO {
                 dtoReportVisit.setDateCheckOut(cursor.getLong(dateCheckOut));
                 dtoReportVisit.setHash(cursor.getString(hash));
                 dtoReportVisit.setTypePoll(cursor.getInt(typePoll));
+                if (dtoReportVisit.getTypePoll() != ContextApp.context.getResources().getInteger(R.integer.idPollSupervisor)) {
+                    dtoReportVisit.setName(cursor.getString(nombrePdv));
+                } else {
+                    dtoReportVisit.setName(ContextApp.context.getResources().getString(R.string.supervisor));
+                }
 
                 obj.add(dtoReportVisit);
             } while (cursor.moveToNext());
