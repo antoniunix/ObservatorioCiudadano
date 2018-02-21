@@ -2,6 +2,7 @@ package net.gshp.observatoriociudadano.dao;
 
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import net.gshp.observatoriociudadano.dto.DtoEaRespuestaPdv;
 
@@ -22,7 +23,9 @@ public class DaoEaRespuestaPdv extends DAO {
     public static String TABLE_NAME = "EARespuestaPdv";
     public static String PK_FIELD = "id";
 
-    public DaoEaRespuestaPdv() { super(TABLE_NAME, PK_FIELD); }
+    public DaoEaRespuestaPdv() {
+        super(TABLE_NAME, PK_FIELD);
+    }
 
     /**
      * Insert
@@ -57,10 +60,25 @@ public class DaoEaRespuestaPdv extends DAO {
     public boolean exists(long idPdv, long idPoll) {
         db = helper.getReadableDatabase();
         cursor = db.rawQuery("SELECT *" + " FROM " + TABLE_NAME
-                + " WHERE id_pdv = "+idPdv+" AND id_poll="+idPoll , null);
+                + " WHERE id_pdv = " + idPdv + " AND id_poll=" + idPoll, null);
         if (cursor.getCount() > 0)
             return true;
         else
             return false;
+    }
+
+    public boolean supervisorRegistered() {
+        db = helper.getReadableDatabase();
+        cursor = db.rawQuery("SELECT\n" +
+                "rowid\n" +
+                "FROM\n" +
+                "EAAnswerPdv\n" +
+                "WHERE \n" +
+                id_poll + "=1", null);
+        int results = cursor.getCount();
+        Log.w(TAG, "result: " + results);
+        cursor.close();
+        db.close();
+        return results >= 1;
     }
 }
