@@ -103,6 +103,9 @@
             android:name=".PlaceAutocompleteActivity"
             android:screenOrientation="portrait" />
 
+        <meta-data
+            android:name="com.google.android.gms.vision.DEPENDENCIES"
+            android:value="face" />
         <activity
             android:name=".faceDetection.FaceDetectionActivity"
             android:screenOrientation="portrait" />

@@ -61,7 +61,7 @@
 
     </net.gshp.observatoriociudadano.faceDetection.camera.CameraSourcePreview>
 
-    <RelativeLayout
+    <!--<RelativeLayout
         android:id="@+id/progress_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -111,6 +111,17 @@
         android:layout_margin="16dp"
         android:background="@null"
         android:clickable="true"
-        app:srcCompat="@drawable/ic_action_camera_rear" />
+        app:srcCompat="@drawable/ic_action_camera_rear" />-->
+
+    <ImageButton
+        android:id="@+id/take_photo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="16dp"
+        android:background="@drawable/camera_button"
+        android:clickable="true"
+        app:srcCompat="@drawable/ic_action_camera_alt" />
 
 </RelativeLayout>

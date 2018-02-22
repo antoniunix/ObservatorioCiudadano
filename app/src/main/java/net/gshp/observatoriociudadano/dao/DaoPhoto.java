@@ -165,7 +165,7 @@ public class DaoPhoto extends DAO {
         return dto;
     }
 
-    public int missingPhotos(long idReport) {
+    public int missingPhotos(long idReport, int quantity) {
         db = helper.getReadableDatabase();
         cursor = db.rawQuery("SELECT\n" +
                 "id\n" +
@@ -178,13 +178,13 @@ public class DaoPhoto extends DAO {
         cursor.close();
         db.close();
 
-        if (photos >= 7)
+        if (photos >= quantity)
             return 0;
         else
-            return 7 - photos;
+            return quantity - photos;
     }
 
-    public boolean previousPhotos(String userName) {
+    public boolean previousPhotos(String userName, int quantity) {
         db = helper.getReadableDatabase();
         cursor = db.rawQuery("SELECT\n" +
                 "id\n" +
@@ -197,6 +197,6 @@ public class DaoPhoto extends DAO {
         cursor.close();
         db.close();
 
-        return photos >= 7;
+        return photos >= quantity;
     }
 }

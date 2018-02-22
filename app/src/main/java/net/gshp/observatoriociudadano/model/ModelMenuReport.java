@@ -116,7 +116,7 @@ public class ModelMenuReport {
 
     public boolean isReportPhotoComplete(long idReport) {
         DaoPhoto dao = new DaoPhoto();
-        return (dao.missingPhotos(idReport) == 0);
+        return (dao.missingPhotos(idReport, context.getResources().getInteger(R.integer.number_photos)) == 0);
     }
 
     public String getUserPassword(long idReportLocal) {

@@ -308,7 +308,7 @@ Página 6 de 6</string>
     <string name="process">PROCESANDO...</string>
     <string name="title_detection">RECONOCIMIENTO FACIAL</string>
     <string name="start">INICIO</string>
-    <string name="initial_reco">RECONOCIMIENTO INICIAL</string>
+    <string name="initial_reco">RECONOCIMIENTO</string>
     <string name="firs_step">Dar click en inicio</string>
     <string name="second_step">Tomar las 10 fotos\ncon las expresiones\nsolicitadas</string>
     <string name="third_step">Dar click en guardar\ne iniciar el recono-\ncimiento facial</string>
@@ -321,7 +321,7 @@ Página 6 de 6</string>
     <string name="IMAGE_SIZE">IMAGE_SIZE</string>
     <string name="user_roll">user_roll</string>
     <string name="is_reco">is_reco</string>
-    <string name="images_ip">http://172.16.41.77:80</string>
+    <string name="images_ip">http://97.107.123.139:8005</string>
     <string name="address">address</string>
     <string name="add_address">Guardar direccion.</string>
     <string name="photo">Foto</string>

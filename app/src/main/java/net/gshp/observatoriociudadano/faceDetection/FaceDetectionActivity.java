@@ -23,8 +23,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -80,9 +78,9 @@ public class FaceDetectionActivity extends AppCompatActivity {
     private String photoPath;
     private String imageName;
 
-    private ImageView myPhoto;
-    private ProgressBar progress;
-    private RelativeLayout progressView;
+    //private ImageView myPhoto;
+    //private ProgressBar progress;
+    //private RelativeLayout progressView;
     private Handler handler = new Handler();
     private NetworkConfig networkConfig;
 
@@ -91,7 +89,8 @@ public class FaceDetectionActivity extends AppCompatActivity {
     private boolean frontCamera;
     private String userName;
 
-    private ImageButton switchCamera;
+    //private ImageButton switchCamera;
+    private ImageButton takePhoto;
     private DtoBundle dtoBundle;
     int orientation;
 
@@ -106,11 +105,13 @@ public class FaceDetectionActivity extends AppCompatActivity {
         if (getIntent().hasExtra(getString(R.string.app_bundle_name)))
             dtoBundle = (DtoBundle) getIntent().getExtras().get(getString(R.string.app_bundle_name));
 
-        if (getIntent().hasExtra(getString(R.string.user_roll)) || getIntent().getIntExtra(getString(R.string.user_roll),
-                getResources().getInteger(R.integer.rollSupervisor)) == getResources().getInteger(R.integer.rollSupervisor))
-            rol = getResources().getInteger(R.integer.rollSupervisor);
-        else
-            rol = getResources().getInteger(R.integer.rollRepresentanteCasilla);
+        if (getIntent().hasExtra(getString(R.string.user_roll))) {
+            if (getIntent().getIntExtra(getString(R.string.user_roll),
+                    getResources().getInteger(R.integer.rollSupervisor)) == getResources().getInteger(R.integer.rollSupervisor))
+                rol = getResources().getInteger(R.integer.rollSupervisor);
+            else
+                rol = getResources().getInteger(R.integer.rollRepresentanteCasilla);
+        }
 
         reco = !getIntent().hasExtra(getString(R.string.is_reco)) || getIntent().getBooleanExtra(getString(R.string.is_reco), true);
         if (getIntent().hasExtra("userName")) {
@@ -132,9 +133,9 @@ public class FaceDetectionActivity extends AppCompatActivity {
         preferences = getSharedPreferences(getString(R.string.app_share_preference_name), Context.MODE_PRIVATE);
         networkConfig = new NetworkConfig(new HandlerSendImage(), ContextApp.context, "app/observador/recognition/");
 
-        progressView = findViewById(R.id.progress_view);
-        myPhoto = findViewById(R.id.my_photo);
-        progress = findViewById(R.id.progress);
+        //progressView = findViewById(R.id.progress_view);
+        //myPhoto = findViewById(R.id.my_photo);
+        //progress = findViewById(R.id.progress);
         mPreview = findViewById(R.id.preview);
         mGraphicOverlay = findViewById(R.id.faceOverlay);
 
@@ -147,7 +148,16 @@ public class FaceDetectionActivity extends AppCompatActivity {
             requestCameraPermission();
         }
 
-        switchCamera = findViewById(R.id.switch_camera);
+        takePhoto = findViewById(R.id.take_photo);
+        takePhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mCameraSource != null)
+                    mCameraSource.takePicture(mShutterCallback, mJpegPictureCallback);
+            }
+        });
+
+        /*switchCamera = findViewById(R.id.switch_camera);
         if (preferences.getBoolean("front_camera", true))
             switchCamera.setImageResource(R.drawable.ic_action_camera_rear);
         else
@@ -160,10 +170,10 @@ public class FaceDetectionActivity extends AppCompatActivity {
                     switchCameraAction();
                 }
             });
-        }
+        }*/
     }
 
-    private void switchCameraAction() {
+    /*private void switchCameraAction() {
         if (mCameraSource != null) {
             mPreview.stop();
             mCameraSource.release();
@@ -207,7 +217,7 @@ public class FaceDetectionActivity extends AppCompatActivity {
         }
 
         startCameraSource();
-    }
+    }*/
 
     private boolean checkCameraFront() {
         return getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FRONT);
@@ -265,13 +275,14 @@ public class FaceDetectionActivity extends AppCompatActivity {
                     .build();
             frontCamera = true;
         } else {
-            mCameraSource = new CameraSource.Builder(context, detector)
+            /*mCameraSource = new CameraSource.Builder(context, detector)
                     .setAutoFocusEnabled(true)
                     .setRequestedPreviewSize(640, 480)
                     .setFacing(CameraSource.CAMERA_FACING_BACK)
                     .setRequestedFps(30.0f)
                     .build();
-            frontCamera = false;
+            frontCamera = false;*/
+            finish();
         }
 
         /*if (reco) {
@@ -414,7 +425,7 @@ public class FaceDetectionActivity extends AppCompatActivity {
             }
 
             try {
-                imageName = preferences.getString(getString(R.string.app_share_preference_user_account), "")
+                imageName = userName
                         + "_" + System.currentTimeMillis() + ".jpg";
                 File rawOutput = new File(getString(R.string.app_path_photo), imageName);
 
@@ -425,7 +436,7 @@ public class FaceDetectionActivity extends AppCompatActivity {
                 photoPath = rawOutput.getPath();
 
                 saveImage();
-                //sendImage();
+                sendImage();
                 finishReturn();
             } catch (Exception e) {
                 Log.v(TAG, e.toString());
@@ -433,7 +444,7 @@ public class FaceDetectionActivity extends AppCompatActivity {
         }
     }
 
-    private void processingImage() {
+    /*private void processingImage() {
         new Thread(new Runnable() {
             int i = 0;
             int progressStatus = 10;
@@ -474,7 +485,7 @@ public class FaceDetectionActivity extends AppCompatActivity {
             }
 
         }).start();
-    }
+    }*/
 
     @Override
     public void finish() {
@@ -486,7 +497,6 @@ public class FaceDetectionActivity extends AppCompatActivity {
 
         Intent intent = new Intent();
         intent.putExtra(getString(R.string.PHOTO_PATH), photoPath);
-        intent.putExtra("rotation", orientation);
         setResult(RESULT_OK, intent);
 
         if (reco)
@@ -508,7 +518,7 @@ public class FaceDetectionActivity extends AppCompatActivity {
         if (savedInstanceState != null) {
             if (savedInstanceState.containsKey(PHOTO_PATH)) {
                 photoPath = savedInstanceState.getString(PHOTO_PATH);
-                myPhoto.setImageBitmap(BitmapFactory.decodeFile(photoPath));
+                //myPhoto.setImageBitmap(BitmapFactory.decodeFile(photoPath));
             }
         }
     }
@@ -537,8 +547,8 @@ public class FaceDetectionActivity extends AppCompatActivity {
         private FaceGraphic mFaceGraphic;
 
         GraphicFaceTracker(GraphicOverlay overlay) {
-            mOverlay = overlay;
-            mFaceGraphic = new FaceGraphic(overlay, getApplicationContext());
+            //mOverlay = overlay;
+            //mFaceGraphic = new FaceGraphic(overlay, getApplicationContext());
         }
 
         /**
@@ -546,7 +556,7 @@ public class FaceDetectionActivity extends AppCompatActivity {
          */
         @Override
         public void onNewItem(int faceId, Face item) {
-            mFaceGraphic.setId(faceId);
+            //mFaceGraphic.setId(faceId);
         }
 
         /**
@@ -554,7 +564,7 @@ public class FaceDetectionActivity extends AppCompatActivity {
          */
         @Override
         public void onUpdate(FaceDetector.Detections<Face> detectionResults, Face face) {
-            mOverlay.add(mFaceGraphic);
+            /*mOverlay.add(mFaceGraphic);
             mFaceGraphic.updateFace(face);
             if (mFaceGraphic.centered()) {
                 if (!shutter) {
@@ -563,7 +573,7 @@ public class FaceDetectionActivity extends AppCompatActivity {
                     shutter = true;
                     mCameraSource.takePicture(mShutterCallback, mJpegPictureCallback);
                 }
-            }
+            }*/
         }
 
         /**
@@ -573,7 +583,7 @@ public class FaceDetectionActivity extends AppCompatActivity {
          */
         @Override
         public void onMissing(FaceDetector.Detections<Face> detectionResults) {
-            mOverlay.remove(mFaceGraphic);
+            //mOverlay.remove(mFaceGraphic);
         }
 
         /**
@@ -582,7 +592,7 @@ public class FaceDetectionActivity extends AppCompatActivity {
          */
         @Override
         public void onDone() {
-            mOverlay.remove(mFaceGraphic);
+            //mOverlay.remove(mFaceGraphic);
         }
     }
 
@@ -624,7 +634,7 @@ public class FaceDetectionActivity extends AppCompatActivity {
         if (reco) {
             ImageConverter.roundedCornerBitmap(FaceDetectionActivity.this, photoPath, "myPhoto",
                     preferences.getInt(getString(R.string.IMAGE_SIZE), 60));
-            myPhoto.setImageBitmap(ImageConverter.getBitmap(FaceDetectionActivity.this, "myPhoto"));
+            /*myPhoto.setImageBitmap(ImageConverter.getBitmap(FaceDetectionActivity.this, "myPhoto"));
             progressView.setVisibility(View.VISIBLE);
 
             if (mCameraSource != null) {
@@ -634,7 +644,8 @@ public class FaceDetectionActivity extends AppCompatActivity {
             }
 
             progress.setProgress(10);
-            processingImage();
+            processingImage();*/
+            finish();
         } else {
             finish();
         }

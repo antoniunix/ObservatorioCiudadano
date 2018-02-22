@@ -40,6 +40,7 @@ import net.gshp.observatoriociudadano.dialog.DialogMessageGeneric;
 import net.gshp.observatoriociudadano.dialog.DialogSync;
 import net.gshp.observatoriociudadano.dto.DtoBundle;
 import net.gshp.observatoriociudadano.dto.DtoImageLogin;
+import net.gshp.observatoriociudadano.faceDetection.PhotoWizardActivity;
 import net.gshp.observatoriociudadano.model.ModelHome;
 import net.gshp.observatoriociudadano.model.ModelInfoPerson;
 import net.gshp.observatoriociudadano.model.ModelMenuReport;
@@ -150,7 +151,11 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
 
                 break;
             case R.id.action_visit:
-                startActivity(new Intent(this, Visit.class));
+                Intent intent = new Intent(this, PhotoWizardActivity.class);
+                intent.putExtra(getString(R.string.user_roll), getResources().getInteger(R.integer.rollSupervisor));
+                intent.putExtra(getString(R.string.app_bundle_name), dtoBundle);
+                startActivity(intent);
+                //startActivity(new Intent(this, Visit.class));
                 break;
             case R.id.action_exit:
                 finish();

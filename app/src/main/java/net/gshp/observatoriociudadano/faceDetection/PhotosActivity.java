@@ -4,15 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -22,15 +19,12 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
-import net.gshp.observatoriociudadano.Home;
 import net.gshp.observatoriociudadano.R;
 import net.gshp.observatoriociudadano.dao.DaoEARespuesta;
 import net.gshp.observatoriociudadano.dao.DaoPhoto;
 import net.gshp.observatoriociudadano.dto.DtoBundle;
-import net.gshp.observatoriociudadano.dto.DtoEARespuesta;
 import net.gshp.observatoriociudadano.dto.DtoPhoto;
 import net.gshp.observatoriociudadano.faceDetection.adapters.PhotoItem;
 import net.gshp.observatoriociudadano.faceDetection.models.Photo;
@@ -62,7 +56,7 @@ public class PhotosActivity extends AppCompatActivity {
         setContentView(R.layout.activity_photos);
         getSupportActionBar().hide();
 
-        SimpleDateFormat df = new SimpleDateFormat("MMM dd yyyy");
+        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yy");
         TextView timestamp = findViewById(R.id.date);
         timestamp.setText(df.format(System.currentTimeMillis()).toUpperCase());
 
@@ -115,7 +109,6 @@ public class PhotosActivity extends AppCompatActivity {
                 takenPhotos++;
             }
         }
-        Log.w(TAG, "faltan: "+new DaoPhoto().missingPhotos(dtoBundle.getIdReportLocal()));
 
         int missingPhotos = minPhotos - takenPhotos;
 
@@ -137,45 +130,37 @@ public class PhotosActivity extends AppCompatActivity {
     private void prepareAlbums() {
 
         int[] covers = new int[]{
-                R.drawable.cara2,
-                R.drawable.cara3,
-                R.drawable.cara4,
-                R.drawable.cara5,
-                R.drawable.cara7,
-                R.drawable.cara8,
-                R.drawable.cara9};
+                R.drawable.c1,
+                R.drawable.c2,
+                R.drawable.c3,
+                R.drawable.c4,
+                R.drawable.c5};
 
-        Photo a = new Photo("Enojado", covers[0], "");
+        Photo a = new Photo("FRUNCIENDO CEÑO", covers[0], "");
         pictureList.add(a);
 
-        a = new Photo("Viendo a lado", covers[1], "");
+        a = new Photo("TRISTE", covers[1], "");
         pictureList.add(a);
 
-        a = new Photo("Serio de Frente", covers[2], "");
+        a = new Photo("SORPRENDIDO", covers[2], "");
         pictureList.add(a);
 
-        a = new Photo("Sonriendo enseñando dientes", covers[3], "");
+        a = new Photo("ENOJADO", covers[3], "");
         pictureList.add(a);
 
-        a = new Photo("Ojos cerrados", covers[4], "");
-        pictureList.add(a);
-
-        a = new Photo("Sonriendo", covers[5], "");
-        pictureList.add(a);
-
-        a = new Photo("Frunciendo ceño", covers[6], "");
+        a = new Photo("SONRIENDO", covers[4], "");
         pictureList.add(a);
 
         if (rol == getResources().getInteger(R.integer.rollSupervisor)) {
             userName = new DaoEARespuesta().selectUserName(1, 1, dtoBundle.getIdReportLocal());
-            List<DtoPhoto> pictures = new DaoPhoto().selectAll(userName.replaceAll("\\s+",""));
+            List<DtoPhoto> pictures = new DaoPhoto().selectAll(userName.replaceAll("\\s+", ""));
 
             for (DtoPhoto picture : pictures) {
                 pictureList.get(picture.getFace_id()).setPicture(picture.getPath());
             }
         } else {
             userName = new DaoEARespuesta().selectUserName(8, 2, dtoBundle.getIdReportLocal());
-            List<DtoPhoto> pictures = new DaoPhoto().selectAll(userName.replaceAll("\\s+",""));
+            List<DtoPhoto> pictures = new DaoPhoto().selectAll(userName.replaceAll("\\s+", ""));
             Log.w(TAG, userName);
 
             for (DtoPhoto picture : pictures) {
@@ -296,7 +281,7 @@ public class PhotosActivity extends AppCompatActivity {
                     //new PhotoSender(data.getLongExtra(Constants.PHOTO_ID, 0)).execute();
                     Photo photo = pictureList.get(photoPosition);
                     photo.setPicture(data.getStringExtra(getString(R.string.PHOTO_PATH)));
-                    photo.setRotation(data.getIntExtra("rotation",0));
+                    photo.setRotation(data.getIntExtra("rotation", 0));
 
                     adapter.notifyItemChanged(photoPosition);
                     adapter.notifyDataSetChanged();
