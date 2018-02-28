@@ -20,7 +20,7 @@ allprojects {
     repositories {
         jcenter()
         maven {
-            url 'http://10.0.4.79:8080/repository/internal/'
+            url 'http://10.0.4.136:8080/repository/internal/'
         }
         google()
     }

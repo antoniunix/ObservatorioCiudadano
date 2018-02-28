@@ -14,4 +14,5 @@
     <dimen name="sizeTextNormal">12sp</dimen>
     <dimen name="sizeTextBig">18sp</dimen>
     <dimen name="sizeTextVeryBig">20sp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 </resources>

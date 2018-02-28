@@ -137,13 +137,11 @@ public class PhotosActivity extends AppCompatActivity {
     private void prepareAlbums() {
 
         int[] covers = new int[]{
-                R.drawable.cara2,
-                R.drawable.cara3,
-                R.drawable.cara4,
-                R.drawable.cara5,
-                R.drawable.cara7,
-                R.drawable.cara8,
-                R.drawable.cara9};
+                R.drawable.c1,
+                R.drawable.c2,
+                R.drawable.c3,
+                R.drawable.c4,
+                R.drawable.c5};
 
         Photo a = new Photo("Enojado", covers[0], "");
         pictureList.add(a);
@@ -160,11 +158,11 @@ public class PhotosActivity extends AppCompatActivity {
         a = new Photo("Ojos cerrados", covers[4], "");
         pictureList.add(a);
 
-        a = new Photo("Sonriendo", covers[5], "");
-        pictureList.add(a);
-
-        a = new Photo("Frunciendo ceño", covers[6], "");
-        pictureList.add(a);
+//        a = new Photo("Sonriendo", covers[5], "");
+//        pictureList.add(a);
+//
+//        a = new Photo("Frunciendo ceño", covers[6], "");
+//        pictureList.add(a);
 
         if (rol == getResources().getInteger(R.integer.rollSupervisor)) {
             userName = new DaoEARespuesta().selectUserName(1, 1, dtoBundle.getIdReportLocal());

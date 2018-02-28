@@ -5,6 +5,8 @@
     <string name="app_share_preference_name">ObservatorioCiudadano</string>
     <string name="network_ip">http://os.gshp-apps.com</string>
     <string name="network_context">service/rest/</string>
+    <string name="user">user1</string>
+    <string name="pass">54321</string>
     <string name="app_download_apk">https://s3-us-west-1.amazonaws.com/gshpapps/OBCiudadano/ObservatorioCiudadano.apk</string>
     <string name="app_path_apk">sdcard/ObservatorioCiudadano/ObservatorioCiudadano.apk</string>
     <string name="network_header_name_application_json">Content-Type</string>
@@ -346,5 +348,6 @@ Página 6 de 6</string>
     <string name="dialog_delete_census">¿Desea eliminar Ubicación?</string>
     <string name="supervisor">SUPERVISOR</string>
     <string name="report_complete">Este reporte ya fue concluido.</string>
+    <string name="title_activity_message_push">MessagePush</string>
 
 </resources>

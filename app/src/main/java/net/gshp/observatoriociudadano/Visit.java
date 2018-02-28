@@ -25,10 +25,8 @@ import net.gshp.observatoriociudadano.util.BottomNavigationViewHelper;
 import net.gshp.observatoriociudadano.util.ChangeFontStyle;
 import net.gshp.observatoriociudadano.util.Config;
 
-public class Visit extends AppCompatActivity implements OnItemClickListenerRV,
-        BottomNavigationView.OnNavigationItemSelectedListener, OnFinishSendReports {
+public class Visit extends AppCompatActivity implements OnItemClickListenerRV, OnFinishSendReports {
 
-    private BottomNavigationView bottomNavigationView;
     private LinearLayoutManager lmy;
     private RecyclerView rcvVisit;
     private ModelVisit model;
@@ -37,14 +35,10 @@ public class Visit extends AppCompatActivity implements OnItemClickListenerRV,
 
     private void init() {
         rcvVisit = findViewById(R.id.rcvVisit);
-        bottomNavigationView = findViewById(R.id.bottom_navigation);
-        BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
         lmy = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rcvVisit.setLayoutManager(lmy);
         model = new ModelVisit();
         adapter = model.getAdapter(this);
-        bottomNavigationView.setOnNavigationItemSelectedListener(this);
-        bottomNavigationView.setSelectedItemId(R.id.action_visit);
         new ModelInfoPerson(this).loadImage(this).loadInfo("CONTROL DE REGISTROS");
     }
 
@@ -62,27 +56,6 @@ public class Visit extends AppCompatActivity implements OnItemClickListenerRV,
         rcvVisit.setAdapter(adapter);
     }
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        DtoBundle dtoBundle = new DtoBundle();
-        switch (item.getItemId()) {
-            case R.id.action_supervisor:
-                dtoBundle.setIdTypeMenuReport(getResources().getInteger(R.integer.idPollSupervisor));
-                startActivity(new Intent(this, MenuReport.class).putExtra(getString(R.string.app_bundle_name), dtoBundle));
-                finish();
-                break;
-            case R.id.action_representative:
-                startActivity(new Intent(this, ListStation.class));
-                finish();
-                break;
-            case R.id.action_visit:
-                break;
-            case R.id.action_exit:
-                finish();
-                break;
-        }
-        return true;
-    }
 
     @Override
     public void onItemClickListener(View v, int position) {

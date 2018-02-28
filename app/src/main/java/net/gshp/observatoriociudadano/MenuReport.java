@@ -59,7 +59,7 @@ public class MenuReport extends AppCompatActivity implements AHBottomNavigation.
         mapFrag.getMapAsync(this);
         modelMenuReport = new ModelMenuReport(dtoBundle);
         if (dtoBundle.getIdTypeMenuReport() == getResources().getInteger(R.integer.idPollSupervisor)) {
-            new ModelInfoPerson(this).loadImage(this).loadInfo("SUPERVISOR");
+            new ModelInfoPerson(this).loadImage(this).loadInfo("REGISTRO");
         } else if (dtoBundle.getIdTypeMenuReport() == getResources().getInteger(R.integer.idPollRepresentanteCasilla)) {
             new ModelInfoPerson(this).loadImage(this).loadInfo("REPRESENTANTE");
         }
@@ -99,7 +99,7 @@ public class MenuReport extends AppCompatActivity implements AHBottomNavigation.
                     statusReportSupervisor = modelMenuReport.isReportPollSup();
 
                     if (statusReportSupervisor != getResources().getInteger(R.integer.statusModuleReportDone)) {
-                        dialog.setData("ENCUESTA SUPERVISOR", "Debe completar la encuesta primero", 0).
+                        dialog.setData("ENCUESTA", "Debe completar la encuesta primero", 0).
                                 setShowButton(false, true).setCancelable(false);
                         dialog.show(getSupportFragmentManager(), "");
                     } else {
@@ -113,11 +113,11 @@ public class MenuReport extends AppCompatActivity implements AHBottomNavigation.
                     statusReportCensusSupervisor = modelMenuReport.isReportSupCompleteCensus();
 
                     if (statusReportSupervisor != getResources().getInteger(R.integer.statusModuleReportDone)) {
-                        dialog.setData("ENCUESTA SUPERVISOR", "Debe completar la encuesta primero", 0).
+                        dialog.setData("ENCUESTA", "Debe completar la encuesta primero", 0).
                                 setShowButton(false, true);
                         dialog.show(getSupportFragmentManager(), "");
                     } else if (statusReportCensusSupervisor == getResources().getInteger(R.integer.statusModuleReportNotDone)) {
-                        dialog.setData("DIRECCIÓN SUPERVISOR", "Debe completar la dirección de supervisor primero", 0).
+                        dialog.setData("DIRECCIÓN", "Debe completar la dirección de supervisor primero", 0).
                                 setShowButton(false, true);
                         dialog.show(getSupportFragmentManager(), "");
                     } else {
@@ -134,15 +134,15 @@ public class MenuReport extends AppCompatActivity implements AHBottomNavigation.
                     statusReportCensusSupervisor = modelMenuReport.isReportSupCompleteCensus();
 
                     if (statusReportSupervisor != getResources().getInteger(R.integer.statusModuleReportDone)) {
-                        dialog.setData("ENCUESTA SUPERVISOR", "Debe completar la encuesta primero", 0).
+                        dialog.setData("ENCUESTA", "Debe completar la encuesta primero", 0).
                                 setShowButton(false, true);
                         dialog.show(getSupportFragmentManager(), "");
                     } else if (statusReportCensusSupervisor == getResources().getInteger(R.integer.statusModuleReportNotDone)) {
-                        dialog.setData("DIRECCIÓN SUPERVISOR", "Debe completar la dirección de supervisor primero", 0).
+                        dialog.setData("DIRECCIÓN", "Debe completar la dirección de supervisor primero", 0).
                                 setShowButton(false, true);
                         dialog.show(getSupportFragmentManager(), "");
                     }else if(!modelMenuReport.isReportPhotoComplete(dtoBundle.getIdReportLocal())){
-                        dialog.setData("DIRECCIÓN SUPERVISOR", "Debe completar las fotografías", 0).
+                        dialog.setData("DIRECCIÓN", "Debe completar las fotografías", 0).
                                 setShowButton(false, true);
                         dialog.show(getSupportFragmentManager(), "");
                     }
@@ -150,7 +150,12 @@ public class MenuReport extends AppCompatActivity implements AHBottomNavigation.
                         startService(new Intent(ContextApp.context, ServiceCheck.class).
                                 putExtra(getString(R.string.app_bundle_name), dtoBundle).
                                 putExtra("typeCheck", getResources().getInteger(R.integer.type_check_out)));
-                        finish();
+                        String msg = "Error al obtener datos";
+                        msg = modelMenuReport.getUserPassword(dtoBundle.getIdReportLocal());
+                        dialog.setData("USUARIO Y CONTARSEÑA", msg, 0).
+                                setShowButton(false, true).
+                                setOnDissmisDialogListener(this);
+                        dialog.show(getSupportFragmentManager(), "");
                     }
 
 

@@ -18,7 +18,6 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
-
     <application
         android:name=".contextApp.ContextApp"
         android:allowBackup="true"
@@ -95,14 +94,12 @@
         <activity
             android:name=".Visit"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".Census"
             android:screenOrientation="portrait" />
         <activity
             android:name=".PlaceAutocompleteActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".faceDetection.FaceDetectionActivity"
             android:screenOrientation="portrait" />
@@ -115,7 +112,7 @@
         <activity
             android:name=".CensusManual"
             android:screenOrientation="portrait" />
-
+        <activity android:name=".dialog.MessagePush"></activity>
     </application>
 
 </manifest>

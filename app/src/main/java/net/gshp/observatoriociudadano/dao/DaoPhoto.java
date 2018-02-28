@@ -178,10 +178,10 @@ public class DaoPhoto extends DAO {
         cursor.close();
         db.close();
 
-        if (photos >= 7)
+        if (photos >= 5)
             return 0;
         else
-            return 7 - photos;
+            return 5 - photos;
     }
 
     public boolean previousPhotos(String userName) {

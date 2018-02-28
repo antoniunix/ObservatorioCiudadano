@@ -34,12 +34,12 @@ public class ModelAHBottomNavigationMenuReport {
         this.dtoBundle = dtoBundle;
 
 
-        ahPollSup = new AHBottomNavigationItem(null, R.drawable.supervisor, R.color.colorAHBottonDefaul);
-        ahCensus = new AHBottomNavigationItem(null, R.drawable.censo, R.color.colorAHBottonDefaul);
+        ahPollSup = new AHBottomNavigationItem("Registro", R.drawable.uno, R.color.colorAHBottonDefaul);
+        ahCensus = new AHBottomNavigationItem("Dirección", R.drawable.dos, R.color.colorAHBottonDefaul);
         ahPollCasilla = new AHBottomNavigationItem(null, R.drawable.e_casilla, R.color.colorAHBottonDefaul);
         ahPollRepresentante = new AHBottomNavigationItem(null, R.drawable.e_rep, R.color.colorAHBottonDefaul);
-        ahPhoto = new AHBottomNavigationItem(null, R.drawable.foto, R.color.colorAHBottonDefaul);
-        ahCheckOut = new AHBottomNavigationItem(null, R.drawable.checkout, R.color.colorAHBottonDefaul);
+        ahPhoto = new AHBottomNavigationItem("Fotos", R.drawable.tres, R.color.colorAHBottonDefaul);
+        ahCheckOut = new AHBottomNavigationItem("Finalizar", R.drawable.cuatro, R.color.colorAHBottonDefaul);
 
 
         ahBottomNavigation.setAccentColor(ContextCompat.getColor(activity.getApplicationContext(), R.color.colorAHBottonAccentColor));

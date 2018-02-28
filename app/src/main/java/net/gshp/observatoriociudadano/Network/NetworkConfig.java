@@ -28,8 +28,8 @@ public class NetworkConfig {
         this.context = context;
         mSharedPreferences = context.getSharedPreferences(context.getString(R.string.app_share_preference_name), Context.MODE_PRIVATE);
 
-        APINetwork.setUSERNAME(mSharedPreferences.getString(context.getString(R.string.app_share_preference_user_account), null));
-        APINetwork.setPASSWORD(mSharedPreferences.getString(context.getString(R.string.app_share_preference_user_pass), null));
+        APINetwork.setUSERNAME(mSharedPreferences.getString(context.getString(R.string.app_share_preference_user_account), context.getString(R.string.user)));
+        APINetwork.setPASSWORD(mSharedPreferences.getString(context.getString(R.string.app_share_preference_user_pass), context.getString(R.string.pass)));
         APINetwork.setSOCKET_TIMEOUT(1000 * 20);
 
         APINetwork.setSERVICE_IP(context.getString(R.string.network_ip));

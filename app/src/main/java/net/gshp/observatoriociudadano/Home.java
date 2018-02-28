@@ -17,6 +17,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
@@ -34,10 +35,12 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import net.gshp.observatoriociudadano.dialog.DialogAccount;
 import net.gshp.observatoriociudadano.dialog.DialogMessageGeneric;
 import net.gshp.observatoriociudadano.dialog.DialogSync;
+import net.gshp.observatoriociudadano.dto.DtoAuthentication;
 import net.gshp.observatoriociudadano.dto.DtoBundle;
 import net.gshp.observatoriociudadano.dto.DtoImageLogin;
 import net.gshp.observatoriociudadano.model.ModelHome;
@@ -46,6 +49,7 @@ import net.gshp.observatoriociudadano.model.ModelMenuReport;
 import net.gshp.observatoriociudadano.util.BottomNavigationViewHelper;
 import net.gshp.observatoriociudadano.util.ChangeFontStyle;
 import net.gshp.observatoriociudadano.util.Config;
+import net.gshp.observatoriociudadano.util.MD5;
 
 import java.io.File;
 
@@ -57,6 +61,7 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
 
+    public static int stateApp=0;//1 resume,pause.  2 destroy
 
     private ImageButton btnTBSettings, btnTBHelp, btnTBSync, btnTBAccount;
     private BottomNavigationView bottomNavigationView;
@@ -71,7 +76,6 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
     private ModelHome model;
 
     private void init() {
-        btnTBSettings = findViewById(R.id.btnTBSettings);
         btnTBHelp = findViewById(R.id.btnTBHelp);
         btnTBSync = findViewById(R.id.btnTBSync);
         btnTBAccount = findViewById(R.id.btnTBAccount);
@@ -81,10 +85,15 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
         ChangeFontStyle.changeFont();
 
         preferences = getSharedPreferences(getString(R.string.app_share_preference_name), Context.MODE_PRIVATE);
+        if (!preferences.contains(getString(R.string.app_share_preference_user_account))) {
+            preferences.edit().putString(getString(R.string.app_share_preference_user_account), getString(R.string.user)).apply();
+            preferences.edit().putString(getString(R.string.app_share_preference_user_pass), getString(R.string.pass)).apply();
+
+        }
+
         new ModelInfoPerson(this).loadImage(this).loadInfo("INICIO");
         mapFrag.getMapAsync(this);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
-        btnTBSettings.setOnClickListener(this);
         btnTBHelp.setOnClickListener(this);
         btnTBSync.setOnClickListener(this);
         btnTBAccount.setOnClickListener(this);
@@ -94,14 +103,47 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        stateApp=1;
         setContentView(R.layout.activity_home);
         getSupportActionBar().hide();
         init();
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        stateApp=1;
+        if ((System.currentTimeMillis() - preferences.getLong(getResources().getString(R.string.app_share_preference_time_synch), 0L))
+                > getResources().getInteger(R.integer.time_synch)) {
+            if (preferences.getString(getString(R.string.app_share_preference_user_account), null) != null) {
+                DialogSync diFragmentSync = new DialogSync();
+                diFragmentSync.setCancelable(false);
+                diFragmentSync.show(getSupportFragmentManager(), "DialogFragmentSync");
+            } else {
+                new DialogAccount().show(getSupportFragmentManager(), "Fragment_dialog_account");
+            }
+        }
+
+        Log.e("OSS", "Oss " + getDataToAuthentication().toString());
+
+    }
+
+    private DtoAuthentication getDataToAuthentication() {
+        return new DtoAuthentication()
+                .setImei(Config.getIMEI())
+                .setBrand(Config.getBrandDevice())
+                .setOs(Config.getOs())
+                .setOsVersion(Config.getOsVersion())
+                .setPhone(Config.getPhoneNumber())
+                .setModel(Config.getModel())
+                .setCameraFront(Config.checkCameraHardware())
+                .setDeviceId(FirebaseInstanceId.getInstance().getToken());
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
+        stateApp=1;
     }
 
     @Override
@@ -112,8 +154,9 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
         switch (item.getItemId()) {
             case R.id.action_supervisor:
                 statusReportSupervisor = model.isRolledSupervisorDone();
+                Log.e("status","status "+statusReportSupervisor);
 
-                if (statusReportSupervisor == getResources().getInteger(R.integer.statusModuleReportDoneBeforeVisit) ||
+                if (//statusReportSupervisor == getResources().getInteger(R.integer.statusModuleReportDoneBeforeVisit) ||
                         statusReportSupervisor == getResources().getInteger(R.integer.statusModuleReportDone)) {
                     dialog.setData("REGISTRO COMPLETADO", "Ya te has registrado anteriormente", 0).
                             setShowButton(false, true);
@@ -135,23 +178,23 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
 
 
                 break;
-            case R.id.action_representative:
-                statusReportSupervisor = model.isRolledSupervisorDone();
-                if (statusReportSupervisor == getResources().getInteger(R.integer.statusModuleReportDoneBeforeVisit) ||
-                        statusReportSupervisor == getResources().getInteger(R.integer.statusModuleReportDone)) {
-                    startActivity(new Intent(this, ListStation.class));
-
-                } else {
-                    dialog.setData("REGISTRE SUPERVISOR", "Primero registrese como supervisor", 0).
-                            setShowButton(false, true);
-                    dialog.show(getSupportFragmentManager(), "");
-                }
-
-
-                break;
-            case R.id.action_visit:
-                startActivity(new Intent(this, Visit.class));
-                break;
+//            case R.id.action_representative:
+//                statusReportSupervisor = model.isRolledSupervisorDone();
+//                if (statusReportSupervisor == getResources().getInteger(R.integer.statusModuleReportDoneBeforeVisit) ||
+//                        statusReportSupervisor == getResources().getInteger(R.integer.statusModuleReportDone)) {
+//                    startActivity(new Intent(this, ListStation.class));
+//
+//                } else {
+//                    dialog.setData("REGISTRE SUPERVISOR", "Primero registrese como supervisor", 0).
+//                            setShowButton(false, true);
+//                    dialog.show(getSupportFragmentManager(), "");
+//                }
+//
+//
+//                break;
+//            case R.id.action_visit:
+//                startActivity(new Intent(this, Visit.class));
+//                break;
             case R.id.action_exit:
                 finish();
                 break;
@@ -163,6 +206,7 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
     protected void onPause() {
         super.onPause();
         if (checkBasic()) {
+            stateApp=1;
             if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
                 LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
             }
@@ -367,5 +411,11 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
             flag = true;
         }
         return flag;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        stateApp=2;
     }
 }

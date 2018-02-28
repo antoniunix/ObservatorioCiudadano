@@ -22,9 +22,7 @@ public class ModelHome {
 
     public int isRolledSupervisorDone() {
 
-        if (new DaoEaAnswerPdv().isResponsePollSupervisor()) {
-            return context.getResources().getInteger(R.integer.statusModuleReportDoneBeforeVisit);
-        } else if (!new DaoEAEncuesta().existPoll(context.getResources().getInteger(R.integer.idPollSupervisor))) {
+        if (!new DaoEAEncuesta().existPoll(context.getResources().getInteger(R.integer.idPollSupervisor))) {
             return context.getResources().getInteger(R.integer.statusModuleReportWithOut);
         } else if (new DaoReport().isCompleteReportSupervisor()) {
             return context.getResources().getInteger(R.integer.statusModuleReportDone);

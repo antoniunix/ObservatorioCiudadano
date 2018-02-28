@@ -17,7 +17,7 @@ import java.lang.ref.WeakReference;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class Splash extends AppCompatActivity implements OnFinishThread{
+public class Splash extends AppCompatActivity implements OnFinishThread {
 
     private Timer timer;
     private WeakReference<Splash> weakReference;
@@ -50,14 +50,14 @@ public class Splash extends AppCompatActivity implements OnFinishThread{
                 public void run() {
                     Splash activity = weakReference.get();
                     if (activity != null && !activity.isFinishing()) {
-                        startActivity(new Intent(Splash.this, Login.class));
+                        startActivity(new Intent(Splash.this, Home.class));
                         finish();
                     }
                 }
             };
-            timer.schedule(timerTask,1500);
-        }else {
-            Snackbar.make(findViewById(R.id.activity_splash),R.string.Splash_configuration_init, Snackbar.LENGTH_INDEFINITE)
+            timer.schedule(timerTask, 1500);
+        } else {
+            Snackbar.make(findViewById(R.id.activity_splash), R.string.Splash_configuration_init, Snackbar.LENGTH_INDEFINITE)
                     .setAction("Action", null).show();
         }
     }
@@ -91,7 +91,7 @@ public class Splash extends AppCompatActivity implements OnFinishThread{
 
     @Override
     public void onFinishThread() {
-        startActivity(new Intent(Splash.this, Login.class));
+        startActivity(new Intent(Splash.this, Home.class));
         finish();
     }
 }

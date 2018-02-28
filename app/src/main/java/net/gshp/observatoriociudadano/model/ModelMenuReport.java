@@ -3,6 +3,7 @@ package net.gshp.observatoriociudadano.model;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 
 import com.gshp.api.utils.Crypto;
@@ -33,10 +34,12 @@ public class ModelMenuReport {
 
     private DtoBundle dtoBundle;
     private Context context;
+    private SharedPreferences prefs;
 
     public ModelMenuReport(DtoBundle dtoBundle) {
         this.dtoBundle = dtoBundle;
         context = ContextApp.context;
+        prefs = context.getSharedPreferences(context.getString(R.string.app_share_preference_name), Context.MODE_PRIVATE);
 
     }
 
@@ -61,11 +64,9 @@ public class ModelMenuReport {
 
     public int isReportPollSup() {
         DaoEAEncuesta dao = new DaoEAEncuesta();
-        DaoEaAnswerPdv daoAnswer = new DaoEaAnswerPdv();
         if (!dao.existPoll(ContextApp.context.getResources().getInteger(R.integer.idPollSupervisor))) {
             return context.getResources().getInteger(R.integer.statusModuleReportWithOut);
-        } else if (dao.isResponsePollById(ContextApp.context.getResources().getInteger(R.integer.idPollSupervisor)) ||
-                daoAnswer.isResponsePollSupervisor()) {
+        } else if (dao.isResponsePollById(ContextApp.context.getResources().getInteger(R.integer.idPollSupervisor))) {
             return context.getResources().getInteger(R.integer.statusModuleReportDone);
         } else {
             return context.getResources().getInteger(R.integer.statusModuleReportNotDone);
@@ -120,10 +121,12 @@ public class ModelMenuReport {
     }
 
     public String getUserPassword(long idReportLocal) {
-        DtoEARespuesta dto = new DaoEARespuesta().selectAnswer(19, idReportLocal);
+        DtoEARespuesta dto = new DaoEARespuesta().selectAnswer(37, idReportLocal);
         String msg;
         if (dto.getRespuesta() != null) {
             msg = "Usuario: " + dto.getRespuesta() + " \nContraseña: " + MD5.md5(dto.getRespuesta()).substring(0, 5);
+            prefs.edit().putString(context.getString(R.string.app_share_preference_user_account), dto.getRespuesta().trim()).apply();
+            prefs.edit().putString(context.getString(R.string.app_share_preference_user_pass), MD5.md5(dto.getRespuesta()).substring(0, 5).trim()).apply();
 
         } else {
             msg = "";

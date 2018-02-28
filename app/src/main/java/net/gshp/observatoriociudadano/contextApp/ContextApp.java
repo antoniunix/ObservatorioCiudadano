@@ -2,6 +2,7 @@ package net.gshp.observatoriociudadano.contextApp;
 
 import android.content.Context;
 import android.support.multidex.MultiDexApplication;
+import android.util.Log;
 
 import com.facebook.stetho.Stetho;
 import com.gosharp.apis.db.DBAPI;
@@ -33,4 +34,11 @@ public class ContextApp extends MultiDexApplication {
         dbapi.loadPropertiesFromFile(this.getApplicationContext().getResources());
         dbapi.createDB(this.getApplicationContext());
     }
+
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+    }
+
+
 }

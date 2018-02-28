@@ -37,4 +37,10 @@
     
     <color name="colorLineListSeparator">#b7b7b7</color>
 
+    <!--API POLL-->
+    <color name="colorCheckDisable">#ffffff</color>
+    <color name="colorCheckEnable">#b72a2b</color>
+    <color name="colorBackgrounSecction">#d3d3d3</color>
+    <color name="colorTextSecction">#858585</color>
+
 </resources>

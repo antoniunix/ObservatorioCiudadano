@@ -1,5 +1,6 @@
 package net.gshp.observatoriociudadano.util;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -11,6 +12,7 @@ import android.net.NetworkInfo;
 import android.os.BatteryManager;
 import android.os.Build;
 import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
 
 import net.gshp.observatoriociudadano.contextApp.ContextApp;
@@ -43,6 +45,16 @@ public class Config {
         TelephonyManager telephonyManager = (TelephonyManager) ContextApp.context
                 .getSystemService(Context.TELEPHONY_SERVICE);
         return telephonyManager.getDeviceId();
+    }
+
+    public static boolean checkCameraHardware() {
+        if (ContextApp.context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FRONT)){
+            // this device has a camera
+            return true;
+        } else {
+            // no camera on this device
+            return false;
+        }
     }
 
     /**
@@ -115,13 +127,13 @@ public class Config {
             e.printStackTrace();
         }
 
-        SimpleDateFormat sdf = new SimpleDateFormat(format,new Locale("es", "MX"));
+        SimpleDateFormat sdf = new SimpleDateFormat(format, new Locale("es", "MX"));
         Date resultdate = new Date(curr);
         return sdf.format(resultdate);
     }
 
     public static String formatDate(String oldFormat, String newFormat, String date) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat(oldFormat,new Locale("es", "MX"));
+        SimpleDateFormat dateFormat = new SimpleDateFormat(oldFormat, new Locale("es", "MX"));
         Date myDate = null;
         try {
             myDate = dateFormat.parse(date);
@@ -174,6 +186,10 @@ public class Config {
 
     public static String getPhoneNumber() {
         TelephonyManager tMgr = (TelephonyManager) ContextApp.context.getSystemService(Context.TELEPHONY_SERVICE);
+        if (ActivityCompat.checkSelfPermission(ContextApp.context, Manifest.permission.READ_SMS) !=
+                PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(ContextApp.context, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+            return null;
+        }
         return tMgr.getLine1Number();
     }
 
