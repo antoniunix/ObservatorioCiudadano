@@ -32,6 +32,8 @@ import com.google.android.gms.vision.MultiProcessor;
 import com.google.android.gms.vision.Tracker;
 import com.google.android.gms.vision.face.Face;
 import com.google.android.gms.vision.face.FaceDetector;
+import com.google.gson.Gson;
+import com.gshp.api.utils.Crypto;
 
 import net.gshp.APINetwork.NetworkTask;
 import net.gshp.observatoriociudadano.Home;
@@ -57,6 +59,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class FaceDetectionActivity extends AppCompatActivity {
     private static final String TAG = "FaceDetectionActivity";
@@ -88,6 +92,10 @@ public class FaceDetectionActivity extends AppCompatActivity {
     private boolean reco;
     private boolean frontCamera;
     private String userName;
+    private String hash;
+    private int placeId;
+    private DtoPhoto photo;
+    private DtoImageLogin image;
 
     //private ImageButton switchCamera;
     private ImageButton takePhoto;
@@ -116,8 +124,11 @@ public class FaceDetectionActivity extends AppCompatActivity {
         reco = !getIntent().hasExtra(getString(R.string.is_reco)) || getIntent().getBooleanExtra(getString(R.string.is_reco), true);
         if (getIntent().hasExtra("userName")) {
             userName = getIntent().getStringExtra("userName");
+            hash = getIntent().getStringExtra("hash");
+            placeId = getIntent().getIntExtra("placeId",1);
             Log.w(TAG, "userName: " + userName);
             Log.w(TAG, "rol: " + rol);
+            Log.w(TAG, "hash: " + hash);
         }
 
         SimpleDateFormat df = new SimpleDateFormat("MMM dd yyyy - HH:mm");
@@ -131,7 +142,8 @@ public class FaceDetectionActivity extends AppCompatActivity {
             timestamp.setText(df.format(System.currentTimeMillis()).toUpperCase());
 
         preferences = getSharedPreferences(getString(R.string.app_share_preference_name), Context.MODE_PRIVATE);
-        networkConfig = new NetworkConfig(new HandlerSendImage(), ContextApp.context, "app/observador/recognition/");
+        //networkConfig = new NetworkConfig(new HandlerSendImage(), ContextApp.context, "app/observador/recognition/");
+        networkConfig = new NetworkConfig(new HandlerSendImage(), ContextApp.context);
 
         //progressView = findViewById(R.id.progress_view);
         //myPhoto = findViewById(R.id.my_photo);
@@ -598,18 +610,51 @@ public class FaceDetectionActivity extends AppCompatActivity {
 
     private void saveImage() {
         if (reco) {
-            DtoImageLogin image = new DtoImageLogin(photoPath, imageName, 0, rol);
+            image = new DtoImageLogin(photoPath, imageName, 0);
             new DaoImageLogin().insertOrReplace(image);
         } else {
-            DtoPhoto photo = new DtoPhoto(photoPath, imageName,
-                    getIntent().getIntExtra(getString(R.string.PICTURE_POSITION), 0), 0, rol, userName, dtoBundle.getIdReportLocal());
+            photo = new DtoPhoto(photoPath, imageName,
+                    getIntent().getIntExtra(getString(R.string.PICTURE_POSITION), 0), 0, userName, dtoBundle.getIdReportLocal());
             new DaoPhoto().insert(photo);
         }
     }
 
     private void sendImage() {
-        Log.w(TAG, "sending");
-        if (reco) {
+        new Thread() {
+            public void run() {
+                String json = "";
+                if (reco) {
+                    image.setHash(hash);
+                    image.setVersion("1");
+                    image.setTableName("report_rf_photo");
+                    image.setMd5(Crypto.MD5CheckSum(photoPath));
+                    image.setDescription("reco");
+                    image.setPersonId("@person");
+                    image.setUserId("@user");
+                    image.setPlaceId(1);
+
+                    json = new Gson().toJson(image);
+                } else {
+                    photo.setHash(hash);
+                    photo.setVersion("1");
+                    photo.setTableName("report_rf_photo");
+                    photo.setMd5(Crypto.MD5CheckSum(photoPath));
+                    photo.setDescription("registro");
+                    photo.setPersonId("@person");
+                    photo.setUserId("@user");
+                    image.setPlaceId(placeId);
+
+                    json = new Gson().toJson(photo);
+                }
+                Log.e("send", "send " + json);
+                Map<String, String> header = new HashMap<>();
+                header.put(ContextApp.context.getString(R.string.network_header_name_application_json), ContextApp.context.getString(R.string.network_header_multipart_data));
+                ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+                nameValuePairs.add(new BasicNameValuePair("json", json));
+                networkConfig.multipartFile("image/save", photoPath, nameValuePairs, imageName, true);
+            }
+        }.start();
+        /*if (reco) {
             new Thread() {
                 public void run() {
                     ArrayList<NameValuePair> nameValuePairs = new ArrayList<>();
@@ -627,7 +672,7 @@ public class FaceDetectionActivity extends AppCompatActivity {
                             imageName);
                 }
             }.start();
-        }
+        }*/
     }
 
     private void finishReturn() {

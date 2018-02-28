@@ -378,39 +378,37 @@ public class DaoEARespuesta extends DAO {
                 (long) idReporteServer);
     }
 
-    public String selectUserName(int idQuestion, int idEncuesta, long idReportLocal) {
+    public DtoEARespuesta selectUserName(int idQuestion, int idEncuesta, long idReportLocal) {
         db = helper.getReadableDatabase();
         cursor = db.rawQuery("SELECT\n" +
                 "EARespuesta.ida,\n" +
                 "EARespuesta.idPregunta,\n" +
-                "EARespuesta.idReporte,\n" +
                 "EARespuesta.idReporteLocal,\n" +
                 "EARespuesta.idEncuesta,\n" +
-                "EARespuesta.nombreEncuesta,\n" +
                 "EARespuesta.respuesta,\n" +
                 "EARespuesta.hash,\n" +
-                "EARespuesta.enviado,\n" +
                 "EARespuesta.numeroEncuesta,\n" +
-                "EARespuesta.campoExtra1,\n" +
-                "EARespuesta.campoExtra2,\n" +
-                "EARespuesta.timeStamp\n" +
+                "report.id_pdv\n" +
                 "FROM\n" +
                 "EARespuesta\n" +
+                "INNER JOIN report ON report.id = EARespuesta.idReporteLocal\n"+
                 "WHERE \n" +
                 "EARespuesta.idPregunta=" + idQuestion + "\n" +
                 "AND EARespuesta.idReporteLocal=" + idReportLocal + "\n" +
                 "AND EARespuesta.idEncuesta=" + idEncuesta, null);
         String userName = "";
         Log.w(TAG, "result: " + cursor.getCount());
+        DtoEARespuesta respuesta = new DtoEARespuesta();
         if (cursor.moveToFirst()) {
-            userName = cursor.getString(cursor.getColumnIndexOrThrow("respuesta"));
+            respuesta.setRespuesta(cursor.getString(cursor.getColumnIndexOrThrow("respuesta")));
+            respuesta.setHash(cursor.getString(cursor.getColumnIndexOrThrow("hash")));
+            respuesta.setPdv(cursor.getInt(cursor.getColumnIndexOrThrow("id_pdv")));
         }
         cursor.close();
         db.close();
-        return userName;
+
+        return respuesta;
     }
-
-
 
 
 }

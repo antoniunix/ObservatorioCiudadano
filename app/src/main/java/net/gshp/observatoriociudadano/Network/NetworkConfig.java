@@ -80,7 +80,8 @@ public class NetworkConfig {
                 .setParams(params);
         if(sendHeader){
             Map<String,String> header=new HashMap<>();
-            header.put(context.getString(R.string.network_header_token),mSharedPreferences.getString(context.getString(R.string.app_share_preference_toke_webservices),""));
+            header.put(context.getString(R.string.network_header_token),
+                    mSharedPreferences.getString(context.getString(R.string.app_share_preference_toke_webservices),""));
             Ntask.setCustomHeaders(header);
         }
 

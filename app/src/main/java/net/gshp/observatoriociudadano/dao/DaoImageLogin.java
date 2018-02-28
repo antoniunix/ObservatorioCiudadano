@@ -22,7 +22,6 @@ public class DaoImageLogin extends DAO {
     private final String path = "path";
     private final String name = "name";
     private final String sent = "sent";
-    private final String rol = "rol";
 
     private SQLiteDatabase db;
     private Cursor cursor;
@@ -40,8 +39,8 @@ public class DaoImageLogin extends DAO {
         try {
             SQLiteStatement insStatement = db.compileStatement("INSERT INTO "
                     + TABLE_NAME + " (" + path + "," + name + ","
-                    + sent + "," + rol + ")"
-                    + "VALUES(?,?,?,?);");
+                    + sent + ")"
+                    + "VALUES(?,?,?);");
             db.beginTransaction();
 
             try {
@@ -59,11 +58,6 @@ public class DaoImageLogin extends DAO {
             } catch (Exception e) {
                 insStatement.bindNull(3);
             }
-            try {
-                insStatement.bindLong(4, dto.getRol());
-            } catch (Exception e) {
-                insStatement.bindNull(4);
-            }
             insStatement.executeInsert();
             db.setTransactionSuccessful();
         } catch (Exception e) {
@@ -80,7 +74,6 @@ public class DaoImageLogin extends DAO {
         ContentValues cv = new ContentValues();
         cv.put(path, dto.getPath());
         cv.put(name, dto.getName());
-        cv.put(rol, dto.getRol());
         cv.put(sent, dto.getSent());
         db.update(TABLE_NAME, cv, "id=" + dto.getId(), null);
         db.close();
