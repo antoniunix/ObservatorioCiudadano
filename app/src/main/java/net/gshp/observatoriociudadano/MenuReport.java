@@ -147,7 +147,7 @@ public class MenuReport extends AppCompatActivity implements View.OnClickListene
 
                 break;
             case R.id.lytStep4://photos
-                /*statusReportSupervisor = modelMenuReport.isReportPollSup();
+                statusReportSupervisor = modelMenuReport.isReportPollSup();
                 statusReportCensusSupervisor = modelMenuReport.isReportSupCompleteCensus();
                 statusReportDevice = modelMenuReport.isReportPollDevice();
 
@@ -163,10 +163,10 @@ public class MenuReport extends AppCompatActivity implements View.OnClickListene
                     dialog.setData("SE ESTA SALTANDO UN PASO", "Debe completar el paso 3", 0).
                             setShowButton(false, true);
                     dialog.show(getSupportFragmentManager(), "");
-                } else {*/
+                } else {
                     startActivity(new Intent(this, PhotosActivity.class)
                             .putExtra(getString(R.string.is_reco), false).putExtra(getString(R.string.app_bundle_name), dtoBundle));
-                //}
+                }
                 break;
             case R.id.lytStep5://check out
                 statusReportSupervisor = modelMenuReport.isReportPollSup();
