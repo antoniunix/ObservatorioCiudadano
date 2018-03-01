@@ -1,8 +1,6 @@
 package net.gshp.observatoriociudadano.faceDetection;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -16,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
@@ -29,10 +26,8 @@ import net.gshp.observatoriociudadano.dto.DtoEARespuesta;
 import net.gshp.observatoriociudadano.dto.DtoPhoto;
 import net.gshp.observatoriociudadano.faceDetection.adapters.PhotoItem;
 import net.gshp.observatoriociudadano.faceDetection.models.Photo;
-import net.gshp.observatoriociudadano.model.ModelInfoPerson;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,24 +41,18 @@ public class PhotosActivity extends AppCompatActivity {
     private List<Photo> pictureList = new ArrayList<>();
     private int photoPosition;
 
-    private SharedPreferences preferences;
-    private int rol;
     private DtoBundle dtoBundle;
     private String userName;
-    private String hash;
     private int placeId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_photos);
         getSupportActionBar().hide();
-        new ModelInfoPerson(this).loadImage(this).loadInfo("TOMATE LA FOTO", "selecciona cada foto y tomate una igual".toUpperCase());
-        rol = getResources().getInteger(R.integer.rollSupervisor);
 
         dtoBundle = (DtoBundle) getIntent().getExtras().get(getString(R.string.app_bundle_name));
-
-        preferences = getSharedPreferences(getString(R.string.app_share_preference_name), Context.MODE_PRIVATE);
 
         prepareAlbums();
         adapter = new PhotosAdapter(pictureList);
@@ -85,13 +74,8 @@ public class PhotosActivity extends AppCompatActivity {
         });
     }
 
-    private void initGrid() {
-    }
-
     @Override
     protected void onResume() {
-        //prepareAlbums();
-        //adapter = new PhotosAdapter(pictureList);
         super.onResume();
     }
 
@@ -113,8 +97,6 @@ public class PhotosActivity extends AppCompatActivity {
             else
                 Toast.makeText(this, "Falta " + missingPhotos + " foto", Toast.LENGTH_SHORT).show();
         } else {
-            //Intent intent = new Intent(this, Home.class);
-            //startActivity(intent);
             finish();
         }
     }
@@ -125,11 +107,11 @@ public class PhotosActivity extends AppCompatActivity {
     private void prepareAlbums() {
 
         int[] covers = new int[]{
-                R.drawable.c1,
-                R.drawable.c2,
-                R.drawable.c3,
-                R.drawable.c4,
-                R.drawable.c5};
+                R.drawable.f1,
+                R.drawable.f2,
+                R.drawable.f3,
+                R.drawable.f4,
+                R.drawable.f5};
 
         Photo a = new Photo("FRUNCIENDO CEÑO", covers[0], "");
         pictureList.add(a);
@@ -146,30 +128,15 @@ public class PhotosActivity extends AppCompatActivity {
         a = new Photo("SONRIENDO", covers[4], "");
         pictureList.add(a);
 
-        if (rol == getResources().getInteger(R.integer.rollSupervisor)) {
-            Log.e("idPdv", "idPdv " + dtoBundle.getIdReportLocal());
-            DtoEARespuesta respuesta = new DaoEARespuesta().selectUserName(46, 1, dtoBundle.getIdReportLocal());
-            userName = respuesta.getRespuesta();
-            hash = respuesta.getHash();
-            placeId = respuesta.getPdv();
+        DtoEARespuesta respuesta = new DaoEARespuesta().selectUserName(46, 1, dtoBundle.getIdReportLocal());
+        userName = respuesta.getRespuesta();
+        placeId = respuesta.getPdv();
 
-            List<DtoPhoto> pictures = new DaoPhoto().selectAll(userName.replaceAll("\\s+", ""));
+        List<DtoPhoto> pictures = new DaoPhoto().selectAll(userName.replaceAll("\\s+", ""));
+        Log.w(TAG, userName);
 
-            for (DtoPhoto picture : pictures) {
-                pictureList.get(picture.getFace_id()).setPicture(picture.getPath());
-            }
-        } else {
-            DtoEARespuesta respuesta = new DaoEARespuesta().selectUserName(8, 2, dtoBundle.getIdReportLocal());
-            userName = respuesta.getRespuesta();
-            hash = respuesta.getHash();
-            placeId = respuesta.getPdv();
-
-            List<DtoPhoto> pictures = new DaoPhoto().selectAll(userName.replaceAll("\\s+", ""));
-            Log.w(TAG, userName);
-
-            for (DtoPhoto picture : pictures) {
-                pictureList.get(picture.getFace_id()).setPicture(picture.getPath());
-            }
+        for (DtoPhoto picture : pictures) {
+            pictureList.get(picture.getFace_id()).setPicture(picture.getPath());
         }
     }
 
@@ -224,9 +191,7 @@ public class PhotosActivity extends AppCompatActivity {
         intent.putExtra(getString(R.string.PHOTO_TYPE), name);
         intent.putExtra(getString(R.string.PICTURE_POSITION), index);
         intent.putExtra(getString(R.string.is_reco), false);
-        intent.putExtra(getString(R.string.user_roll), rol);
         intent.putExtra("userName", userName);
-        intent.putExtra("hash", hash);
         intent.putExtra("placeId", placeId);
         intent.putExtra(getString(R.string.app_bundle_name), dtoBundle);
         startActivityForResult(intent, PICTURE_REQUEST_CODE);
@@ -256,7 +221,9 @@ public class PhotosActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     photoPosition = holder.getAdapterPosition();
-                    openCamera(photo.getName(), photoPosition);
+                    if (photo.getPicture() == null || photo.getPicture().isEmpty()) {
+                        openCamera(photo.getName(), photoPosition);
+                    }
                 }
             });
 
@@ -264,8 +231,6 @@ public class PhotosActivity extends AppCompatActivity {
                 File imgFile = new File(photo.getPicture());
 
                 if (imgFile.exists()) {
-                    //Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-                    //holder.thumbnail.setImageBitmap(decodeSampledBitmapFromResource(getResources(), R.id.myimage, 80, 120));
                     Picasso.with(getApplicationContext()).load(new File(imgFile.getAbsolutePath())).into(holder.thumbnail);
                 }
             } else {
@@ -284,7 +249,6 @@ public class PhotosActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK) {
             if (requestCode == PICTURE_REQUEST_CODE) {
                 if (data.hasExtra(getString(R.string.PHOTO_PATH))) {
-                    //new PhotoSender(data.getLongExtra(Constants.PHOTO_ID, 0)).execute();
                     Photo photo = pictureList.get(photoPosition);
                     photo.setPicture(data.getStringExtra(getString(R.string.PHOTO_PATH)));
                     photo.setRotation(data.getIntExtra("rotation", 0));
@@ -296,10 +260,7 @@ public class PhotosActivity extends AppCompatActivity {
 
             if (requestCode == PHOTO_REQUEST_CODE) {
                 if (data.hasExtra(getString(R.string.PHOTO_PATH)) && !data.getStringExtra(getString(R.string.PHOTO_PATH)).isEmpty()) {
-                    //DaoService.getInstance().getSession().getPictureDao().deleteAll();
-
                     finish();
-                    //startActivity(new Intent(this, MainActivity.class));
                 }
             }
         }

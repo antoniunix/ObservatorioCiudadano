@@ -20,25 +20,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:text="@string/title_detection"
+            android:text="@string/initial_reco"
             android:textColor="@color/black_text"
             android:textStyle="bold" />
-
-        <ImageView
-            android:id="@+id/calendar"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@id/title"
-            app:srcCompat="@drawable/calendar" />
 
         <TextView
             android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/calendar"
             android:layout_below="@id/title"
-            android:layout_toRightOf="@id/calendar"
             android:gravity="center_vertical"
             android:text="TextView"
             android:textColor="@color/light_text" />

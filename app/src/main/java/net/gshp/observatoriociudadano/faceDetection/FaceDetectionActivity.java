@@ -36,6 +36,7 @@ import com.google.gson.Gson;
 import com.gshp.api.utils.Crypto;
 
 import net.gshp.APINetwork.NetworkTask;
+import net.gshp.api_time_module.config.MD5;
 import net.gshp.observatoriociudadano.Home;
 import net.gshp.observatoriociudadano.Network.NetworkConfig;
 import net.gshp.observatoriociudadano.R;
@@ -47,6 +48,7 @@ import net.gshp.observatoriociudadano.dto.DtoImageLogin;
 import net.gshp.observatoriociudadano.dto.DtoPhoto;
 import net.gshp.observatoriociudadano.faceDetection.camera.CameraSourcePreview;
 import net.gshp.observatoriociudadano.faceDetection.camera.GraphicOverlay;
+import net.gshp.observatoriociudadano.util.Config;
 import net.gshp.observatoriociudadano.util.Exif;
 import net.gshp.observatoriociudadano.util.ImageConverter;
 
@@ -85,14 +87,12 @@ public class FaceDetectionActivity extends AppCompatActivity {
     //private ImageView myPhoto;
     //private ProgressBar progress;
     //private RelativeLayout progressView;
-    private Handler handler = new Handler();
+    //private Handler handler = new Handler();
     private NetworkConfig networkConfig;
 
-    private int rol;
     private boolean reco;
-    private boolean frontCamera;
+    //private boolean frontCamera;
     private String userName;
-    private String hash;
     private int placeId;
     private DtoPhoto photo;
     private DtoImageLogin image;
@@ -113,33 +113,19 @@ public class FaceDetectionActivity extends AppCompatActivity {
         if (getIntent().hasExtra(getString(R.string.app_bundle_name)))
             dtoBundle = (DtoBundle) getIntent().getExtras().get(getString(R.string.app_bundle_name));
 
-        if (getIntent().hasExtra(getString(R.string.user_roll))) {
-            if (getIntent().getIntExtra(getString(R.string.user_roll),
-                    getResources().getInteger(R.integer.rollSupervisor)) == getResources().getInteger(R.integer.rollSupervisor))
-                rol = getResources().getInteger(R.integer.rollSupervisor);
-            else
-                rol = getResources().getInteger(R.integer.rollRepresentanteCasilla);
-        }
-
         reco = !getIntent().hasExtra(getString(R.string.is_reco)) || getIntent().getBooleanExtra(getString(R.string.is_reco), true);
         if (getIntent().hasExtra("userName")) {
             userName = getIntent().getStringExtra("userName");
-            hash = getIntent().getStringExtra("hash");
-            placeId = getIntent().getIntExtra("placeId",1);
+            placeId = getIntent().getIntExtra("placeId", 1);
             Log.w(TAG, "userName: " + userName);
-            Log.w(TAG, "rol: " + rol);
-            Log.w(TAG, "hash: " + hash);
+            Log.w(TAG, "placeId: " + placeId);
         }
 
-        SimpleDateFormat df = new SimpleDateFormat("MMM dd yyyy - HH:mm");
         TextView timestamp = findViewById(R.id.date);
-        ImageView calendar = findViewById(R.id.calendar);
 
         if (getIntent().hasExtra(getString(R.string.PHOTO_TYPE))) {
             timestamp.setText(getIntent().getStringExtra(getString(R.string.PHOTO_TYPE)));
-            calendar.setVisibility(View.GONE);
-        } else
-            timestamp.setText(df.format(System.currentTimeMillis()).toUpperCase());
+        }
 
         preferences = getSharedPreferences(getString(R.string.app_share_preference_name), Context.MODE_PRIVATE);
         //networkConfig = new NetworkConfig(new HandlerSendImage(), ContextApp.context, "app/observador/recognition/");
@@ -285,7 +271,7 @@ public class FaceDetectionActivity extends AppCompatActivity {
                     .setFacing(CameraSource.CAMERA_FACING_FRONT)
                     .setRequestedFps(30.0f)
                     .build();
-            frontCamera = true;
+            //frontCamera = true;
         } else {
             /*mCameraSource = new CameraSource.Builder(context, detector)
                     .setAutoFocusEnabled(true)
@@ -422,7 +408,7 @@ public class FaceDetectionActivity extends AppCompatActivity {
         @Override
         public void onPictureTaken(byte[] rawData) {
             orientation = Exif.getOrientation(rawData);
-            Bitmap bitmap = decodeSampledBitmapFromResource(80, 120, rawData);
+            Bitmap bitmap = ImageConverter.decodeSampledBitmapFromResource(80, 120, rawData);
 
             switch (orientation) {
                 case 90:
@@ -624,25 +610,25 @@ public class FaceDetectionActivity extends AppCompatActivity {
             public void run() {
                 String json = "";
                 if (reco) {
-                    image.setHash(hash);
+                    image.setHash(MD5.md5(imageName));
                     image.setVersion("1");
                     image.setTableName("report_rf_photo");
                     image.setMd5(Crypto.MD5CheckSum(photoPath));
                     image.setDescription("reco");
                     image.setPersonId("@person");
                     image.setUserId("@user");
-                    image.setPlaceId(1);
+                    image.setPlaceId(placeId);
 
                     json = new Gson().toJson(image);
                 } else {
-                    photo.setHash(hash);
+                    photo.setHash(MD5.md5(imageName));
                     photo.setVersion("1");
                     photo.setTableName("report_rf_photo");
                     photo.setMd5(Crypto.MD5CheckSum(photoPath));
                     photo.setDescription("registro");
                     photo.setPersonId("@person");
                     photo.setUserId("@user");
-                    image.setPlaceId(placeId);
+                    photo.setPlaceId(placeId);
 
                     json = new Gson().toJson(photo);
                 }
@@ -654,25 +640,6 @@ public class FaceDetectionActivity extends AppCompatActivity {
                 networkConfig.multipartFile("image/save", photoPath, nameValuePairs, imageName, true);
             }
         }.start();
-        /*if (reco) {
-            new Thread() {
-                public void run() {
-                    ArrayList<NameValuePair> nameValuePairs = new ArrayList<>();
-                    nameValuePairs.add(new BasicNameValuePair("json", ""));
-                    networkConfig.POST_MULTIPART_FILE(userName + "/", photoPath, nameValuePairs,
-                            imageName);
-                }
-            }.start();
-        } else {
-            new Thread() {
-                public void run() {
-                    ArrayList<NameValuePair> nameValuePairs = new ArrayList<>();
-                    nameValuePairs.add(new BasicNameValuePair("json", ""));
-                    networkConfig.POST_MULTIPART_FILE("init-load/" + userName + "/", photoPath, nameValuePairs,
-                            imageName);
-                }
-            }.start();
-        }*/
     }
 
     private void finishReturn() {
@@ -702,7 +669,11 @@ public class FaceDetectionActivity extends AppCompatActivity {
             NetworkTask nt = (NetworkTask) msg.obj;
             Log.w(TAG, "status: " + nt.getResponseStatus());
             if (nt.getResponseStatus() == HttpStatus.SC_OK || nt.getResponseStatus() == HttpStatus.SC_CREATED) {
-                Log.w(TAG, nt.getResponse());
+                if (reco) {
+                    new DaoImageLogin().updateSent(imageName);
+                } else {
+                    new DaoPhoto().updateSent(imageName);
+                }
             }
         }
     }
@@ -711,44 +682,5 @@ public class FaceDetectionActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (!reco)
             finish();
-    }
-
-    public static Bitmap decodeSampledBitmapFromResource(int reqWidth, int reqHeight, byte[] rawData) {
-
-        // First decode with inJustDecodeBounds=true to check dimensions
-        final BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        //BitmapFactory.decodeResource(res, resId, options);
-        BitmapFactory.decodeByteArray(rawData, 0, rawData.length, options);
-
-        // Calculate inSampleSize
-        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
-
-        // Decode bitmap with inSampleSize set
-        options.inJustDecodeBounds = false;
-        //return BitmapFactory.decodeResource(res, resId, options);
-        return BitmapFactory.decodeByteArray(rawData, 0, rawData.length, options);
-    }
-
-    public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
-        // Raw height and width of image
-        final int height = options.outHeight;
-        final int width = options.outWidth;
-        int inSampleSize = 1;
-
-        if (height > reqHeight || width > reqWidth) {
-
-            final int halfHeight = height / 2;
-            final int halfWidth = width / 2;
-
-            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
-            // height and width larger than the requested height and width.
-            while ((halfHeight / inSampleSize) >= reqHeight
-                    && (halfWidth / inSampleSize) >= reqWidth) {
-                inSampleSize *= 2;
-            }
-        }
-
-        return inSampleSize;
     }
 }

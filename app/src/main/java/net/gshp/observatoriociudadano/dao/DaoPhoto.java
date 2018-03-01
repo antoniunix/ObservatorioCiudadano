@@ -1,5 +1,6 @@
 package net.gshp.observatoriociudadano.dao;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
@@ -192,5 +193,13 @@ public class DaoPhoto extends DAO {
         db.close();
 
         return photos >= quantity;
+    }
+
+    public void updateSent(String imageName) {
+        db = helper.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(sent, 1);
+        db.update(TABLE_NAME, cv, name + "=" + "\"" + imageName + "\"", null);
+        db.close();
     }
 }

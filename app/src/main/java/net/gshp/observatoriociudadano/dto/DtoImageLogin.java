@@ -1,5 +1,7 @@
 package net.gshp.observatoriociudadano.dto;
 
+import com.google.gson.annotations.Expose;
+
 /**
  * Created by alejandro on 16/02/18.
  */
@@ -7,8 +9,11 @@ package net.gshp.observatoriociudadano.dto;
 public class DtoImageLogin {
 
     private int id;
+    @Expose(serialize = false)
     private String path;
+    @Expose(serialize = false)
     private String name;
+    @Expose(serialize = false)
     private int sent;
     private String tableName;
     private String md5;

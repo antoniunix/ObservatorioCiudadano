@@ -173,4 +173,12 @@ public class DaoImageLogin extends DAO {
         db.close();
         return dto;
     }
+
+    public void updateSent(String imageName) {
+        db = helper.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(sent, 1);
+        db.update(TABLE_NAME, cv, name + "=" + "\"" + imageName + "\"", null);
+        db.close();
+    }
 }

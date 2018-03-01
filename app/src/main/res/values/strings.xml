@@ -310,9 +310,8 @@ Página 6 de 6</string>
     <string name="no_camera_permission">Es necesario permitir a la aplicación usar la cámara</string>
     <string name="low_storage_error">Poco espacio de almacenamiento</string>
     <string name="process">PROCESANDO...</string>
-    <string name="title_detection">RECONOCIMIENTO FACIAL</string>
     <string name="start">INICIO</string>
-    <string name="initial_reco">RECONOCIMIENTO</string>
+    <string name="initial_reco">TÓMATE LA FOTO</string>
     <string name="firs_step">Dar click en inicio</string>
     <string name="second_step">Tomar las 10 fotos\ncon las expresiones\nsolicitadas</string>
     <string name="third_step">Dar click en guardar\ne iniciar el recono-\ncimiento facial</string>
@@ -337,7 +336,7 @@ Página 6 de 6</string>
     <string name="street_left">Calle Izquierda:</string>
     <string name="street_right">Calle Derecha:</string>
     <string name="number_out">Número Exterior:</string>
-    <string name="number_in">Número Interior:</string>
+    <string name="number_in">Número Inerior:</string>
     <string name="info_manual">No se pudo obtener dirección, favor de ingresarla manual.</string>
     <string name="title_info_manual">UBICACIÓN NO OBTENIDA</string>
     <string name="empty_street">Ingrese la Direccion.</string>
@@ -351,5 +350,9 @@ Página 6 de 6</string>
     <string name="supervisor">SUPERVISOR</string>
     <string name="report_complete">Este reporte ya fue concluido.</string>
     <string name="title_activity_message_push">MessagePush</string>
+    <string name="instructions">INSTRUCCIONES</string>
+    <string name="p1">Selecciona\nINICIO</string>
+    <string name="p2">Selecciona cada\nfoto y tómate\nuna igual.</string>
+    <string name="p3">Cuando termines\nselecciona guardar</string>
 
 </resources>
