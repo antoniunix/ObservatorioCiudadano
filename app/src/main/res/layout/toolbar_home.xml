@@ -37,16 +37,6 @@
             android:textSize="@dimen/sizeTextNormal" />
 
 
-        <ImageButton
-            android:id="@+id/btnTBHelp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="@dimen/activity_horizontal_margin_middle"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin_middle"
-            android:layout_marginTop="@dimen/activity_horizontal_margin_middle"
-            android:background="@null"
-            android:src="@drawable/help" />
 
         <ImageButton
             android:id="@+id/btnTBSync"
@@ -55,7 +45,7 @@
             android:layout_marginBottom="@dimen/activity_horizontal_margin_middle"
             android:layout_marginLeft="@dimen/activity_horizontal_margin_middle"
             android:layout_marginTop="@dimen/activity_horizontal_margin_middle"
-            android:layout_toLeftOf="@id/btnTBHelp"
+            android:layout_alignParentRight="true"
             android:background="@null"
             android:src="@drawable/sync" />
 

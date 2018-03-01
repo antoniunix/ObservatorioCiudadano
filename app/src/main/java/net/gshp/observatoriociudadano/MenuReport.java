@@ -1,48 +1,23 @@
 package net.gshp.observatoriociudadano;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
-
-import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.LatLng;
 
 import net.gshp.apiencuesta.Encuesta;
 import net.gshp.observatoriociudadano.contextApp.ContextApp;
 import net.gshp.observatoriociudadano.dialog.DialogMessageGeneric;
 import net.gshp.observatoriociudadano.dto.DtoBundle;
 import net.gshp.observatoriociudadano.faceDetection.PhotoWizardActivity;
+import net.gshp.observatoriociudadano.faceDetection.PhotosActivity;
 import net.gshp.observatoriociudadano.geolocation.ServiceCheck;
 import net.gshp.observatoriociudadano.listener.OnDissmisDialogListener;
-import net.gshp.observatoriociudadano.model.ModelAHBottomNavigationMenuReport;
 import net.gshp.observatoriociudadano.model.ModelInfoPerson;
 import net.gshp.observatoriociudadano.model.ModelMenuReport;
-
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
 
 public class MenuReport extends AppCompatActivity implements View.OnClickListener,
         OnDissmisDialogListener {
@@ -89,23 +64,28 @@ public class MenuReport extends AppCompatActivity implements View.OnClickListene
         if (dtoBundle.getIdReportLocal() == 0) {
             modelMenuReport.createNewReport(this);
         }
-        int statusReportSupervisor, statusReportCensusSupervisor;
+        int statusReportSupervisor, statusReportCensusSupervisor, statusReportDevice;
         statusReportSupervisor = modelMenuReport.isReportPollSup();
         statusReportCensusSupervisor = modelMenuReport.isReportSupCompleteCensus();
+        statusReportDevice = modelMenuReport.isReportPollDevice();
         if (statusReportSupervisor == getResources().getInteger(R.integer.statusModuleReportDone)) {
             //boton registro
-            ((ImageView)findViewById(R.id.imgStep1)).setImageResource(R.drawable.reg2);
+            ((ImageView) findViewById(R.id.imgStep1)).setImageResource(R.drawable.reg2);
         }
         if (statusReportCensusSupervisor == getResources().getInteger(R.integer.statusModuleReportDone)) {
             // boton censo
-            ((ImageView)findViewById(R.id.imgStep2)).setImageResource(R.drawable.dom2);
+            ((ImageView) findViewById(R.id.imgStep2)).setImageResource(R.drawable.dom2);
         }
 
-        if ( modelMenuReport.isReportPhotoComplete(dtoBundle.getIdReportLocal())) {
+        if (statusReportDevice == getResources().getInteger(R.integer.statusModuleReportDone)) {
+            //boton registro
+            ((ImageView) findViewById(R.id.imgStep3)).setImageResource(R.drawable.tel2);
+        }
+
+        if (modelMenuReport.isReportPhotoComplete(dtoBundle.getIdReportLocal())) {
             //boton fotos
-            ((ImageView)findViewById(R.id.imgStep4)).setImageResource(R.drawable.foto2);
+            ((ImageView) findViewById(R.id.imgStep4)).setImageResource(R.drawable.foto2);
         }
-
 
 
     }
@@ -125,7 +105,7 @@ public class MenuReport extends AppCompatActivity implements View.OnClickListene
     @Override
     public void onClick(View v) {
         DialogMessageGeneric dialog = new DialogMessageGeneric();
-        int statusReportSupervisor, statusReportCensusSupervisor;
+        int statusReportSupervisor, statusReportCensusSupervisor, statusReportDevice;
         switch (v.getId()) {
             case R.id.lytStep1: //poll personal
                 startActivity(new Intent(this, Encuesta.class)
@@ -169,6 +149,7 @@ public class MenuReport extends AppCompatActivity implements View.OnClickListene
             case R.id.lytStep4://photos
                 statusReportSupervisor = modelMenuReport.isReportPollSup();
                 statusReportCensusSupervisor = modelMenuReport.isReportSupCompleteCensus();
+                statusReportDevice = modelMenuReport.isReportPollDevice();
 
                 if (flagTest && statusReportSupervisor != getResources().getInteger(R.integer.statusModuleReportDone)) {
                     dialog.setData("SE ESTA SALTANDO UN PASO", "Debe completar el paso 1", 0).
@@ -178,16 +159,25 @@ public class MenuReport extends AppCompatActivity implements View.OnClickListene
                     dialog.setData("SE ESTA SALTANDO UN PASO", "Debe completar el paso 2", 0).
                             setShowButton(false, true);
                     dialog.show(getSupportFragmentManager(), "");
+                } else if (flagTest && statusReportDevice != getResources().getInteger(R.integer.statusModuleReportDone)) {
+                    dialog.setData("SE ESTA SALTANDO UN PASO", "Debe completar el paso 3", 0).
+                            setShowButton(false, true);
+                    dialog.show(getSupportFragmentManager(), "");
                 } else {
-                    Intent intent = new Intent(this, PhotoWizardActivity.class);
-                    intent.putExtra(getString(R.string.user_roll), getResources().getInteger(R.integer.rollSupervisor));
-                    intent.putExtra(getString(R.string.app_bundle_name), dtoBundle);
-                    startActivity(intent);
+
+                    startActivity(new Intent(this, PhotosActivity.class)
+                            .putExtra(getString(R.string.user_roll), getIntent().getIntExtra(getString(R.string.user_roll),
+                                    getResources().getInteger(R.integer.rollSupervisor)))
+                            .putExtra(getString(R.string.is_reco), false).putExtra(getString(R.string.app_bundle_name), dtoBundle));
+
+
+
                 }
                 break;
             case R.id.lytStep5://check out
                 statusReportSupervisor = modelMenuReport.isReportPollSup();
                 statusReportCensusSupervisor = modelMenuReport.isReportSupCompleteCensus();
+                statusReportDevice = modelMenuReport.isReportPollDevice();
 
                 if (flagTest && statusReportSupervisor != getResources().getInteger(R.integer.statusModuleReportDone)) {
                     dialog.setData("SE ESTA SALTANDO UN PASO", "Debe completar el paso 1", 0).
@@ -195,6 +185,10 @@ public class MenuReport extends AppCompatActivity implements View.OnClickListene
                     dialog.show(getSupportFragmentManager(), "");
                 } else if (flagTest && statusReportCensusSupervisor == getResources().getInteger(R.integer.statusModuleReportNotDone)) {
                     dialog.setData("SE ESTA SALTANDO UN PASO", "Debe completar el paso 2", 0).
+                            setShowButton(false, true);
+                    dialog.show(getSupportFragmentManager(), "");
+                } else if (flagTest && statusReportDevice != getResources().getInteger(R.integer.statusModuleReportDone)) {
+                    dialog.setData("SE ESTA SALTANDO UN PASO", "Debe completar el paso 3", 0).
                             setShowButton(false, true);
                     dialog.show(getSupportFragmentManager(), "");
                 } else if (flagTest && !modelMenuReport.isReportPhotoComplete(dtoBundle.getIdReportLocal())) {

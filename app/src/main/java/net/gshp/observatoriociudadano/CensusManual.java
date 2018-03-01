@@ -32,7 +32,7 @@ public class CensusManual extends AppCompatActivity implements TextWatcher, View
     private ModelCensus modelCensus;
     private DtoBundle dtoBundle;
     private Spinner spinnerSuburb;
-    private EditText edtStreet, edtStreetLeft, edtStreetRight, edtNumberOut, edtNumberin;
+    private EditText edtStreet, edtNumberOut, edtNumberin;
     private AutoCompleteTextView edtcp;
     private DtoReportCensus dtoReportCensus;
     private Button btn_save;
@@ -49,7 +49,6 @@ public class CensusManual extends AppCompatActivity implements TextWatcher, View
     private void init() {
         dtoBundle = (DtoBundle) getIntent().getExtras().get(getString(R.string.app_bundle_name));
         latLng = (LatLng) getIntent().getExtras().get(getString(R.string.latlon));
-        Log.e("dtoBunlde", "dtoBundle census manua. " + dtoBundle.getIdReportLocal());
         dtoReportCensus = new DtoReportCensus();
         modelCensus = new ModelCensus(dtoBundle);
         if (latLng != null) {
@@ -59,8 +58,6 @@ public class CensusManual extends AppCompatActivity implements TextWatcher, View
         edtcp = findViewById(R.id.edt_cp);
         edtNumberin = findViewById(R.id.edt_numberin);
         edtNumberOut = findViewById(R.id.edt_numberout);
-        edtStreetLeft = findViewById(R.id.edt_street_left);
-        edtStreetRight = findViewById(R.id.edt_street_right);
         edtStreet = findViewById(R.id.edt_street);
         spinnerSuburb = findViewById(R.id.spn_suburb);
         btn_save = findViewById(R.id.btn_save);
@@ -70,9 +67,9 @@ public class CensusManual extends AppCompatActivity implements TextWatcher, View
         edtcp.setThreshold(1);
         btn_save.setOnClickListener(this);
         new ModelInfoPerson(this).loadImage(this);
-        new ModelInfoPerson(this).loadImage(this).loadInfo("REGISTRO DE DOMICILIO");
-        ChangeFontStyle.changeFont(edtcp, edtNumberin, edtNumberOut, edtStreet, edtStreetLeft,
-                edtStreetRight, edtStreet, spinnerSuburb, btn_save);
+        new ModelInfoPerson(this).loadImage(this).loadInfo("REGISTRA TU DOMICILIO");
+        ChangeFontStyle.changeFont(edtcp, edtNumberin, edtNumberOut, edtStreet
+                , edtStreet, spinnerSuburb, btn_save);
 
     }
 
@@ -97,12 +94,6 @@ public class CensusManual extends AppCompatActivity implements TextWatcher, View
         if (edtStreet.getText().toString().isEmpty()) {
             Snackbar.make(findViewById(R.id.rlt_census_manual), R.string.empty_street, Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
-        } else if (edtStreetRight.getText().toString().isEmpty()) {
-            Snackbar.make(findViewById(R.id.rlt_census_manual), R.string.empty_street_right, Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
-        } else if (edtStreetLeft.getText().toString().isEmpty()) {
-            Snackbar.make(findViewById(R.id.rlt_census_manual), R.string.empty_street_left, Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
         } else if (edtNumberOut.getText().toString().isEmpty()) {
             Snackbar.make(findViewById(R.id.rlt_census_manual), R.string.empty_numberout, Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
@@ -115,8 +106,6 @@ public class CensusManual extends AppCompatActivity implements TextWatcher, View
 
             dtoReportCensus.setCp(edtcp.getText().toString());
             dtoReportCensus.setAddress(edtStreet.getText().toString());
-            dtoReportCensus.setAddress_left(edtStreetLeft.getText().toString());
-            dtoReportCensus.setAddress_right(edtStreetRight.getText().toString());
             dtoReportCensus.setExternalNumber(edtNumberOut.getText().toString());
             dtoReportCensus.setInternalNumber(edtNumberin.getText().toString());
             dtoReportCensus.setProvider(getString(R.string.providerManual));
@@ -130,8 +119,7 @@ public class CensusManual extends AppCompatActivity implements TextWatcher, View
 
     @Override
     public void onClick(View view) {
-
-            save();
+        save();
 
     }
 }

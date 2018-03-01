@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/style_activity"
     android:layout_width="match_parent"
@@ -17,105 +16,114 @@
 
     <TextView
         android:id="@+id/txtLabelInit"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar"
-        android:textSize="@dimen/textSizeBig"
-        android:text="“Bienvenido,\nEres parte del Observatorio Ciudadano”" />
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:gravity="center"
+        android:text="“Bienvenido,"
+        android:textSize="36sp" />
 
-
-    <TableLayout
+    <TextView
+        android:id="@+id/txtLabelSecon"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/txtLabelInit">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtLabelInit"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin_middle"
+        android:gravity="center"
+        android:text="Al Observatorio Ciudadano”"
+        android:textSize="28sp" />
 
-        <TableRow
-            android:id="@+id/tableRow1"
+    <LinearLayout
+        android:id="@+id/lnyDoneRegister"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="@dimen/activity_horizontal_margin_double"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/imgPerson"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            app:civ_border_color="#FF000000"
+            app:civ_border_width="2dp" />
+
+        <TextView
+            android:id="@+id/txtName"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginBottom="@dimen/activity_horizontal_margin_double"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_horizontal_margin_triple"
-            android:layout_weight="1">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:gravity="center"
+            android:textSize="@dimen/textSizeBig" />
 
-            <LinearLayout
-                android:id="@+id/lnyStartRegister"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/startRegister"
-                    style="@style/style_Button"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:background="@color/colorButtonHomeLeft"
-                    android:text="COMIENZA AQUÍ"
-                    android:textSize="@dimen/textSizeVeryBig" />
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@color/colorButtonHomeRigth"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/f" />
-
-
-            </LinearLayout>
-
-
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/tableRow2"
+        <TextView
+            android:id="@+id/txtLabelRegister"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:gravity="center"
+            android:text="YA ERES PARTE DEL OBSERVATORIO CIUDADANO"
+            android:textSize="@dimen/textSizeVeryBig" />
 
-            <LinearLayout
-                android:id="@+id/lnyExit"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="@dimen/activity_horizontal_margin_triple"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:layout_marginTop="@dimen/activity_horizontal_margin_double"
-                android:layout_weight="1"
-                android:orientation="horizontal">
+        <TextView
+            android:id="@+id/txtLabelMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:gravity="center"
+            android:text="POR AQUÍ ESTAREMOS EN CONTACTO CONTIGO.\nESPERA NUESTRAS PRÓXIMAS ACTIVIDADES"
+            android:textSize="@dimen/textSizeBig" />
 
-                <Button
-                    android:id="@+id/exit"
-                    style="@style/style_Button"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:background="@color/colorButtonHomeLeft"
-                    android:text="@string/label_exit"
-                    android:textSize="@dimen/textSizeVeryBig" />
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@color/colorButtonHomeRigth"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/x" />
+    </LinearLayout>
 
 
-            </LinearLayout>
+    <LinearLayout
+        android:id="@+id/lnyStartRegister"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="@dimen/activity_horizontal_margin_double"
+        android:layout_weight="1"
+        android:minHeight="@dimen/activity_horizontal_margin_triple"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/startRegister"
+            style="@style/style_Button"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:background="@color/colorButtonHomeLeft"
+            android:text="COMIENZA AQUÍ"
+            android:textSize="@dimen/textSizeVeryBig" />
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/colorButtonHomeRigth"
+            android:scaleType="centerInside"
+            android:src="@drawable/f" />
 
 
-        </TableRow>
+    </LinearLayout>
 
-
-    </TableLayout>
+    <Button
+        android:id="@+id/exit"
+        style="@style/style_Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/activity_horizontal_margin_double"
+        android:text="@string/label_exit"
+        android:textSize="@dimen/textSizeBig" />
 
 
 </RelativeLayout>

@@ -29,6 +29,7 @@ import net.gshp.observatoriociudadano.dto.DtoEARespuesta;
 import net.gshp.observatoriociudadano.dto.DtoPhoto;
 import net.gshp.observatoriociudadano.faceDetection.adapters.PhotoItem;
 import net.gshp.observatoriociudadano.faceDetection.models.Photo;
+import net.gshp.observatoriociudadano.model.ModelInfoPerson;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -55,19 +56,10 @@ public class PhotosActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_photos);
         getSupportActionBar().hide();
-
-        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yy");
-        TextView timestamp = findViewById(R.id.date);
-        timestamp.setText(df.format(System.currentTimeMillis()).toUpperCase());
-
-        if (getIntent().getIntExtra(getString(R.string.user_roll),
-                getResources().getInteger(R.integer.rollSupervisor)) == getResources().getInteger(R.integer.rollSupervisor))
-            rol = getResources().getInteger(R.integer.rollSupervisor);
-        else
-            rol = getResources().getInteger(R.integer.rollRepresentanteCasilla);
+        new ModelInfoPerson(this).loadImage(this).loadInfo("TOMATE LA FOTO", "selecciona cada foto y tomate una igual".toUpperCase());
+        rol = getResources().getInteger(R.integer.rollSupervisor);
 
         dtoBundle = (DtoBundle) getIntent().getExtras().get(getString(R.string.app_bundle_name));
 
@@ -155,7 +147,8 @@ public class PhotosActivity extends AppCompatActivity {
         pictureList.add(a);
 
         if (rol == getResources().getInteger(R.integer.rollSupervisor)) {
-            DtoEARespuesta respuesta = new DaoEARespuesta().selectUserName(1, 1, dtoBundle.getIdReportLocal());
+            Log.e("idPdv", "idPdv " + dtoBundle.getIdReportLocal());
+            DtoEARespuesta respuesta = new DaoEARespuesta().selectUserName(46, 1, dtoBundle.getIdReportLocal());
             userName = respuesta.getRespuesta();
             hash = respuesta.getHash();
             placeId = respuesta.getPdv();

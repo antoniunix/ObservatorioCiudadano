@@ -337,7 +337,7 @@ Página 6 de 6</string>
     <string name="street_left">Calle Izquierda:</string>
     <string name="street_right">Calle Derecha:</string>
     <string name="number_out">Número Exterior:</string>
-    <string name="number_in">Número Inerior:</string>
+    <string name="number_in">Número Interior:</string>
     <string name="info_manual">No se pudo obtener dirección, favor de ingresarla manual.</string>
     <string name="title_info_manual">UBICACIÓN NO OBTENIDA</string>
     <string name="empty_street">Ingrese la Direccion.</string>

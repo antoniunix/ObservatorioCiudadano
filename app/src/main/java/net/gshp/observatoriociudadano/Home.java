@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import net.gshp.observatoriociudadano.dialog.DialogAccount;
@@ -19,25 +20,27 @@ import net.gshp.observatoriociudadano.util.ChangeFontStyle;
 import net.gshp.observatoriociudadano.util.Config;
 import net.gshp.observatoriociudadano.util.SharePreferenceCustom;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class Home extends AppCompatActivity implements View.OnClickListener {
 
     public static int stateApp = 0;//1 resume,pause.  2 destroy
 
-    private ImageButton btnTBSettings, btnTBHelp, btnTBSync, btnTBAccount;
-    private LinearLayout lnyStartRegister, lnyExit;
+    private ImageButton btnTBSync, btnTBAccount;
+    private LinearLayout lnyStartRegister;
     private Button startRegister, exit;
 
     private ModelHome model;
+    private int statusReportSupervisor;
 
     private void init() {
-        btnTBHelp = findViewById(R.id.btnTBHelp);
         btnTBSync = findViewById(R.id.btnTBSync);
         btnTBAccount = findViewById(R.id.btnTBAccount);
         lnyStartRegister = findViewById(R.id.lnyStartRegister);
-        lnyExit = findViewById(R.id.lnyExit);
         startRegister = findViewById(R.id.startRegister);
         exit = findViewById(R.id.exit);
-        ChangeFontStyle.changeFont(startRegister, exit, findViewById(R.id.txtLabelInit));
+        ChangeFontStyle.changeFont(startRegister, exit,
+                findViewById(R.id.txtLabelInit), findViewById(R.id.txtLabelSecon));
 
         if (!SharePreferenceCustom.contains(R.string.app_share_preference_name, R.string.app_share_preference_user_account)) {
             SharePreferenceCustom.write(R.string.app_share_preference_name, R.string.app_share_preference_user_account, R.string.user);
@@ -46,11 +49,9 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
         }
 
         new ModelInfoPerson(this).loadImage(this).loadInfo("INICIO");
-        btnTBHelp.setOnClickListener(this);
         btnTBSync.setOnClickListener(this);
         btnTBAccount.setOnClickListener(this);
         lnyStartRegister.setOnClickListener(this);
-        lnyExit.setOnClickListener(this);
         startRegister.setOnClickListener(this);
         exit.setOnClickListener(this);
         model = new ModelHome();
@@ -89,6 +90,23 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
     protected void onResume() {
         super.onResume();
         stateApp = 1;
+        statusReportSupervisor = model.isRolledSupervisorDone();
+
+        if (statusReportSupervisor == getResources().getInteger(R.integer.statusModuleReportDone)) {
+            findViewById(R.id.lnyDoneRegister).setVisibility(View.VISIBLE);
+            findViewById(R.id.txtLabelSecon).setVisibility(View.GONE);
+            ((TextView)findViewById(R.id.txtLabelInit)).setText("FELICIDADES");
+            new ModelInfoPerson(this)
+                    .loadImage(this,(CircleImageView)findViewById(R.id.imgPerson))
+                    .loadInfoRegister("INICIO",(TextView)findViewById(R.id.txtName));
+            lnyStartRegister.setVisibility(View.GONE);
+        } else {
+            findViewById(R.id.lnyDoneRegister).setVisibility(View.GONE);
+            lnyStartRegister.setVisibility(View.VISIBLE);
+            ((TextView)findViewById(R.id.txtLabelSecon)).setText("“Bienvenido,");
+            findViewById(R.id.txtLabelSecon).setVisibility(View.VISIBLE);
+            new ModelInfoPerson(this).loadImage(this).loadInfo("INICIO");
+        }
     }
 
 
@@ -116,13 +134,9 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
                 new DialogAccount().show(getSupportFragmentManager(), "Fragment_dialog_account");
             }
 
-        } else if (v.getId() == btnTBHelp.getId()) {
-
         } else if (v.getId() == lnyStartRegister.getId() || v.getId() == startRegister.getId()) {
             DtoBundle dtoBundle = new DtoBundle();
-            int statusReportSupervisor;
             DialogMessageGeneric dialog = new DialogMessageGeneric();
-            statusReportSupervisor = model.isRolledSupervisorDone();
 
             if (statusReportSupervisor == getResources().getInteger(R.integer.statusModuleReportDone)) {
                 dialog.setData("REGISTRO COMPLETADO", "Ya te has registrado anteriormente", 0).
@@ -143,7 +157,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
                 startActivity(new Intent(this, MenuReport.class).putExtra(getString(R.string.app_bundle_name), dtoBundle));
             }
 
-        } else if (v.getId() == lnyExit.getId() || v.getId() == exit.getId()) {
+        } else if (v.getId() == exit.getId()) {
             finish();
         }
 

@@ -71,11 +71,11 @@ public class ModelMenuReport {
         }
     }
 
-    public int isReportPollStation(DtoBundle dtoBundle, int idPoll) {
+    public int isReportPollDevice() {
         DaoEAEncuesta dao = new DaoEAEncuesta();
-        if (!dao.existPoll(idPoll)) {
+        if (!dao.existPoll(ContextApp.context.getResources().getInteger(R.integer.idPollDevice))) {
             return context.getResources().getInteger(R.integer.statusModuleReportWithOut);
-        } else if (dao.isResponsePollById(dtoBundle.getIdReportLocal(), idPoll)) {
+        } else if (dao.isResponsePollById(ContextApp.context.getResources().getInteger(R.integer.idPollDevice))) {
             return context.getResources().getInteger(R.integer.statusModuleReportDone);
         } else {
             return context.getResources().getInteger(R.integer.statusModuleReportNotDone);
@@ -119,7 +119,7 @@ public class ModelMenuReport {
     }
 
     public String getUserPassword(long idReportLocal) {
-        DtoEARespuesta dto = new DaoEARespuesta().selectAnswer(37, idReportLocal);
+        DtoEARespuesta dto = new DaoEARespuesta().selectAnswer(46, idReportLocal);
         String msg;
         if (dto.getRespuesta() != null) {
             String pass = MD5.md5(dto.getRespuesta()).substring(0, 5).trim();
