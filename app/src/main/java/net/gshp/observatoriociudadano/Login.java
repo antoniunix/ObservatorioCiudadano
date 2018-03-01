@@ -86,12 +86,14 @@ public class Login extends AppCompatActivity implements View.OnClickListener, On
             btn_next.setOnClickListener(this);
             edt_user_name.setText(prefs.getString(getString(R.string.app_share_preference_user_account), ""));
             edt_pass.setText(prefs.getString(getString(R.string.app_share_preference_user_pass), ""));
-            ChangeFontStyle.changeFont(btn_sync,btn_sync_agree,btn_sync_cancel,btn_next
-            ,edt_user_name,edt_pass,txtPorcent);
+            ChangeFontStyle.changeFont(btn_sync, btn_sync_agree, btn_sync_cancel, btn_next
+                    , edt_user_name, edt_pass, txtPorcent);
         } else {
-            if (new DaoEaRespuestaPdv().supervisorRegistered() || new DaoPhoto().previousPhotos(prefs.getString(getString(R.string.app_share_preference_user_account),""))) {
+            if (new DaoEaRespuestaPdv().supervisorRegistered() || new DaoPhoto()
+                    .previousPhotos(prefs.getString(getString(R.string.app_share_preference_user_account), ""),
+                            getResources().getInteger(R.integer.number_photos))) {
                 Intent intent = new Intent(this, FaceDetectionActivity.class);
-                intent.putExtra("userName",prefs.getString(getString(R.string.app_share_preference_user_account),""));
+                intent.putExtra("userName", prefs.getString(getString(R.string.app_share_preference_user_account), ""));
                 startActivity(intent);
             } else {
                 startActivity(new Intent(this, Home.class));
@@ -149,10 +151,12 @@ public class Login extends AppCompatActivity implements View.OnClickListener, On
             case R.id.btn_next:
                 switch (statusSync) {
                     case HttpStatus.SC_OK:
-                        Log.w("Login","time "+prefs.getLong(getResources().getString(R.string.app_share_preference_time_synch), 0L));
-                        if (new DaoEaRespuestaPdv().supervisorRegistered() || new DaoPhoto().previousPhotos(prefs.getString(getString(R.string.app_share_preference_user_account),""))) {
+                        Log.w("Login", "time " + prefs.getLong(getResources().getString(R.string.app_share_preference_time_synch), 0L));
+                        if (new DaoEaRespuestaPdv().supervisorRegistered() || new DaoPhoto()
+                                .previousPhotos(prefs.getString(getString(R.string.app_share_preference_user_account), ""),
+                                        getResources().getInteger(R.integer.number_photos))) {
                             Intent intent = new Intent(this, FaceDetectionActivity.class);
-                            intent.putExtra("userName",prefs.getString(getString(R.string.app_share_preference_user_account),""));
+                            intent.putExtra("userName", prefs.getString(getString(R.string.app_share_preference_user_account), ""));
                             startActivity(intent);
                         } else {
                             startActivity(new Intent(this, Home.class));

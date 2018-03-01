@@ -22,7 +22,6 @@ public class DaoPhoto extends DAO {
     private final String name = "name";
     private final String face_id = "face_id";
     private final String sent = "sent";
-    private final String rol = "rol";
     private final String user = "user";
     private final String report_id = "report_id";
 
@@ -42,8 +41,8 @@ public class DaoPhoto extends DAO {
         try {
             SQLiteStatement insStatement = db.compileStatement("INSERT INTO "
                     + TABLE_NAME + " (" + path + "," + name + "," + face_id + ","
-                    + sent + "," + rol + "," + user + "," + report_id + ")"
-                    + "VALUES(?,?,?,?,?,?,?);");
+                    + sent + "," + user + "," + report_id + ")"
+                    + "VALUES(?,?,?,?,?,?);");
             db.beginTransaction();
 
             try {
@@ -67,19 +66,14 @@ public class DaoPhoto extends DAO {
                 insStatement.bindNull(4);
             }
             try {
-                insStatement.bindLong(5, dto.getRol());
+                insStatement.bindString(5, dto.getUser());
             } catch (Exception e) {
                 insStatement.bindNull(5);
             }
             try {
-                insStatement.bindString(6, dto.getUser());
+                insStatement.bindLong(6, dto.getReport_id());
             } catch (Exception e) {
                 insStatement.bindNull(6);
-            }
-            try {
-                insStatement.bindLong(7, dto.getReport_id());
-            } catch (Exception e) {
-                insStatement.bindNull(7);
             }
             insStatement.executeInsert();
             db.setTransactionSuccessful();
@@ -165,7 +159,7 @@ public class DaoPhoto extends DAO {
         return dto;
     }
 
-    public int missingPhotos(long idReport) {
+    public int missingPhotos(long idReport, int quantity) {
         db = helper.getReadableDatabase();
         cursor = db.rawQuery("SELECT\n" +
                 "id\n" +
@@ -178,13 +172,13 @@ public class DaoPhoto extends DAO {
         cursor.close();
         db.close();
 
-        if (photos >= 5)
+        if (photos >= quantity)
             return 0;
         else
-            return 5 - photos;
+            return quantity - photos;
     }
 
-    public boolean previousPhotos(String userName) {
+    public boolean previousPhotos(String userName, int quantity) {
         db = helper.getReadableDatabase();
         cursor = db.rawQuery("SELECT\n" +
                 "id\n" +
@@ -197,6 +191,6 @@ public class DaoPhoto extends DAO {
         cursor.close();
         db.close();
 
-        return photos >= 7;
+        return photos >= quantity;
     }
 }

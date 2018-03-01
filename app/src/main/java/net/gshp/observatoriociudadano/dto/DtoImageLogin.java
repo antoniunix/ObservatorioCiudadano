@@ -10,13 +10,19 @@ public class DtoImageLogin {
     private String path;
     private String name;
     private int sent;
-    private int rol;
+    private String tableName;
+    private String md5;
+    private String version;
+    private String hash;
+    private String description;
+    private String personId;
+    private String userId;
+    private int placeId;
 
-    public DtoImageLogin(String path, String name, int sent, int rol) {
+    public DtoImageLogin(String path, String name, int sentl) {
         this.path = path;
         this.name = name;
         this.sent = sent;
-        this.rol = rol;
     }
 
     public DtoImageLogin() {
@@ -54,11 +60,67 @@ public class DtoImageLogin {
         this.sent = sent;
     }
 
-    public int getRol() {
-        return rol;
+    public String getTableName() {
+        return tableName;
     }
 
-    public void setRol(int rol) {
-        this.rol = rol;
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
+    }
+
+    public String getMd5() {
+        return md5;
+    }
+
+    public void setMd5(String md5) {
+        this.md5 = md5;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
+    public String getHash() {
+        return hash;
+    }
+
+    public void setHash(String hash) {
+        this.hash = hash;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getPersonId() {
+        return personId;
+    }
+
+    public void setPersonId(String personId) {
+        this.personId = personId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public int getPlaceId() {
+        return placeId;
+    }
+
+    public void setPlaceId(int placeId) {
+        this.placeId = placeId;
     }
 }

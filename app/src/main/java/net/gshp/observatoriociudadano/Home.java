@@ -25,7 +25,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
 
     private ImageButton btnTBSettings, btnTBHelp, btnTBSync, btnTBAccount;
     private LinearLayout lnyStartRegister, lnyExit;
-    private Button startRegister,exit;
+    private Button startRegister, exit;
 
     private ModelHome model;
 
@@ -118,7 +118,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
 
         } else if (v.getId() == btnTBHelp.getId()) {
 
-        } else if (v.getId() == lnyStartRegister.getId()|| v.getId()==startRegister.getId()) {
+        } else if (v.getId() == lnyStartRegister.getId() || v.getId() == startRegister.getId()) {
             DtoBundle dtoBundle = new DtoBundle();
             int statusReportSupervisor;
             DialogMessageGeneric dialog = new DialogMessageGeneric();
@@ -143,7 +143,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
                 startActivity(new Intent(this, MenuReport.class).putExtra(getString(R.string.app_bundle_name), dtoBundle));
             }
 
-        } else if (v.getId() == lnyExit.getId()|| v.getId()==exit.getId()) {
+        } else if (v.getId() == lnyExit.getId() || v.getId() == exit.getId()) {
             finish();
         }
 

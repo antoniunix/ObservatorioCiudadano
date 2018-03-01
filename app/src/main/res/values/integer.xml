@@ -25,4 +25,5 @@
     <integer name="statusModuleReportDoneBeforeVisit">6000</integer>
     <integer name="statusModuleReportWithMoreVisit">7000</integer>
     <integer name="statusModuleReportIncompleteForced">8000</integer>
+    <integer name="number_photos">5</integer>
 </resources>
