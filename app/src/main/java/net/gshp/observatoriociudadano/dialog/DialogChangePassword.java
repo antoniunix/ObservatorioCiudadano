@@ -1,7 +1,5 @@
 package net.gshp.observatoriociudadano.dialog;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,6 +20,7 @@ import net.gshp.APINetwork.NetworkTask;
 import net.gshp.observatoriociudadano.R;
 import net.gshp.observatoriociudadano.model.ModelChangePassword;
 import net.gshp.observatoriociudadano.util.ChangeFontStyle;
+import net.gshp.observatoriociudadano.util.SharePreferenceCustom;
 
 import org.apache.http.HttpStatus;
 
@@ -43,7 +42,6 @@ public class DialogChangePassword extends DialogFragment implements View.OnClick
     private ModelChangePassword model;
     private boolean isChangePass = false;
     private boolean isUnauthorized = false;
-    private SharedPreferences mySharedPreferences;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -70,7 +68,6 @@ public class DialogChangePassword extends DialogFragment implements View.OnClick
         txtPorcent = v.findViewById(R.id.txtPorcent);
         txt_toolbar=v.findViewById(R.id.toolbar_title);
         id_progressbar =  v.findViewById(R.id.id_progressbar);
-        mySharedPreferences = getActivity().getSharedPreferences(getString(R.string.app_share_preference_name), Context.MODE_PRIVATE);
         id_progressbar.setVisibility(View.GONE);
         txtPorcent.setVisibility(View.GONE);
         model = new ModelChangePassword(UIHandler);
@@ -144,7 +141,7 @@ public class DialogChangePassword extends DialogFragment implements View.OnClick
                     btn_next.setVisibility(Button.VISIBLE);
                     btn_next.setText(R.string.label_continue);
                     isChangePass = true;
-                    mySharedPreferences.edit().putString(getString(R.string.app_share_preference_user_pass), edt_pss
+                    SharePreferenceCustom.write(R.string.app_share_preference_name,R.string.app_share_preference_user_pass,edt_pss
                             .getText().toString().trim());
                     break;
                 case HttpStatus.SC_PRECONDITION_FAILED:

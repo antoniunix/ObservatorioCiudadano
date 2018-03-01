@@ -203,7 +203,6 @@ public class Census extends AppCompatActivity implements OnMapReadyCallback, OnF
     private void setUpDialogCensusManual() {
         DialogCensusManual dialogCensusManual = new DialogCensusManual();
         dialogCensusManual.setDtoBundle(dtoBundle, lat, lon);
-        Log.e("dtoBundle", "dto census " + dtoBundle.getIdReportLocal());
         dialogCensusManual.show(getSupportFragmentManager(), "dialog");
     }
 

@@ -22,6 +22,7 @@ import net.gshp.observatoriociudadano.dto.DtoReport;
 import net.gshp.observatoriociudadano.geolocation.ServiceCheck;
 import net.gshp.observatoriociudadano.util.Config;
 import net.gshp.observatoriociudadano.util.MD5;
+import net.gshp.observatoriociudadano.util.SharePreferenceCustom;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
@@ -34,13 +35,10 @@ public class ModelMenuReport {
 
     private DtoBundle dtoBundle;
     private Context context;
-    private SharedPreferences prefs;
 
     public ModelMenuReport(DtoBundle dtoBundle) {
         this.dtoBundle = dtoBundle;
         context = ContextApp.context;
-        prefs = context.getSharedPreferences(context.getString(R.string.app_share_preference_name), Context.MODE_PRIVATE);
-
     }
 
     public void createNewReport(Activity activity) {
@@ -124,9 +122,12 @@ public class ModelMenuReport {
         DtoEARespuesta dto = new DaoEARespuesta().selectAnswer(37, idReportLocal);
         String msg;
         if (dto.getRespuesta() != null) {
-            msg = "Usuario: " + dto.getRespuesta() + " \nContraseña: " + MD5.md5(dto.getRespuesta()).substring(0, 5);
-            prefs.edit().putString(context.getString(R.string.app_share_preference_user_account), dto.getRespuesta().trim()).apply();
-            prefs.edit().putString(context.getString(R.string.app_share_preference_user_pass), MD5.md5(dto.getRespuesta()).substring(0, 5).trim()).apply();
+            String pass = MD5.md5(dto.getRespuesta()).substring(0, 5).trim();
+            msg = "Usuario: " + dto.getRespuesta() + " \nContraseña: " + pass;
+
+            SharePreferenceCustom.write(R.string.app_share_preference_name, R.string.app_share_preference_user_account, dto.getRespuesta().trim());
+            SharePreferenceCustom.write(R.string.app_share_preference_name, R.string.app_share_preference_user_pass, pass);
+
 
         } else {
             msg = "";

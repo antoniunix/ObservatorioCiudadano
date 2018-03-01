@@ -43,4 +43,8 @@
     <color name="colorBackgrounSecction">#d3d3d3</color>
     <color name="colorTextSecction">#858585</color>
 
+    <color name="colorButtonHomeLeft">#b52820</color>
+    <color name="colorButtonHomeRigth">#781b16</color>
+    <color name="colorBackGrounTableLayout">#f5f5f5</color>
+
 </resources>

@@ -2,7 +2,6 @@ package net.gshp.observatoriociudadano.dialog;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -35,7 +34,6 @@ public class DialogUpdateApp extends DialogFragment {
 
     private View view;
     private Context context;
-    private SharedPreferences settings;
     private TextView txtTitle, txtPercent;
     private DownloadFileFromURL donDownloadFileFromURL;
     private Handler h;
@@ -56,7 +54,6 @@ public class DialogUpdateApp extends DialogFragment {
 
     private void init() {
         context = view.getContext();
-        settings = context.getSharedPreferences(context.getResources().getString(R.string.app_share_preference_name), context.MODE_PRIVATE);
         txtTitle =  view.findViewById(R.id.toolbar_title);
         txtPercent =  view.findViewById(R.id.txt_percent_update);
         h = new HandlerTask();

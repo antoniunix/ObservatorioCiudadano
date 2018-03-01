@@ -1,8 +1,6 @@
 package net.gshp.observatoriociudadano.dialog;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -17,19 +15,19 @@ import android.widget.TextView;
 import net.gshp.observatoriociudadano.R;
 import net.gshp.observatoriociudadano.listener.OnDissmisDialogListener;
 import net.gshp.observatoriociudadano.util.ChangeFontStyle;
+import net.gshp.observatoriociudadano.util.SharePreferenceCustom;
 
 /**
  * Created by LEONARDO on 20/08/2017.
  */
 
-public class DialogAccount extends DialogFragment implements View.OnClickListener{
+public class DialogAccount extends DialogFragment implements View.OnClickListener {
 
     private View view;
     private TextView txtWarning, txtTitle;
     private EditText edt_user_name, edt_pass;
     private LinearLayout lyt_account, lyt_warning;
     private Button btn_sync, btn_sync_agree;
-    private SharedPreferences prefs;
     private OnDissmisDialogListener onDissmisDialogListener;
 
     public DialogAccount() {
@@ -41,27 +39,26 @@ public class DialogAccount extends DialogFragment implements View.OnClickListene
                              Bundle savedInstanceState) {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         view = inflater.inflate(R.layout.dialog_account, container);
-        prefs = getContext().getSharedPreferences(getString(R.string.app_share_preference_name), Context.MODE_PRIVATE);
-        txtTitle =  view.findViewById(R.id.toolbar_title);
-        txtWarning =  view.findViewById(R.id.txt_warning_account);
-        edt_user_name =  view.findViewById(R.id.edt_user_name);
-        edt_pass =  view.findViewById(R.id.edt_pass);
-        lyt_account =  view.findViewById(R.id.lyt_account);
-        lyt_warning =  view.findViewById(R.id.lyt_warning);
+        txtTitle = view.findViewById(R.id.toolbar_title);
+        txtWarning = view.findViewById(R.id.txt_warning_account);
+        edt_user_name = view.findViewById(R.id.edt_user_name);
+        edt_pass = view.findViewById(R.id.edt_pass);
+        lyt_account = view.findViewById(R.id.lyt_account);
+        lyt_warning = view.findViewById(R.id.lyt_warning);
 
-        btn_sync =  view.findViewById(R.id.btn_sync);
-        btn_sync_agree =  view.findViewById(R.id.btn_sync_agree);
+        btn_sync = view.findViewById(R.id.btn_sync);
+        btn_sync_agree = view.findViewById(R.id.btn_sync_agree);
 
         btn_sync.setOnClickListener(this);
         btn_sync_agree.setOnClickListener(this);
 
         //si existe una cuenta guardada se muestra en los textviews
-        edt_user_name.setText(prefs.getString(getString(R.string.app_share_preference_user_account),""));
-        edt_pass.setText(prefs.getString(getString(R.string.app_share_preference_user_pass),""));
+        edt_user_name.setText(SharePreferenceCustom.read(R.string.app_share_preference_name, R.string.app_share_preference_user_account, ""));
+        edt_pass.setText(SharePreferenceCustom.read(R.string.app_share_preference_name, R.string.app_share_preference_user_pass, ""));
 
-        ChangeFontStyle.changeFont(ChangeFontStyle.TYPE_FONT.NORMAL,view.findViewById(R.id.toolbar_title),view.findViewById(R.id.edt_user_name),
-                view.findViewById(R.id.edt_pass),view.findViewById(R.id.btn_sync)
-        ,view.findViewById(R.id.txt_warning_account),view.findViewById(R.id.btn_sync_agree));
+        ChangeFontStyle.changeFont(ChangeFontStyle.TYPE_FONT.NORMAL, view.findViewById(R.id.toolbar_title), view.findViewById(R.id.edt_user_name),
+                view.findViewById(R.id.edt_pass), view.findViewById(R.id.btn_sync)
+                , view.findViewById(R.id.txt_warning_account), view.findViewById(R.id.btn_sync_agree));
 
         return view;
     }
@@ -74,13 +71,13 @@ public class DialogAccount extends DialogFragment implements View.OnClickListene
                     edt_user_name.setError(getString(R.string.error_empty_user_name));
                 } else if (edt_pass.getText().toString().isEmpty()) {
                     edt_pass.setError(getString(R.string.error_empty_password));
-                } else if (prefs.getString(getString(R.string.app_share_preference_user_account), null) != null &&
-                        !prefs.getString(getString(R.string.app_share_preference_user_account), "").equals(edt_user_name.getText().toString().trim())) {
+                } else if (SharePreferenceCustom.read(R.string.app_share_preference_name, R.string.app_share_preference_user_account, null) != null &&
+                        !SharePreferenceCustom.read(R.string.app_share_preference_name, R.string.app_share_preference_user_account, "").equals(edt_user_name.getText().toString().trim())) {
                     lyt_account.setVisibility(View.GONE);
                     lyt_warning.setVisibility(View.VISIBLE);
                 } else {
-                    prefs.edit().putString(getString(R.string.app_share_preference_user_account), edt_user_name.getText().toString().trim()).apply();
-                    prefs.edit().putString(getString(R.string.app_share_preference_user_pass), edt_pass.getText().toString().trim()).apply();
+                    SharePreferenceCustom.write(R.string.app_share_preference_name, R.string.app_share_preference_user_account, edt_user_name.getText().toString().trim());
+                    SharePreferenceCustom.write(R.string.app_share_preference_name, R.string.app_share_preference_user_pass, edt_pass.getText().toString().trim());
                     DialogSync diFragmentSync = new DialogSync();
                     diFragmentSync.setOnDissmiDialogListener(onDissmisDialogListener).setCancelable(false);
                     diFragmentSync.show(getFragmentManager(), "DialogFragmentSync");
@@ -88,11 +85,11 @@ public class DialogAccount extends DialogFragment implements View.OnClickListene
                 }
                 break;
             case R.id.btn_sync_agree:
-                prefs.edit().putString(getString(R.string.app_share_preference_user_account), edt_user_name.getText().toString().trim()).apply();
-                prefs.edit().putString(getString(R.string.app_share_preference_user_pass), edt_pass.getText().toString().trim()).apply();
+                SharePreferenceCustom.write(R.string.app_share_preference_name, R.string.app_share_preference_user_account, edt_user_name.getText().toString().trim());
+                SharePreferenceCustom.write(R.string.app_share_preference_name, R.string.app_share_preference_user_pass, edt_pass.getText().toString().trim());
                 //prefs.edit().remove(getString(R.string.app_share_preference_privacy_politic)).commit();
-                prefs.edit().remove(getString(R.string.app_share_preference_time_synch)).commit();
-                prefs.edit().remove(getString(R.string.app_share_preference_first_synch)).commit();
+                SharePreferenceCustom.remove(R.string.app_share_preference_name, R.string.app_share_preference_time_synch);
+                SharePreferenceCustom.remove(R.string.app_share_preference_name, R.string.app_share_preference_first_synch);
                 getContext().deleteDatabase(getResources().getString(R.string.app_db_name));
                 Intent i = getActivity().getBaseContext().getPackageManager()
                         .getLaunchIntentForPackage(getActivity().getBaseContext().getPackageName());
@@ -109,8 +106,8 @@ public class DialogAccount extends DialogFragment implements View.OnClickListene
         }
     }
 
-    public DialogAccount setOnDissmiDialogListener(OnDissmisDialogListener onDissmisDialogListener){
-        this.onDissmisDialogListener=onDissmisDialogListener;
+    public DialogAccount setOnDissmiDialogListener(OnDissmisDialogListener onDissmisDialogListener) {
+        this.onDissmisDialogListener = onDissmisDialogListener;
         return this;
     }
 }

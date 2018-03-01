@@ -95,16 +95,16 @@ public class CensusManual extends AppCompatActivity implements TextWatcher, View
 
     private void save() {
         if (edtStreet.getText().toString().isEmpty()) {
-            Snackbar.make(findViewById(R.id.rlt_census_manual), R.string.empty_street, Snackbar.LENGTH_INDEFINITE)
+            Snackbar.make(findViewById(R.id.rlt_census_manual), R.string.empty_street, Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
         } else if (edtStreetRight.getText().toString().isEmpty()) {
-            Snackbar.make(findViewById(R.id.rlt_census_manual), R.string.empty_street_right, Snackbar.LENGTH_INDEFINITE)
+            Snackbar.make(findViewById(R.id.rlt_census_manual), R.string.empty_street_right, Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
         } else if (edtStreetLeft.getText().toString().isEmpty()) {
-            Snackbar.make(findViewById(R.id.rlt_census_manual), R.string.empty_street_left, Snackbar.LENGTH_INDEFINITE)
+            Snackbar.make(findViewById(R.id.rlt_census_manual), R.string.empty_street_left, Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
         } else if (edtNumberOut.getText().toString().isEmpty()) {
-            Snackbar.make(findViewById(R.id.rlt_census_manual), R.string.empty_numberout, Snackbar.LENGTH_INDEFINITE)
+            Snackbar.make(findViewById(R.id.rlt_census_manual), R.string.empty_numberout, Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
         } else {
             if (spinnerSuburb.getAdapter().getCount() != 0) {

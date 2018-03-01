@@ -15,7 +15,7 @@ import net.gshp.observatoriociudadano.contextApp.ContextApp;
 import net.gshp.observatoriociudadano.dao.DaoImageLogin;
 import net.gshp.observatoriociudadano.dto.DtoImageLogin;
 import net.gshp.observatoriociudadano.util.ChangeFontStyle;
-import net.gshp.observatoriociudadano.util.Config;
+import net.gshp.observatoriociudadano.util.SharePreferenceCustom;
 
 import java.io.File;
 
@@ -27,18 +27,15 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ModelInfoPerson {
     private CircleImageView imgTBPerson;
-    private TextView txtTBDate, txtTBTitle, txtTBSubTitle;
+    private TextView txtTBTitle, txtTBSubTitle;
     private DtoImageLogin dtoImageLogin;
-    private SharedPreferences preferences;
 
     public ModelInfoPerson(Activity activity) {
         imgTBPerson = activity.findViewById(R.id.imgTBPerson);
-        txtTBDate = activity.findViewById(R.id.txtTBDate);
         txtTBTitle = activity.findViewById(R.id.txtTBTitle);
         txtTBSubTitle = activity.findViewById(R.id.txtTBSubTitle);
         dtoImageLogin = new DaoImageLogin().selectLast();
-        preferences = ContextApp.context.getSharedPreferences(ContextApp.context.getString(R.string.app_share_preference_name), Context.MODE_PRIVATE);
-        ChangeFontStyle.changeFont(txtTBDate, txtTBTitle, txtTBSubTitle);
+        ChangeFontStyle.changeFont(txtTBTitle, txtTBSubTitle);
     }
 
     public ModelInfoPerson loadImage(Activity activity) {
@@ -72,8 +69,7 @@ public class ModelInfoPerson {
     }
 
     public ModelInfoPerson loadInfo(String subtitle) {
-        txtTBDate.setText(Config.formatDate());
-        txtTBTitle.setText(preferences.getString(ContextApp.context.getString(R.string.app_share_preference_user_account), "").toUpperCase());
+        txtTBTitle.setText(SharePreferenceCustom.read(R.string.app_share_preference_name, R.string.app_share_preference_user_account, "").toUpperCase());
         txtTBSubTitle.setText(subtitle);
         return this;
     }

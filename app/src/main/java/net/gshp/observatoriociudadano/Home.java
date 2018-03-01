@@ -1,109 +1,65 @@
 package net.gshp.observatoriociudadano;
 
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.TextView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
-
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.firebase.iid.FirebaseInstanceId;
 
 import net.gshp.observatoriociudadano.dialog.DialogAccount;
 import net.gshp.observatoriociudadano.dialog.DialogMessageGeneric;
 import net.gshp.observatoriociudadano.dialog.DialogSync;
-import net.gshp.observatoriociudadano.dto.DtoAuthentication;
 import net.gshp.observatoriociudadano.dto.DtoBundle;
-import net.gshp.observatoriociudadano.dto.DtoImageLogin;
 import net.gshp.observatoriociudadano.model.ModelHome;
 import net.gshp.observatoriociudadano.model.ModelInfoPerson;
-import net.gshp.observatoriociudadano.model.ModelMenuReport;
-import net.gshp.observatoriociudadano.util.BottomNavigationViewHelper;
 import net.gshp.observatoriociudadano.util.ChangeFontStyle;
 import net.gshp.observatoriociudadano.util.Config;
-import net.gshp.observatoriociudadano.util.MD5;
+import net.gshp.observatoriociudadano.util.SharePreferenceCustom;
 
-import java.io.File;
+public class Home extends AppCompatActivity implements View.OnClickListener {
 
-import de.hdodenhof.circleimageview.CircleImageView;
-
-public class Home extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener,
-        View.OnClickListener,
-        OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener,
-        LocationListener {
-
-    public static int stateApp=0;//1 resume,pause.  2 destroy
+    public static int stateApp = 0;//1 resume,pause.  2 destroy
 
     private ImageButton btnTBSettings, btnTBHelp, btnTBSync, btnTBAccount;
-    private BottomNavigationView bottomNavigationView;
+    private LinearLayout lnyStartRegister, lnyExit;
+    private Button startRegister,exit;
 
-
-    private GoogleMap mGoogleMap;
-    private SupportMapFragment mapFrag;
-    private LocationRequest mLocationRequest;
-    private GoogleApiClient mGoogleApiClient;
-
-    private SharedPreferences preferences;
     private ModelHome model;
 
     private void init() {
         btnTBHelp = findViewById(R.id.btnTBHelp);
         btnTBSync = findViewById(R.id.btnTBSync);
         btnTBAccount = findViewById(R.id.btnTBAccount);
-        bottomNavigationView = findViewById(R.id.bottom_navigation);
-        BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
-        mapFrag = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        ChangeFontStyle.changeFont();
+        lnyStartRegister = findViewById(R.id.lnyStartRegister);
+        lnyExit = findViewById(R.id.lnyExit);
+        startRegister = findViewById(R.id.startRegister);
+        exit = findViewById(R.id.exit);
+        ChangeFontStyle.changeFont(startRegister, exit, findViewById(R.id.txtLabelInit));
 
-        preferences = getSharedPreferences(getString(R.string.app_share_preference_name), Context.MODE_PRIVATE);
-        if (!preferences.contains(getString(R.string.app_share_preference_user_account))) {
-            preferences.edit().putString(getString(R.string.app_share_preference_user_account), getString(R.string.user)).apply();
-            preferences.edit().putString(getString(R.string.app_share_preference_user_pass), getString(R.string.pass)).apply();
+        if (!SharePreferenceCustom.contains(R.string.app_share_preference_name, R.string.app_share_preference_user_account)) {
+            SharePreferenceCustom.write(R.string.app_share_preference_name, R.string.app_share_preference_user_account, R.string.user);
+            SharePreferenceCustom.write(R.string.app_share_preference_name, R.string.app_share_preference_user_pass, R.string.pass);
 
         }
 
         new ModelInfoPerson(this).loadImage(this).loadInfo("INICIO");
-        mapFrag.getMapAsync(this);
-        bottomNavigationView.setOnNavigationItemSelectedListener(this);
         btnTBHelp.setOnClickListener(this);
         btnTBSync.setOnClickListener(this);
         btnTBAccount.setOnClickListener(this);
+        lnyStartRegister.setOnClickListener(this);
+        lnyExit.setOnClickListener(this);
+        startRegister.setOnClickListener(this);
+        exit.setOnClickListener(this);
         model = new ModelHome();
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        stateApp=1;
+        stateApp = 1;
         setContentView(R.layout.activity_home);
         getSupportActionBar().hide();
         init();
@@ -112,10 +68,11 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
     @Override
     protected void onStart() {
         super.onStart();
-        stateApp=1;
-        if ((System.currentTimeMillis() - preferences.getLong(getResources().getString(R.string.app_share_preference_time_synch), 0L))
+        stateApp = 1;
+
+        if ((System.currentTimeMillis() - Long.valueOf(SharePreferenceCustom.read(R.string.app_share_preference_name, R.string.app_share_preference_time_synch, "0")))
                 > getResources().getInteger(R.integer.time_synch)) {
-            if (preferences.getString(getString(R.string.app_share_preference_user_account), null) != null) {
+            if (SharePreferenceCustom.read(R.string.app_share_preference_name, R.string.app_share_preference_user_account, null) != null) {
                 DialogSync diFragmentSync = new DialogSync();
                 diFragmentSync.setCancelable(false);
                 diFragmentSync.show(getSupportFragmentManager(), "DialogFragmentSync");
@@ -124,234 +81,25 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
             }
         }
 
-        Log.e("OSS", "Oss " + getDataToAuthentication().toString());
 
     }
 
-    private DtoAuthentication getDataToAuthentication() {
-        return new DtoAuthentication()
-                .setImei(Config.getIMEI())
-                .setBrand(Config.getBrandDevice())
-                .setOs(Config.getOs())
-                .setOsVersion(Config.getOsVersion())
-                .setPhone(Config.getPhoneNumber())
-                .setModel(Config.getModel())
-                .setCameraFront(Config.checkCameraHardware())
-                .setDeviceId(FirebaseInstanceId.getInstance().getToken());
-    }
 
     @Override
     protected void onResume() {
         super.onResume();
-        stateApp=1;
+        stateApp = 1;
     }
 
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        DtoBundle dtoBundle = new DtoBundle();
-        int statusReportSupervisor;
-        DialogMessageGeneric dialog = new DialogMessageGeneric();
-        switch (item.getItemId()) {
-            case R.id.action_supervisor:
-                statusReportSupervisor = model.isRolledSupervisorDone();
-                Log.e("status","status "+statusReportSupervisor);
-
-                if (//statusReportSupervisor == getResources().getInteger(R.integer.statusModuleReportDoneBeforeVisit) ||
-                        statusReportSupervisor == getResources().getInteger(R.integer.statusModuleReportDone)) {
-                    dialog.setData("REGISTRO COMPLETADO", "Ya te has registrado anteriormente", 0).
-                            setShowButton(false, true);
-                    dialog.show(getSupportFragmentManager(), "");
-
-                } else if (statusReportSupervisor == getResources().getInteger(R.integer.statusModuleReportWithOut)) {
-                    dialog.setData("SIN INFORMACIÓN", "No cuenta con la información necesaria, reportelo con su supervisor", 0).
-                            setShowButton(false, true);
-                    dialog.show(getSupportFragmentManager(), "");
-
-                } else if (statusReportSupervisor == getResources().getInteger(R.integer.statusModuleReportIncomplete)) {
-                    dtoBundle.setIdReportLocal(model.getIdReportIncompleteSupervisor());
-                    dtoBundle.setIdTypeMenuReport(getResources().getInteger(R.integer.idPollSupervisor));
-                    startActivity(new Intent(this, MenuReport.class).putExtra(getString(R.string.app_bundle_name), dtoBundle));
-                } else {
-                    dtoBundle.setIdTypeMenuReport(getResources().getInteger(R.integer.idPollSupervisor));
-                    startActivity(new Intent(this, MenuReport.class).putExtra(getString(R.string.app_bundle_name), dtoBundle));
-                }
-
-
-                break;
-//            case R.id.action_representative:
-//                statusReportSupervisor = model.isRolledSupervisorDone();
-//                if (statusReportSupervisor == getResources().getInteger(R.integer.statusModuleReportDoneBeforeVisit) ||
-//                        statusReportSupervisor == getResources().getInteger(R.integer.statusModuleReportDone)) {
-//                    startActivity(new Intent(this, ListStation.class));
-//
-//                } else {
-//                    dialog.setData("REGISTRE SUPERVISOR", "Primero registrese como supervisor", 0).
-//                            setShowButton(false, true);
-//                    dialog.show(getSupportFragmentManager(), "");
-//                }
-//
-//
-//                break;
-//            case R.id.action_visit:
-//                startActivity(new Intent(this, Visit.class));
-//                break;
-            case R.id.action_exit:
-                finish();
-                break;
-        }
-        return true;
-    }
 
     @Override
     protected void onPause() {
         super.onPause();
         if (checkBasic()) {
-            stateApp=1;
-            if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
-                LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
-            }
+            stateApp = 1;
         }
     }
 
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mGoogleMap = googleMap;
-        mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-
-        //Initialize Google Play Services
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ContextCompat.checkSelfPermission(this,
-                    android.Manifest.permission.ACCESS_FINE_LOCATION)
-                    == PackageManager.PERMISSION_GRANTED) {
-                //Location Permission already granted
-                buildGoogleApiClient();
-                mGoogleMap.setMyLocationEnabled(true);
-            } else {
-                //Request Location Permission
-                checkLocationPermission();
-            }
-        } else {
-            buildGoogleApiClient();
-            mGoogleMap.setMyLocationEnabled(true);
-        }
-    }
-
-    protected synchronized void buildGoogleApiClient() {
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
-        mGoogleApiClient.connect();
-    }
-
-    @Override
-    public void onConnected(Bundle bundle) {
-        mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(1000);
-        mLocationRequest.setFastestInterval(1000);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-        if (ContextCompat.checkSelfPermission(this,
-                android.Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
-        }
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-    }
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-//        mLastLocation = location;
-        //Place current location marker
-        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-
-        CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(20).bearing(45).tilt(90).build();
-        mGoogleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
-        mGoogleMap.clear();
-
-    }
-
-
-    public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
-
-    private void checkLocationPermission() {
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    android.Manifest.permission.ACCESS_FINE_LOCATION)) {
-
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-                new AlertDialog.Builder(this)
-                        .setTitle("Location Permission Needed")
-                        .setMessage("This app needs the Location permission, please accept to use location functionality")
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                //Prompt the user once explanation has been shown
-                                ActivityCompat.requestPermissions(Home.this,
-                                        new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-                                        MY_PERMISSIONS_REQUEST_LOCATION);
-                            }
-                        })
-                        .create()
-                        .show();
-
-
-            } else {
-                // No explanation needed, we can request the permission.
-                ActivityCompat.requestPermissions(this,
-                        new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-                        MY_PERMISSIONS_REQUEST_LOCATION);
-            }
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_LOCATION: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    // permission was granted, yay! Do the
-                    // location-related task you need to do.
-                    if (ContextCompat.checkSelfPermission(this,
-                            android.Manifest.permission.ACCESS_FINE_LOCATION)
-                            == PackageManager.PERMISSION_GRANTED) {
-
-                        if (mGoogleApiClient == null) {
-                            buildGoogleApiClient();
-                        }
-                        mGoogleMap.setMyLocationEnabled(true);
-                    }
-
-                } else {
-
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                    Toast.makeText(this, "permission denied", Toast.LENGTH_LONG).show();
-                }
-                return;
-            }
-
-            // other 'case' lines to check for other
-            // permissions this app might request
-        }
-    }
 
     @Override
     public void onClick(View v) {
@@ -360,7 +108,7 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
             new DialogAccount().show(getSupportFragmentManager(), "Fragment_dialog_account");
 
         } else if (v.getId() == btnTBSync.getId()) {
-            if (preferences.getString(getString(R.string.app_share_preference_user_account), null) != null) {
+            if (SharePreferenceCustom.read(R.string.app_share_preference_name, R.string.app_share_preference_user_account, null) != null) {
                 DialogSync diFragmentSync = new DialogSync();
                 diFragmentSync.setCancelable(false);
                 diFragmentSync.show(getSupportFragmentManager(), "DialogFragmentSync");
@@ -370,8 +118,33 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
 
         } else if (v.getId() == btnTBHelp.getId()) {
 
-        } else if (v.getId() == btnTBSettings.getId()) {
+        } else if (v.getId() == lnyStartRegister.getId()|| v.getId()==startRegister.getId()) {
+            DtoBundle dtoBundle = new DtoBundle();
+            int statusReportSupervisor;
+            DialogMessageGeneric dialog = new DialogMessageGeneric();
+            statusReportSupervisor = model.isRolledSupervisorDone();
 
+            if (statusReportSupervisor == getResources().getInteger(R.integer.statusModuleReportDone)) {
+                dialog.setData("REGISTRO COMPLETADO", "Ya te has registrado anteriormente", 0).
+                        setShowButton(false, true);
+                dialog.show(getSupportFragmentManager(), "");
+
+            } else if (statusReportSupervisor == getResources().getInteger(R.integer.statusModuleReportWithOut)) {
+                dialog.setData("SIN INFORMACIÓN", "No cuenta con la información necesaria, reportelo con su supervisor", 0).
+                        setShowButton(false, true);
+                dialog.show(getSupportFragmentManager(), "");
+
+            } else if (statusReportSupervisor == getResources().getInteger(R.integer.statusModuleReportIncomplete)) {
+                dtoBundle.setIdReportLocal(model.getIdReportIncompleteSupervisor());
+                dtoBundle.setIdTypeMenuReport(getResources().getInteger(R.integer.idPollSupervisor));
+                startActivity(new Intent(this, MenuReport.class).putExtra(getString(R.string.app_bundle_name), dtoBundle));
+            } else {
+                dtoBundle.setIdTypeMenuReport(getResources().getInteger(R.integer.idPollSupervisor));
+                startActivity(new Intent(this, MenuReport.class).putExtra(getString(R.string.app_bundle_name), dtoBundle));
+            }
+
+        } else if (v.getId() == lnyExit.getId()|| v.getId()==exit.getId()) {
+            finish();
         }
 
     }
@@ -416,6 +189,6 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        stateApp=2;
+        stateApp = 2;
     }
 }

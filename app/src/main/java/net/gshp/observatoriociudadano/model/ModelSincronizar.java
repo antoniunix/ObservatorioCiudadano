@@ -20,6 +20,7 @@ import net.gshp.observatoriociudadano.dto.DtoStatus;
 import net.gshp.observatoriociudadano.dto.DtoUpdate;
 import net.gshp.observatoriociudadano.listener.OnProgressSync;
 import net.gshp.observatoriociudadano.util.Config;
+import net.gshp.observatoriociudadano.util.SharePreferenceCustom;
 
 import org.apache.http.HttpStatus;
 
@@ -55,7 +56,6 @@ public class ModelSincronizar {
 
     private boolean flag = false;
     private int numReportGuardados = 0;
-    private SharedPreferences mySharedPreferences;
 
     private final int NUMCATALOGOS = 7; //se usa para saber cuando ya se descargaron todos los catalogos y enviar mensaje de terminado
     private int numReportDownload = 0;
@@ -69,7 +69,6 @@ public class ModelSincronizar {
         modelDataBaseSync = new ModelDataBaseSync(handlerStorage);
         networkConfig = new NetworkConfig(handlerTask, context);
         lstNoContent = new ArrayList<>();
-        mySharedPreferences = context.getSharedPreferences(context.getString(R.string.app_share_preference_name), Context.MODE_PRIVATE);
         regId = FirebaseInstanceId.getInstance().getToken();
         Log.e("RegId", "RegId " + regId);
     }
@@ -79,6 +78,7 @@ public class ModelSincronizar {
         new Thread() {
             public void run() {
                 String json = new Gson().toJson(getDataToAuthentication());
+                Log.e("gson ", "gson " + json);
                 networkConfig.POST("login/authentication", json, "token", null);
             }
         }.start();
@@ -123,8 +123,7 @@ public class ModelSincronizar {
             }
             if (nt.getResponseStatus() == HttpStatus.SC_OK || nt.getResponseStatus() == HttpStatus.SC_CREATED) {
                 if (nt.getTag().equals("token")) {
-                    SharedPreferences prefs = context.getSharedPreferences(context.getString(R.string.app_share_preference_name), Context.MODE_PRIVATE);
-                    prefs.edit().putString(context.getString(R.string.app_share_preference_toke_webservices), nt.getResponse()).apply();
+                    SharePreferenceCustom.write(R.string.app_share_preference_name, R.string.app_share_preference_toke_webservices, nt.getResponse());
                     Actualizar();
                 } else if (nt.getTag().equals("version")) {
 
@@ -258,8 +257,8 @@ public class ModelSincronizar {
 
     private DtoAuthentication getDataToAuthentication() {
         return new DtoAuthentication()
-                .setUsername(mySharedPreferences.getString(context.getString(R.string.app_share_preference_user_account), ""))
-                .setPassword(mySharedPreferences.getString(context.getString(R.string.app_share_preference_user_pass), ""))
+                .setUsername(SharePreferenceCustom.read(R.string.app_share_preference_name, R.string.app_share_preference_user_account, ""))
+                .setPassword(SharePreferenceCustom.read(R.string.app_share_preference_name, R.string.app_share_preference_user_pass, ""))
                 .setImei(Config.getIMEI())
                 .setBrand(Config.getBrandDevice())
                 .setOs(Config.getOs())

@@ -40,7 +40,7 @@ dependencies {
     compile 'net.gshp:APINetwork:1.1'
     compile 'net.gshp:ApiUtils:1.0'
     compile 'net.gshp:ApiTimeModule:1.0'
-    compile 'net.gshp:ApiPoll:1.5'
+    compile 'net.gshp:ApiPoll:1.6'
     compile 'net.gshp:ApiDB:1.1'
     compile 'net.panamiur:ApiGeolocation:1.0'
     compile 'com.android.support:cardview-v7:26.+'

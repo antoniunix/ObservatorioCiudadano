@@ -38,6 +38,8 @@
     <string name="error_empty_password">Ingrese su contraseña</string>
 
     <string name="label_continue">CONTINUAR</string>
+    <string name="label_exit">SALIR</string>
+    <string name="label_finish">Finalizar</string>
     <string name="label_next">SIGUIENTE</string>
     <string name="label_accept">ACEPTAR</string>
     <string name="label_cancel">CANCELAR</string>
